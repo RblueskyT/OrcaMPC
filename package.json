@@ -1,0 +1,50 @@
+{
+  "name": "orcampc",
+  "version": "1.0.0",
+  "description": "COMP390 FYP, A community-based WEB MPC application which is implemented with JIFF",
+  "main": "server.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node server",
+    "dev": "cross-env NODE_ENV=development nodemon server"
+  },
+  "author": "Zian Wang",
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^6.12.6",
+    "ajv-keywords": "^3.5.2",
+    "bignumber.js": "^5.0.0",
+    "connect-mongo": "^3.2.0",
+    "cross-env": "^5.2.1",
+    "docdash": "^1.1.1",
+    "dotenv": "^8.2.0",
+    "express-handlebars": "^5.2.0",
+    "express-session": "^1.17.1",
+    "increase-memory-limit": "^1.0.3",
+    "jquery-deferred": "^0.3.1",
+    "libsodium-wrappers": "^0.7.2",
+    "mathjs": "^5.0.4",
+    "method-override": "^3.0.0",
+    "moment": "^2.29.1",
+    "mongoose": "^5.11.0",
+    "morgan": "^1.10.0",
+    "numeric": "^1.2.6",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
+    "request": "^2.88.0",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.0",
+    "chai": "^4.1.2",
+    "eslint": "^4.19.1",
+    "eslint-plugin-requirejs": "^2.0.1",
+    "express": "^4.17.1",
+    "jsdoc": "^3.6.3",
+    "marked": "^0.7.0",
+    "minimist": "^1.2.0",
+    "mocha": "^4.0.1",
+    "neptune-notebook": "^1.3.1",
+    "nodemon": "^2.0.6"
+  }
+}
