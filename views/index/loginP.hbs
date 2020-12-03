@@ -1,4 +1,15 @@
 <h1>Please Login</h1>
+{{#if flash_success_message}}
+<div>
+    {{flash_success_message}}
+</div>
+{{/if}}
+{{#if flash_error_message}}
+<div>
+    {{flash_error_message}}
+</div>
+{{/if}}
+
 <form action="/login" method="POST">
 <div>
     <label for="email">E-mail</label>
