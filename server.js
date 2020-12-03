@@ -5,12 +5,15 @@ const morgan = require('morgan');
 const exphbs = require('express-handlebars');
 const connectDB = require('./config/db');
 
-// Config
+// Config and Database Connecting
 dotenv.config({ path: './config/config.env' });
-
 connectDB();
 
 const app = express();
+
+// Body parser
+app.use(express.urlencoded({ extended: false}));
+app.use(express.json());
 
 // Logging
 if(process.env.NODE_ENV === 'development'){
@@ -24,9 +27,13 @@ app.set('view engine', '.hbs');
 // Static folder
 app.use(express.static(path.join(__dirname, 'assets')));
 
-// Routes
-app.use('/', require('./routes/index'));
+//Routes
+const indexRouter = require('./routes/index');
 
+app.use('/', indexRouter);
+
+
+// Server Connecting
 const PORT = process.env.PORT || 8080;
 
 app.listen(
