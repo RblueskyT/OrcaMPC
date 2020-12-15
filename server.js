@@ -19,6 +19,12 @@ connectDB();
 
 const app = express();
 
+// JIFF server config
+var http = require('http').Server(app);
+var JIFFServer = require('./jiff/lib/jiff-server');
+var jiffServer = new JIFFServer(http, {logs:true});
+
+
 // Body parser
 app.use(express.urlencoded({ extended: false}));
 app.use(express.json());
@@ -47,7 +53,9 @@ app.engine('.hbs', exphbs({defaultLayout: 'index', extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
 // Static folder
-app.use(express.static(path.join(__dirname, 'assets')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/dist', express.static(path.join(__dirname, 'jiff', 'dist')));
+app.use('/lib', express.static(path.join(__dirname, 'jiff', 'lib')));
 
 
 // Flash message
@@ -61,15 +69,17 @@ app.use(function (req, res, next){
 //Routes
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/users');
+const votingRouter = require('./routes/votings');
 
 app.use('/', indexRouter);
 app.use('/users', userRouter);
+app.use('/votings', votingRouter);
 
 
 // Server Connecting
 const PORT = process.env.PORT || 8080;
 
-app.listen(
+http.listen(
     PORT,
     console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
 );

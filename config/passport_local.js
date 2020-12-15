@@ -12,7 +12,7 @@ module.exports = function(passport){
             User.findOne({ email: email })
               .then(user =>{
                   if(!user){
-                      return done(null, false, req.flash('flash_error_message', 'No such user exists'));
+                      return done(null, false, req.flash('flash_error_message', 'No such user exists or incorrect password'));
                   }
 
                   // Compare password
@@ -21,7 +21,7 @@ module.exports = function(passport){
                       if(isMatch){
                           return done(null, user);
                       }else{
-                        return done(null, false, req.flash('flash_error_message', 'Password Incorrect'));
+                        return done(null, false, req.flash('flash_error_message', 'No such user exists or incorrect password'));
                       }
                   });
               })

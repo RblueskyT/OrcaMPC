@@ -1,0 +1,53 @@
+<h1>Welcome to Voting Editor</h1>
+<h3>Welcome {{username}}</h3>
+<a href="/users/dashboard">Back to dashboard</a>
+<a href="/users/logout">Log Out</a>
+<h3>Create a new voting</h3>
+<div class="row">
+    <form action="/votings/voting_editor" method="POST" class="col s12">
+        <div class="row">
+            <p>Voting Title</p>
+            <div class="input-field">
+                <input type="text" id="votingTitle" name="votingTitle">
+            </div>
+        </div>
+
+        <div class="row">
+            <p>Status</p>
+            <div class="input-field">
+                <select id="status" name="status">
+                    <option value="unpublished" selected>Unpublished</option>
+                    <option value="published">Published</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <h5>Please describle this voting:</h5>
+            <div class="input-field">
+                <textarea id="description" name="description"></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <p>Number of participants</p>
+            <div class="input-field">
+                <input type="text" id="partyCount" name="partyCount" pattern="^[1-9]|[1-9][0-9]*$">
+            </div>
+        </div>
+
+        <div class="row">
+            <p>Options</p>
+            <div class="input-field" id="Options">
+                <input type="button" value="Add new options" onclick="refresh();"><br/><br/>
+                <input type="text" id="option_1" name="options"><br/><br/>
+                <input type="text" id="option_2" name="options"><br/><br/>
+            </div>
+        </div>
+
+        <div class="row">
+            <input type="submit" value="Save" class="btn">
+            <a href="/users/dashboard" class="btn orange">Cancel</a>
+        </div>
+    </form>
+</div>

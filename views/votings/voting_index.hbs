@@ -1,0 +1,28 @@
+<h1>Public Votings</h1>
+{{#if votings}}
+<table class="striped">
+    <thead>
+        <tr>
+            <th>Voting Title</th>
+            <th>Create Date</th>
+            <th>Creator</th>
+            <th>Operation</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each votings}}
+        <tr>
+            <td>{{votingTitle}}</td>
+            <td>{{createTime}}</td>
+            <td><span class="dash-status">{{user.username}}</span></td>
+            <td><a href="/votings/details/{{_id}}">View Details</a></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{else}}
+<p>Sorry, you have not created any votings</p>
+{{/if}}
+<a href="/users/dashboard">Dashboard</a>
+<a href="/users/logout">Log Out</a>
