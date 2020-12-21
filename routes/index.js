@@ -1,42 +1,46 @@
 const express = require('express');
-const User = require('../models/user');
 const passport = require('passport');
 const router = express.Router();
+const User = require('../models/user');
 
+// Index Page
 router.get('/', (req, res) => {
     res.render('index/indexP');
 });
 
+// Register Page
 router.get('/register', (req, res) => {
     res.render('index/registerP', {
         layout: 'register_login',
     });
 });
 
+// Login page
 router.get('/login', (req, res) => {
     res.render('index/loginP', {
         layout: 'register_login',
     });
 });
 
+// Register: handle user inputs
 router.post('/register', async (req, res) => {
-    try{
+    try {
         await User.create(req.body);
         res.redirect('/login');
 
-    }catch{
+    } catch {
         console.error(err);
     }
 });
 
+// Login: handle user inputs
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
-        successRedirect: '/users/dashboard', 
+        successRedirect: '/users/dashboard',
         failureRedirect: '/login',
         failureFlash: true
     })(req, res, next)
 
 });
-
 
 module.exports = router;
