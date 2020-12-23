@@ -1,18 +1,100 @@
-<h1>Please Register</h1>
-<form action="/register" method="POST">
-<div>
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username" required>
+<div class="container">
+    <h3 class="center"></h3>
+    <div class="row">
+        <div class="col s6 offset-s3">
+            <div class="card grey lighten-5 hoverable">
+                <div class="card-content">
+                    <h3 class="center blue-text text-lighten-1">Sign-Up Form</h3></br>
+                    <p><span class="red-text">*</span> parts are required</p></br>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <form id="register" action="/register" method="POST">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input placeholder="No special characters (e.g. @, # and $)" type="text" id="firstName"
+                                    name="firstName" onblur="checkFirst()" onfocus="checkFirst()"
+                                    onchange="checkFirst()" class="validate" required>
+                                <label for="firstName">First Name <span class="red-text">*</span></label>
+                                <span class="helper-text" data-error="Please fill in this field or check your format"
+                                    data-success="Format correct"></span>
+                            </div>
+                            <div class="input-field col s6">
+                                <input placeholder="No special characters (e.g. @, # and $)" type="text" id="lastName"
+                                    name="lastName" onblur="checkLast()" onfocus="checkLast()" onchange="checkLast()"
+                                    class="validate" required>
+                                <label for="lastName">Last Name <span class="red-text">*</span></label>
+                                <span class="helper-text" data-error="Please fill in this field or check your format"
+                                    data-success="Format correct"></span>
+                            </div>
+                        </div>
+                        <div class="input-field col s12">
+                            <select id="gender" name="gender">
+                                <option value="" disabled selected>Please select here ...</option>
+                                <option value="secret">Secret</option>
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                            </select>
+                            <label for="gender">Gender</label>
+                        </div>
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <div class="input-field col s12">
+                            <input placeholder="Please select here ..." type="text" id="birthday" name="birthday"
+                                class="datepicker validate">
+                            <label for="birthday">Birthday</label>
+                            <span class="helper-text" data-error="Please select again"
+                                data-success="Date selected"></span>
+                        </div>
+                        <div class="input-field col s12">
+                            <input placeholder="No special characters (e.g. @, # and $)" type="text" id="career"
+                                name="career" onblur="checkCareer()" onfocus="checkCareer()" onchange="checkCareer()"
+                                class="validate">
+                            <label for="career">Career</label>
+                            <span class="helper-text" data-error="Please check your format"
+                                data-success="Format correct"></span>
+                        </div>
+                        <div class="input-field col s12">
+                            <input placeholder="Cannot be duplicated with the registered addresses" type="email"
+                                id="email" name="email" onblur="checkEmail()" onfocus="checkEmail()"
+                                onchange="checkEmail()" class="validate" required>
+                            <label for="email">E-mail Address <span class="red-text">*</span></label>
+                            <span class="helper-text" data-error="Please fill in this field or check your format"
+                                data-success="Format correct"></span>
+                        </div>
+                        <div class="input-field col s12">
+                            <input placeholder="8-100 characters: letters, numbers and special characters are all required"
+                                type="password" data-length="100" id="password" name="password" onblur="checkPassword()"
+                                onfocus="checkPassword()" onchange="checkPassword()" class="validate" required>
+                            <label for="password">Password <span class="red-text">*</span></label>
+                            <span class="helper-text" data-error="Please fill in this field or check your format (e.g. Aa@123456)"
+                                data-success="Format correct"></span>
+                        </div>
+                        <div class="input-field col s12">
+                            <input placeholder="Please repeat your password again ..." type="password" data-length="100"
+                                id="password_check" name="password_check" onblur="checkRepeat()" onfocus="checkRepeat()"
+                                onchange="checkRepeat()" class="validate" required>
+                            <label for="password_check">Confirm Your Password <span class="red-text">*</span></label>
+                            <span class="helper-text" data-error="Please fill in this field or check your input"
+                                data-success="Confirm correct"></span>
+                        </div>
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <div class="row center">
+                            <div class="col s6">
+                                <a href="/" id="cancel-button"
+                                    class="btn waves-effect waves-light blue lighten-1"><strong>Cancel</strong></a>
+                            </div>
+                            <div class="col s6">
+                                <button class="btn waves-effect waves-light blue lighten-1" id="submit" type="submit" disabled><strong>Sign
+                                        Up</strong></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <label for="email">E-mail</label>
-    <input type="email" id="email" name="email" required>
-</div>
-<div>
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required>
-</div>
-<button type="submit">Register</button>
-</form>
-<a href="/login">Log In</a>
-<a href="/">Back to Home Page</a>

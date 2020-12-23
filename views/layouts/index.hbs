@@ -10,18 +10,19 @@
         integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
         crossorigin="anonymous" />
     <link rel="stylesheet" href="/assets/styles/index.css">
-
     <title>Orca MPC</title>
 </head>
 
 <body>
     {{> _indexHeader}}
     {{{body}}}
+    {{> _pageFooter}}
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="/assets/javascripts/index/index_initial.js"></script>
+    <script src="/assets/javascripts/index/reg_validator.js"></script>
 </body>
 
 </html>

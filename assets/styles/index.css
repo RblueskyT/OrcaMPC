@@ -1,3 +1,7 @@
+body {
+    background-color: #f2f2f2;
+}
+
 .brand-logo {
     display: inline-block;
     height: 100%;
@@ -59,4 +63,62 @@ footer.page-footer {
 
 .ft:hover {
     color: #bbdefb;
+}
+
+/* Change the default color of materialize */
+
+.input-field label {
+    color: #90a4ae;
+}
+
+input:focus {
+    border-bottom: 1px solid #42a5f5 !important;
+    box-shadow: 0 1px 0 0 #42a5f5 !important;
+}
+
+input:focus+label {
+    color: #42a5f5 !important;
+}
+
+input:focus.valid {
+    border-bottom: 1px solid #4caf50 !important;
+    box-shadow: 0 1px 0 0 #4caf50 !important;
+}
+
+input:focus.valid+label {
+    color: #4caf50 !important;
+}
+
+input:focus.invalid {
+    border-bottom: 1px solid #f44336 !important;
+    box-shadow: 0 1px 0 0 #f44336 !important;
+}
+
+input:focus.invalid+label {
+    color: #f44336 !important;
+}
+
+ul.dropdown-content.select-dropdown li.disabled {
+    display: none;
+}
+
+ul.dropdown-content.select-dropdown li span {
+    color: #42a5f5;
+}
+
+.datepicker-date-display {
+    background-color: #42a5f5;
+}
+
+.datepicker-cancel, .datepicker-clear, .datepicker-today, .datepicker-done {
+    color: #42a5f5;
+}
+
+.datepicker-table td.is-today {
+    color: #42a5f5;
+}
+
+.datepicker-table td.is-selected {
+    background-color: #42a5f5;
+    color: #fff;
 }

@@ -10,16 +10,12 @@ router.get('/', (req, res) => {
 
 // Register Page
 router.get('/register', (req, res) => {
-    res.render('index/registerP', {
-        layout: 'register_login',
-    });
+    res.render('index/registerP');
 });
 
 // Login page
 router.get('/login', (req, res) => {
-    res.render('index/loginP', {
-        layout: 'register_login',
-    });
+    res.render('index/loginP');
 });
 
 // Register: handle user inputs

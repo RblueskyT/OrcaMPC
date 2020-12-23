@@ -7,10 +7,39 @@ const userSchema = new mongoose.Schema({
         default: Date.now
     },
 
-    username: {
+    avatar: {
         type: String,
-        required: true,
-        index: {unique: true}
+        default: 'assets/images/users/default.jpeg'
+    },
+
+    firstName: {
+        type: String,
+        required: true
+    },
+
+    lastName: {
+        type: String,
+        required: true
+    },
+
+    gender: {
+        type: String,
+        default: 'secret',
+        enum: ['secret', 'male', 'female'],
+        required: true
+    },
+
+    birthday: {
+        type: String
+    },
+
+    career: {
+        type: String
+    },
+
+    description: {
+        type: String,
+        default: 'I have not decided what to write here ...'
     },
 
     email: {
