@@ -5,13 +5,16 @@ document.getElementById("email").addEventListener("keyup", checkEmail);
 document.getElementById("password").addEventListener("keyup", checkPassword);
 document.getElementById("password_check").addEventListener("keyup", checkRepeat);
 
+// Status flags
 var s1 = false;
 var s2 = false;
-var s3 = true;
+var s3 = true; // The field of career is not required
 var s4 = false;
 var s5 = false;
 var s6 = false;
 
+
+// Check the first name
 function checkFirst() {
     var val = document.getElementById("firstName").value;
 
@@ -32,7 +35,7 @@ function checkFirst() {
     checkForm();
 }
 
-
+// Check the last name
 function checkLast() {
     var val = document.getElementById("lastName").value;
 
@@ -53,6 +56,7 @@ function checkLast() {
     checkForm();
 }
 
+// Check the career
 function checkCareer() {
     var val = document.getElementById("career").value;
 
@@ -73,6 +77,7 @@ function checkCareer() {
     checkForm();
 }
 
+// Check the email
 function checkEmail() {
     var val = document.getElementById("email").value;
 
@@ -93,6 +98,7 @@ function checkEmail() {
     checkForm();
 }
 
+// Check the password
 function checkPassword() {
     var val = document.getElementById("password").value;
 
@@ -113,6 +119,7 @@ function checkPassword() {
     checkForm();
 }
 
+// Check the repeated password
 function checkRepeat() {
     var val1 = document.getElementById("password").value;
     var val2 = document.getElementById("password_check").value;
@@ -132,17 +139,13 @@ function checkRepeat() {
     checkForm();
 }
 
+// Make sure that the "SIGN UP" button only active if all fields validated
 function checkForm() {
-    var val1 = document.getElementById("firstName").value;
-    var val2 = document.getElementById("lastName").value;
-    var val3 = document.getElementById("career").value;
-    var val4 = document.getElementById("email").value;
-    var val5 = document.getElementById("password").value;
-    var val6 = document.getElementById("password_check").value;
 
-    if (!s1 || !s2 || !s3 || !s4 || !s5 || !s6) {
-        $("#submit").attr("disabled", true);
-    } else {
+    if (s1 && s2 && s3 && s4 && s5 && s6) {
         $("#submit").attr("disabled", false);
+    } else {
+        $("#submit").attr("disabled", true);
     }
+
 }

@@ -28,9 +28,9 @@ router.get('/voting', ensureAuthenticated, (req, res) => {
     });
 });
 
-router.get('/logout', (req, res) =>{    
+router.get('/logout', ensureAuthenticated, (req, res) =>{    
     req.logout();
-    req.flash('flash_success_message', 'You logged out sucessfully');
+    req.flash('flash_success_message', 'You have logged out sucessfully');
     res.redirect('../login');
 });
 

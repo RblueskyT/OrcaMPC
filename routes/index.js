@@ -20,12 +20,14 @@ router.get('/login', (req, res) => {
 
 // Register: handle user inputs
 router.post('/register', async (req, res) => {
-    try {
+    const result = await User.findOne({ email: req.body.email }).select("email").lean();
+    if (result) {
+        req.flash('flash_error_message', 'Sorry, this email address has already been registered');
+        res.redirect('/register');
+    } else {
         await User.create(req.body);
+        req.flash('flash_success_message', 'You have signed up successfully, please log in');
         res.redirect('/login');
-
-    } catch {
-        console.error(err);
     }
 });
 

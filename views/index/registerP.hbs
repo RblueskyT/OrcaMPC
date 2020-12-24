@@ -5,10 +5,15 @@
             <div class="card grey lighten-5 hoverable">
                 <div class="card-content">
                     <h3 class="center blue-text text-lighten-1">Sign-Up Form</h3></br>
-                    <p><span class="red-text">*</span> parts are required</p></br>
-                    <div class="row col s12">
-                        <!-- Add a blank line -->
+                    <div class="message_area row">
+                        {{#if flash_error_message}}
+                        <div class="error_msg">
+                        <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                            {{flash_error_message}}
+                        </div>
+                        {{/if}}
                     </div>
+                    <div class="col s12"><p><span class="red-text">*</span> fields are required</p></br></div>
                     <form id="register" action="/register" method="POST">
                         <div class="row">
                             <div class="input-field col s6">
@@ -64,11 +69,13 @@
                                 data-success="Format correct"></span>
                         </div>
                         <div class="input-field col s12">
-                            <input placeholder="8-100 characters: letters, numbers and special characters are all required"
+                            <input
+                                placeholder="8-100 characters: letters, numbers and special characters are all required"
                                 type="password" data-length="100" id="password" name="password" onblur="checkPassword()"
                                 onfocus="checkPassword()" onchange="checkPassword()" class="validate" required>
                             <label for="password">Password <span class="red-text">*</span></label>
-                            <span class="helper-text" data-error="Please fill in this field or check your format (e.g. Aa@123456)"
+                            <span class="helper-text"
+                                data-error="Please fill in this field or check your format (e.g. Aa@123456)"
                                 data-success="Format correct"></span>
                         </div>
                         <div class="input-field col s12">
@@ -88,7 +95,8 @@
                                     class="btn waves-effect waves-light blue lighten-1"><strong>Cancel</strong></a>
                             </div>
                             <div class="col s6">
-                                <button class="btn waves-effect waves-light blue lighten-1" id="submit" type="submit" disabled><strong>Sign
+                                <button class="btn waves-effect waves-light blue lighten-1" id="submit" type="submit"
+                                    disabled><strong>Sign
                                         Up</strong></button>
                             </div>
                         </div>

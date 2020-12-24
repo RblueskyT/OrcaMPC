@@ -65,6 +65,69 @@ footer.page-footer {
     color: #bbdefb;
 }
 
+/* Error and success messages style */
+.success_msg {
+    padding: 10px;
+    background-color: #e8f5e9;
+    color: #66bb6a;
+    opacity: 1;
+    transition: opacity 0.6s;
+    margin-bottom: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #c8e6c9;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.closebtn-s {
+    margin-left: 15px;
+    color: #c8e6c9;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn-s:hover {
+    color: #a5d6a7;
+}
+
+.error_msg {
+    padding: 10px;
+    background-color: #ffebee;
+    color: #ef5350;
+    opacity: 1;
+    transition: opacity 0.6s;
+    margin-bottom: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ffcdd2;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.closebtn-e {
+    margin-left: 15px;
+    color: #ffcdd2;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn-e:hover {
+    color: #ef9a9a;
+}
+
 /* Change the default color of materialize */
 
 .input-field label {
