@@ -5,17 +5,17 @@ const User = require('../models/user');
 
 // Index Page
 router.get('/', (req, res) => {
-    res.render('index/indexP');
+    res.render('index/indexP', {title: 'Orca MPC'});
 });
 
 // Register Page
 router.get('/register', (req, res) => {
-    res.render('index/registerP');
+    res.render('index/registerP', {title: 'User Register - Orca MPC'});
 });
 
 // Login page
 router.get('/login', (req, res) => {
-    res.render('index/loginP');
+    res.render('index/loginP', {title: 'User Login - Orca MPC'});
 });
 
 // Register: handle user inputs
