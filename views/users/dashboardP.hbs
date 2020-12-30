@@ -1,32 +1,5 @@
-<h1>Welcome to Dashboard</h1>
-<h3>Welcome {{username}}</h3>
-<a href="/votings">All published votings</a><br/>
-<a href="/votings/voting_editor">Voting Editor</a><br/>
-<a href="/users/voting">Participate in Voting</a><br/>
-<a href="/users/logout">Log Out</a><br/>
-<p>Here are the votings you created</p>
-{{#if votings}}
-<table class="striped">
-    <thead>
-        <tr>
-            <th>Voting Title</th>
-            <th>Create Date</th>
-            <th>Status</th>
-            <th>Operation</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each votings}}
-        <tr>
-            <td><a href="/votings/{{_id}}"></a>{{votingTitle}}</td>
-            <td>{{createTime}}</td>
-            <td><span class="dash-status">{{status}}</span></td>
-            <td><a href="/votings/details/{{_id}}">View Details</a></td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-
-{{else}}
-<p>Sorry, you have not created any votings</p>
-{{/if}}
+<main>
+<div class="container">
+<h1 class="light-blue-text text-darken-3"><i class="fas fa-home"></i> Dashboard</h1>
+</div>
+</main>
