@@ -59,11 +59,30 @@ router.get('/vote/:id', ensureAuthenticated, async (req, res) => {
 
 });
 
-router.get('/voting_editor', ensureAuthenticated, (req, res) => {
-    res.render('votings/voting_editor', {
-        username: req.user.username,
-        layout: 'voting',
+// Voting Creator
+router.get('/create', ensureAuthenticated, (req, res) => {
+    
+    res.render('voting/createP', {
+        avatar: req.user.avatar,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        email: req.user.email,
+        title: 'Voting Creator - Orca MPC',
+        layout: 'users',
     });
+});
+
+router.post('/create', ensureAuthenticated, async (req, res) => {
+    try{
+        req.body.user=req.user.id;
+        req.body.participants=req.user.id;
+        req.flash('flash_success_message', 'You have successfully create the voting');
+        await Voting.create(req.body);
+        res.redirect('/users/dashboard');
+    }catch(err){
+        console.error(err);
+    }
+
 });
 
 router.post('/voting_editor', ensureAuthenticated, async (req, res) => {

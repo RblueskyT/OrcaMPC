@@ -1,0 +1,90 @@
+<main>
+    <div class="container">
+        <h2 class="light-blue-text text-darken-3">Voting Creator</h2>
+        <div class="divider"></div><br /><br />
+        <div class="col s12"><p><span class="red-text"><strong>All</strong></span> fields are required</p><br /></div>
+        <div class="create_form">
+            <form id="voting_create" action="/users/voting/create" method="POST">
+                <div class="input-field">
+                    <input placeholder="Maximum 200 characters and no special characters (e.g. @, # and $)" type="text"
+                        id="votingTitle" name="votingTitle" onblur="checkTitle()" onfocus="checkTitle()"
+                        onchange="checkTitle()" class="validate" data-length="200" required>
+                    <label for="votingTitle">Voting Title</label>
+                    <span class="helper-text" data-error="Please fill in this field or check your format"
+                        data-success="Format correct"></span>
+                </div><br />
+                <div class="input-field">
+                    <textarea placeholder="At least 50 characters" id="description" name="description"
+                        onblur="checkDes()" onfocus="checkDes()" onchange="checkDes()"
+                        class="materialize-textarea validate" required></textarea>
+                    <label for="description">Voting Description</label>
+                    <span class="helper-text" data-error="Please fill in this field or check your format"
+                        data-success="Input completed"></span>
+                </div><br />
+                <div class="input-field">
+                    <input placeholder="Please select the date here ..." type="text" id="estimatedDate"
+                        name="estimatedDate" class="datepicker validate" required>
+                    <label for="estimatedDate">Estimated Voting Date</label>
+                    <span class="helper-text" data-error="Please select the date" data-success="Date selected"></span>
+                </div><br /><br />
+                <div class="input-field">
+                    <input placeholder="Please select the time here ..." type="text" id="estimatedTime"
+                        name="estimatedTime" class="timepicker validate" required>
+                    <label for="estimatedTime">Estimated Voting Time</label>
+                    <span class="helper-text" data-error="Please select the time" data-success="Time selected"></span>
+                </div><br /><br />
+                <div class="input-field">
+                    <select id="estimatedDuration" name="estimatedDuration" required>
+                        <option value="" disabled selected>Please select here ...</option>
+                        <option value="15">15 Minutes</option>
+                        <option value="30">30 Minutes</option>
+                        <option value="45">45 Minutes</option>
+                        <option value="60">60 Minutes</option>
+                    </select>
+                    <label for="estimatedDuration">Estimated Voting Duration</label>
+                </div><br /><br /><br />
+                <div class="input-field">
+                    <input placeholder="A number between 2 - 50" type="text" id="partyCount" name="partyCount"
+                        onblur="checkCount()" onfocus="checkCount()" onchange="checkCount()" class="validate" required>
+                    <label for="partyCount">Expected Number of Participants</label>
+                    <span class="helper-text" data-error="Please fill in this field or check your format"
+                        data-success="Format correct"></span>
+                </div><br />
+                <div class="input-field">
+                    <div class="valign-wrapper">
+                        <div class="col s3">
+                            <label for="opNum">Number of Options</label>
+                            <input placeholder="Please enter a number between 2 - 10" type="text" id="opNum"
+                                name="opNum" onblur="checkNum()" onfocus="checkNum()" onchange="checkNum()"
+                                class="validate" required>
+                            <span class="helper-text" data-error="Please fill in the field or check your format"
+                                data-success="Format correct"></span>
+                        </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="col s9">
+                            <a href="#" id="addOps" onclick="addOps()"
+                                class="btn waves-effect waves-light blue lighten-1 disabled"><strong>Add
+                                    Options</strong></a>
+                        </div>
+                    </div><br /><br />
+                    <div id="container" />
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row center">
+                    <div class="col s6">
+                        <a href="/users/dashboard" id="cancel-button"
+                            class="btn waves-effect waves-light blue lighten-1"><strong>Cancel</strong></a>
+                    </div>
+                    <div class="col s6">
+                        <button class="btn waves-effect waves-light blue lighten-1" id="submit" type="submit"
+                            disabled><strong>Create</strong></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>

@@ -42,7 +42,7 @@ for (i = 0; i < close1.length; i++) {
         div.style.opacity = "0";
         setTimeout(function () { div.style.display = "none"; }, 600);
     }
-}
+};
 
 for (j = 0; j < close2.length; j++) {
     close2[j].onclick = function () {
@@ -50,4 +50,4 @@ for (j = 0; j < close2.length; j++) {
         div.style.opacity = "0";
         setTimeout(function () { div.style.display = "none"; }, 600);
     }
-}
+};

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 
 const votingSchema = new mongoose.Schema({
     createTime: {
@@ -12,6 +11,21 @@ const votingSchema = new mongoose.Schema({
         ref: 'User'
     },
 
+    estimatedDate: {
+        type: String,
+        required: true
+    },
+
+    estimatedTime: {
+        type: String,
+        required: true
+    },
+
+    estimatedDuration: {
+        type: Number,
+        required: true
+    },
+
     votingTitle: {
         type: String,
         required: true,
@@ -20,7 +34,8 @@ const votingSchema = new mongoose.Schema({
 
     description: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
 
     partyCount: {
@@ -33,14 +48,21 @@ const votingSchema = new mongoose.Schema({
         required: true
     },
 
-    result:{
-        type: Array
+    participants: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+
+    result: {
+        type: String
     },
 
     status: {
         type: String,
-        default: 'unpublished',
-        enum: ['unpublished', 'published', 'initiated', 'expired']
+        default: 'Unpublished',
+        enum: ['Unpublished', 'Published', 'Prepared', 'Initiated', 'Expired']
     }
 
 });

@@ -1,5 +1,61 @@
 <main>
-<div class="container">
-<h1 class="light-blue-text text-darken-3"><i class="fas fa-home"></i> Dashboard</h1>
-</div>
+    <div class="container">
+        <h2 class="light-blue-text text-darken-3">Dashboard</h2>
+        <div class="divider"></div><br />
+        <div class="message_area row">
+            {{#if flash_success_message}}
+            <div class="success_msg">
+                <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                {{flash_success_message}}
+            </div>
+            {{/if}}
+            {{#if flash_error_message}}
+            <div class="error_msg">
+                <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                {{flash_error_message}}
+            </div>
+            {{/if}}
+        </div>
+        <div class="user_voting">
+            <h4 class="light-blue-text text-darken-3"><i class="fas fa-vote-yea"></i> Voting</h4><br />
+            <h6><span class="light-blue-text text-darken-3"><strong>1. My Created Voting <i
+                            class="far fa-arrow-alt-circle-right"></i></strong></span><span
+                    class="grey-text text-darken-2"><strong> Unpublished Voting</strong></span>
+            </h6><br />
+            <div class="unpublished">
+                <div class="row">
+                    {{#if myVoting1}}
+                    {{#each myVoting1}}
+                    <div class="col s12 m4">
+                        <div class="card card grey lighten-5 hoverable">
+                            <div class="card-content">
+                                <span
+                                    class="center card-title grey-text text-darken-2"><strong>{{truncate votingTitle 35}}</strong></span><br />
+                                <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do YYYY, h:mm:ss a'}}</p><br />
+                                <p style="text-align:justify"><strong>Description: </strong>{{truncate description 95}}</p>
+                            </div>
+                            <div class="card-action">
+                                <div class="left"><a href="/votings/details/{{_id}}"><strong><i class="far fa-edit"></i> Edit</strong></a></div>
+                                <div class="right"><a href="/votings/details/{{_id}}"><strong><i class="far fa-file-alt"></i> View</strong></a></div>
+                            </div><br />
+                        </div>
+
+                    </div>
+                    {{/each}}
+
+                    {{else}}
+                    <p>Please use <a href="/users/voting/create"><span class="light-blue-text text-darken-3"><i
+                                    class="fas fa-edit"></i> Voting Creator</span></a> to create your first voting</p>
+                    <br />
+                    {{/if}}
+                </div>
+            </div>
+            <h6 class="light-blue-text text-darken-3"><strong>2. My Attended Voting</strong></h6><br />
+            <p>In development</p><br />
+        </div>
+        <div class="divider"></div><br />
+        <div class="user_surveys">
+            <h4 class="light-blue-text text-darken-3"><i class="fas fa-poll-h"></i> Surveys</h4><br />
+        </div>
+    </div>
 </main>

@@ -53,8 +53,14 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 };
 
+// View Engine config: Handlebars helpers
+const { formatDate, truncate } = require('./config/hbs_helpers');
+
 // View Engine: Handlebars
-app.engine('.hbs', exphbs({ defaultLayout: 'index', extname: '.hbs' }));
+app.engine('.hbs', exphbs({ helpers: {
+    formatDate,
+    truncate
+}, defaultLayout: 'index', extname: '.hbs' }));
 app.set('view engine', '.hbs');
 
 // Static folder
@@ -72,12 +78,12 @@ app.use(function (req, res, next) {
 
 // Routes
 const indexRouter = require('./routes/index');
-const userRouter = require('./routes/users');
-const votingRouter = require('./routes/votings');
+const usersRouter = require('./routes/users');
+const votingRouter = require('./routes/voting');
 
 app.use('/', indexRouter);
-app.use('/users', userRouter);
-app.use('/votings', votingRouter);
+app.use('/users', usersRouter);
+app.use('/users/voting', votingRouter);
 
 
 // Server Connecting
