@@ -67,6 +67,31 @@ function addOps(){
 
 };
 
+// Initiate confirm button handler
+var confirmButton = document.getElementById("confirmInfo");
+
+if(confirmButton){
+confirmButton.addEventListener("click", confirmInitiating);
+}
+
+s1 = false;
+
+function confirmInitiating(){
+  confirmButton.setAttribute("disabled", true);
+  s1 = true;
+  checkConfirm();
+};
+
+function checkConfirm() {
+
+  if (s1) {
+      $("#initiateButton").attr("disabled", false);
+  } else {
+      $("#initiateButton").attr("disabled", true);
+  }
+
+}
+
 // Flash Message style
 var close1 = document.getElementsByClassName("closebtn-s");
 var close2 = document.getElementsByClassName("closebtn-e");

@@ -29,7 +29,6 @@ var http = require('http').Server(app);
 var JIFFServer = require('./jiff/lib/jiff-server');
 var jiffServer = new JIFFServer(http, { logs: true });
 
-
 // Body parser
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -54,12 +53,13 @@ if (process.env.NODE_ENV === 'development') {
 };
 
 // View Engine config: Handlebars helpers
-const { formatDate, truncate } = require('./config/hbs_helpers');
+const { formatDate, truncate, serialNumber} = require('./config/hbs_helpers');
 
 // View Engine: Handlebars
 app.engine('.hbs', exphbs({ helpers: {
     formatDate,
-    truncate
+    truncate,
+    serialNumber
 }, defaultLayout: 'index', extname: '.hbs' }));
 app.set('view engine', '.hbs');
 
@@ -84,7 +84,6 @@ const votingRouter = require('./routes/voting');
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/users/voting', votingRouter);
-
 
 // Server Connecting
 const PORT = process.env.PORT || 8080;

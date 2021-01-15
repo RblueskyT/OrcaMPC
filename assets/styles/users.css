@@ -32,6 +32,11 @@ main {
   width: 64px;
 }
 
+.valign-wrapper .circle {
+  height: 32px;
+  width: 32px;
+}
+
 .nav_op2 {
   margin-left: 3px;
 }
@@ -59,6 +64,12 @@ header, main, footer {
   header, main, footer {
     padding-left: 0;
   }
+}
+
+/* Error Page */
+.error_img>img{
+  margin-top: 190px;
+  height: 420px;
 }
 
 /* Error and success messages style */
@@ -240,4 +251,15 @@ ul.dropdown-content.select-dropdown li span {
 
 .timepicker-close {
   color: #42a5f5;
+}
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:before,
+[type="radio"].with-gap:checked + span:after {
+  border: 2px solid #42a5f5;
+}
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:after {
+  background-color: #42a5f5;
 }

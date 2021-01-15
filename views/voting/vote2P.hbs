@@ -1,0 +1,98 @@
+<main>
+    <div class="container">
+        <h2 class="green-text text-darken-2">{{votingSession.voting.votingTitle}}</h2>
+        <div class="divider"></div><br /><br />
+        <div class="row">
+            <div class="jiff_connection" style="display: none;">
+                <div class="input-field col s12">
+                    <input disabled value={{votingSession._id}}{{votingSession.voting._id}} id="voting_id" type="text"
+                        class="voting_id">
+                </div>
+                <div class="input-field col s12">
+                    <input disabled value={{votingSession.voting.partyCount}} id="voting_partycount" type="text"
+                        class="voting_partycount">
+                </div>
+                <div class="input-field col s12" style="display:none;">
+                    <input disabled value={{userID}} id="voting_user_id" type="text" class="voting_user_id">
+                </div>
+                <div class="input-field col s12" style="display:none;">
+                    <input disabled value={{votingSession.voting.participants}} id="voting_people" type="text"
+                        class="voting_people">
+                </div>
+                <div class="input-field col s12">
+                    <input disabled id="my_party_id" type="text" class="my_party_id">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <div class="voting_content">
+                    <div class="valign-wrapper">
+                        <h6 class="light-blue-text text-darken-3" style="text-align:justify"><strong>1)
+                                Voting Initator:</strong></h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img class="circle"
+                            src={{votingSession.initiator.avatar}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a class="green-text text-darken-1"><strong>{{votingSession.initiator.firstName}}
+                                {{votingSession.initiator.lastName}}</strong></a>
+                    </div><br /><br />
+                    <h6 class="light-blue-text text-darken-3" style="text-align:justify"><strong>2) Question:&nbsp;
+                        </strong> {{votingSession.voting.description}} (Please select one of the following options)</h6>
+                    <br /><br /><br /><br /><br />
+                    <div class="options center">
+                        {{#each votingSession.voting.options}}
+                        <label>
+                            <input class="with-gap" id="options" name="options" type="radio" />
+                            <span><strong>{{this}}</strong></span>
+                        </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+            <div class="row col s12">
+                <!-- Add a blank line -->
+            </div>
+            <div class="row col s12">
+                <!-- Add a blank line -->
+            </div>
+            <div class="row col s12">
+                <!-- Add a blank line -->
+            </div>
+            <div class="row col s12">
+                <!-- Add a blank line -->
+            </div>
+        </div>
+        <div class="row center">
+            <div class="waiting_content" style="display: none;">
+                <div class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-blue-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+                <h6 class="light-blue-text text-darken-3"> Please wait for voting initiator to connect to this voting
+                </h6>
+            </div>
+        </div><br />
+        <div class="row center">
+            <form id="others_vote" action="/users/voting/others_vote" method="POST">
+                <input value={{votingSession._id}} type="hidden" id="sessionid" name="sessionid" class="sessionid">
+                <div class="row center">
+                    <div class="col s6">
+                        <a href="/users/dashboard" id="cancel-button"
+                            class="btn waves-effect waves-light blue lighten-1"><strong>Back</strong></a>
+                    </div>
+                    <div class="col s6">
+                        <button class="btn waves-effect waves-light blue lighten-1" id="OthersSubmit"
+                            type="submit"><strong>Vote</strong></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>

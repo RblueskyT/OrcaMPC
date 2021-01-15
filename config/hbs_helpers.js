@@ -14,5 +14,8 @@ module.exports = {
             return new_str + ' ... ';
         }
         return str;
+    },
+    serialNumber: function (indexVal){
+        return parseInt(indexVal)+1;
     }
 }

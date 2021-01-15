@@ -1,0 +1,43 @@
+<main>
+    <div class="container">
+        <h2 class="grey-text text-darken-2">{{voting.votingTitle}}</h2>
+        <div class="divider"></div><br /><br />
+        <div class="my_voting_content">
+            <h6 class="light-blue-text text-darken-3"><strong>- Creation Date and Time:&nbsp; </strong> {{formatDate
+                voting.createTime 'MMMM Do YYYY, h:mm:ss a'}}</h6><br />
+            <h6 class="light-blue-text text-darken-3"><strong>- Creator Name:&nbsp; </strong> {{voting.user.firstName}}
+                {{voting.user.lastName}}</h6><br />
+            <h6 class="light-blue-text text-darken-3" style="text-align:justify"><strong>- Voting Description:&nbsp;
+                </strong> {{voting.description}}</h6><br />
+            <h6 class="light-blue-text text-darken-3"><strong>- Estimated Voting Date:&nbsp; </strong>
+                {{voting.estimatedDate}}</h6><br />
+            <h6 class="light-blue-text text-darken-3"><strong>- Estimated Voting Time:&nbsp; </strong>
+                {{voting.estimatedTime}}</h6><br />
+            <h6 class="light-blue-text text-darken-3"><strong>- Estimated Voting Duration:&nbsp; </strong>
+                {{voting.estimatedDuration}} minutes</h6><br />
+            <h6 class="light-blue-text text-darken-3"><strong>- Expected Number of Participants:&nbsp; </strong>
+                {{voting.partyCount}}</h6><br />
+            <h6 class="light-blue-text text-darken-3"><strong>- Voting Options:&nbsp; </strong>
+                {{#each voting.options}}
+                {{serialNumber @index}}. {{this}}&nbsp;
+                {{/each}}
+            </h6><br />
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row center">
+            <div class="col s6">
+                <a href="/users/dashboard" id="cancel-button"
+                    class="btn waves-effect waves-light blue lighten-1"><strong>Delete</strong></a>
+            </div>
+            <div class="col s6">
+                <a href="/users/voting/publish/{{voting._id}}" id="publish-button"
+                    class="btn waves-effect waves-light blue lighten-1"><strong>Publish</strong></a>
+            </div>
+        </div>
+    </div>
+</main>

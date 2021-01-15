@@ -1,9 +1,18 @@
+var input1 = document.getElementById("firstName");
+var input2 = document.getElementById("lastName");
+var input3 = document.getElementById("career");
+var input4 = document.getElementById("email");
+var input5 = document.getElementById("password");
+var input6 = document.getElementById("password_check");
+
+if(input1 && input2 && input3 && input4 && input5 && input6){
 document.getElementById("firstName").addEventListener("keyup", checkFirst);
 document.getElementById("lastName").addEventListener("keyup", checkLast);
 document.getElementById("career").addEventListener("keyup", checkCareer);
 document.getElementById("email").addEventListener("keyup", checkEmail);
 document.getElementById("password").addEventListener("keyup", checkPassword);
 document.getElementById("password_check").addEventListener("keyup", checkRepeat);
+}
 
 // Status flags
 var s1 = false;

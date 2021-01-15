@@ -1,7 +1,14 @@
+var input1 = document.getElementById("votingTitle");
+var input2 = document.getElementById("description");
+var input3 = document.getElementById("partyCount");
+var input4 = document.getElementById("opNum");
+
+if(input1 && input2 && input3 && input4){
 document.getElementById("votingTitle").addEventListener("keyup", checkTitle);
 document.getElementById("description").addEventListener("keyup", checkDes);
 document.getElementById("partyCount").addEventListener("keyup", checkCount);
 document.getElementById("opNum").addEventListener("keyup", checkNum);
+}
 
 // Status flags
 var s1 = false;

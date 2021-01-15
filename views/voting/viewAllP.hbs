@@ -1,0 +1,33 @@
+<main>
+    <div class="container">
+    <h2 class="light-blue-text text-darken-3">All Published Voting</h2>
+    <div class="divider"></div><br />
+    <div class="published">
+        <div class="row">
+            {{#if voting}}
+            {{#each voting}}
+            <div class="col s12 m4">
+                <div class="card card grey lighten-5 hoverable">
+                    <div class="card-content">
+                        <span class="center card-title yellow-text text-darken-2"><strong>{{truncate votingTitle
+                                35}}</strong></span><br />
+                        <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do YYYY,
+                            h:mm:ss a'}}</p><br />
+                        <p style="text-align:justify"><strong>Description: </strong>{{truncate description 95}}
+                        </p>
+                    </div>
+                    <div class="card-action">
+                        <div class="center"><a href="/users/voting/public/{{_id}}"><strong><i
+                                        class="far fa-file-alt"></i> View</strong></a></div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+
+            {{else}}
+            Sorry, there is no published voting here
+            {{/if}}
+        </div>
+    </div>
+    </div>
+</main>
