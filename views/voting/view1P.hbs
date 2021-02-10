@@ -1,27 +1,115 @@
 <main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
     <div class="container">
-        <h2 class="grey-text text-darken-2">{{voting.votingTitle}}</h2>
-        <div class="divider"></div><br /><br />
-        <div class="my_voting_content">
-            <h6 class="light-blue-text text-darken-3"><strong>- Creation Date and Time:&nbsp; </strong> {{formatDate
-                voting.createTime 'MMMM Do YYYY, h:mm:ss a'}}</h6><br />
-            <h6 class="light-blue-text text-darken-3"><strong>- Creator Name:&nbsp; </strong> {{voting.user.firstName}}
-                {{voting.user.lastName}}</h6><br />
-            <h6 class="light-blue-text text-darken-3" style="text-align:justify"><strong>- Voting Description:&nbsp;
-                </strong> {{voting.description}}</h6><br />
-            <h6 class="light-blue-text text-darken-3"><strong>- Estimated Voting Date:&nbsp; </strong>
-                {{voting.estimatedDate}}</h6><br />
-            <h6 class="light-blue-text text-darken-3"><strong>- Estimated Voting Time:&nbsp; </strong>
-                {{voting.estimatedTime}}</h6><br />
-            <h6 class="light-blue-text text-darken-3"><strong>- Estimated Voting Duration:&nbsp; </strong>
-                {{voting.estimatedDuration}} minutes</h6><br />
-            <h6 class="light-blue-text text-darken-3"><strong>- Expected Number of Participants:&nbsp; </strong>
-                {{voting.partyCount}}</h6><br />
-            <h6 class="light-blue-text text-darken-3"><strong>- Voting Options:&nbsp; </strong>
-                {{#each voting.options}}
-                {{serialNumber @index}}. {{this}}&nbsp;
-                {{/each}}
-            </h6><br />
+        <div class="card white">
+            <h3 style="padding-top: 35px; margin-right: 20px;" class="center brown-text text-darken-2"><a
+                    style="float: left; margin-top: 5px; margin-left: 20px;" href="/users/voting/unpublished"
+                    class="btn-floating waves-effect waves-light blue lighten-1"><i
+                        class="fas fa-arrow-left"></i></a>{{voting.votingTitle}}</h3><br />
+            <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                {{#if flash_success_message}}
+                <div class="success_msg">
+                    <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_success_message}}
+                </div>
+                {{/if}}
+                {{#if flash_error_message}}
+                <div class="error_msg">
+                    <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_error_message}}
+                </div>
+                {{/if}}
+            </div>
+            <div class="divider"></div>
+            <div class="card-content">
+                <h6 class="black-text"><strong>Creation Date and Time:&nbsp; </strong> {{formatDate
+                    voting.createTime 'MMMM Do YYYY, h:mm:ss a'}}</h6><br />
+                <h6 class="black-text"><strong>Creator Name:&nbsp; </strong> {{voting.user.firstName}}
+                    {{voting.user.lastName}}</h6><br />
+                <h6 class="black-text" style="text-align:justify; line-height: 1.5;">
+                    <strong>Description:&nbsp;
+                    </strong> {{voting.description}}
+                </h6><br />
+                <h6 class="black-text"><strong>Estimated Voting Date and Time:&nbsp; </strong>
+                    {{voting.estimatedDate}}, {{voting.estimatedTime}}</h6><br />
+                <h6 class="black-text"><strong>Estimated Voting Duration:&nbsp; </strong>
+                    {{voting.estimatedDuration}} minutes</h6><br />
+                <h6 class="black-text"><strong>Expected Number of Participants:&nbsp; </strong>
+                    {{voting.partyCount}}</h6><br />
+                <h6 class="black-text"><strong>Voting Options:&nbsp; </strong>
+                    {{#each voting.options}}
+                    {{serialNumber @index}}. {{this}}&nbsp;
+                    {{/each}}
+                </h6><br />
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <form action="/users/voting/unpublished/publish" method="POST">
+                    <input type="hidden" id="votingid" name="votingid" value={{voting._id}} required>
+                    <div class="row center">
+                        <div class="col s6">
+                            <a href="#modal1" id="delete-button"
+                                class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Delete</strong></a>
+                        </div>
+                        <div class="col s6">
+                            <a href="#modal2" id="publish-button"
+                                class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Publish</strong></a>
+                        </div>
+                        <div id="modal1" class="modal">
+                            <div class="modal-content">
+                                <h4 class="light-blue-text text-darken-2 center">Confirm Deletion</h4><br />
+                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to delete this
+                                        voting? Please confirm it again.</strong></h6>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="modal-footer">
+                                <div class="col s6">
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <button class="modal-close waves-effect waves-green btn-flat" id="delete-button"
+                                        type="submit"
+                                        formaction="/users/voting/unpublished/delete"><strong>Yes</strong></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="modal2" class="modal">
+                            <div class="modal-content">
+                                <h4 class="light-blue-text text-darken-2 center">Confirm Publishment</h4><br />
+                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to publish
+                                        this
+                                        voting? Please confirm it again.</strong></h6>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="modal-footer">
+                                <div class="col s6">
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <button class="modal-close waves-effect waves-green btn-flat" id="publish-button"
+                                        type="submit"><strong>Yes</strong></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div><br />
+                </form>
+            </div>
         </div>
         <div class="row col s12">
             <!-- Add a blank line -->
@@ -29,15 +117,8 @@
         <div class="row col s12">
             <!-- Add a blank line -->
         </div>
-        <div class="row center">
-            <div class="col s6">
-                <a href="/users/dashboard" id="cancel-button"
-                    class="btn waves-effect waves-light blue lighten-1"><strong>Delete</strong></a>
-            </div>
-            <div class="col s6">
-                <a href="/users/voting/publish/{{voting._id}}" id="publish-button"
-                    class="btn waves-effect waves-light blue lighten-1"><strong>Publish</strong></a>
-            </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
         </div>
     </div>
 </main>

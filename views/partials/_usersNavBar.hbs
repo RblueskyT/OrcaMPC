@@ -1,26 +1,98 @@
-<ul id="slide-out" class="sidenav sidenav-fixed grey lighten-5">
+<ul id="slide-out" class="sidenav sidenav-fixed white">
     <li>
         <div class="user-view">
             <div class="background">
                 <img src="/assets/images/users/users_bg.jpeg">
             </div>
             <div class="center">
-                <a><img class="circle" src={{avatar}}></a>
-                <a><span class="blue-text text-lighten-1 name">{{firstName}} {{lastName}}</span></a>
-                <a><span class="blue-text text-lighten-1 email">{{email}}</span></a>
+                <a><img class="circle" src="{{avatar}}"></a>
+                <a><span class="light-blue-text text-darken-1 name">{{firstName}} {{lastName}}</span></a>
+                <a><span class="light-blue-text text-darken-1 email">{{email}}</span></a>
             </div>
         </div>
     </li>
-    <li><a class="subheader"><span class="grey-text text-darken-1">Personal Space</span></a></li>
-    <li><a href="/users/dashboard" class="nav_op1"><span class="light-blue-text text-darken-3"><i class="fas fa-home"></i> Dashboard</span></a></li>
-    <li><a href="/users/my_profile" class="nav_op2"><span class="light-blue-text text-darken-3"><i class="fas fa-id-badge"></i> My Personal Profile</span></a></li>
-    <li><div class="divider"></div></li>
-    <li><a class="subheader"><span class="grey-text text-darken-1">My Workspace</span></a></li>
-    <li><a href="/users/voting/create"><span class="light-blue-text text-darken-3"><i class="fas fa-edit"></i> Voting Creator</span></a></li>
-    <li><div class="divider"></div></li>
-    <li><a class="subheader"><span class="grey-text text-darken-1">Community (in development)</span></a></li>
-    <li><a href="/users/voting/"><span class="light-blue-text text-darken-3"><i class="far fa-id-badge"></i> Published Voting</span></a></li>
-    <li><div class="divider"></div></li>
-    <li><div class="row col s12"><!-- Add a blank line --></div></li>
-    <li><a href="/users/logout" class="center"><span class="light-blue-text text-darken-3"><i class="fas fa-sign-out-alt"></i> Logout</span></a></li>
+    <ul class="user_sidenav">
+        <ul class="collapsible collapsible-accordion">
+            <li id="level1">
+                <a class="collapsible-header waves-effect waves-blue"><i id="expand1" style="color: #2196f3;"
+                        class="fas fa-angle-right"></i><span class="black-text">Personal Space</span></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li><a class="waves-effect waves-blue" href="/users/dashboard"><span style="margin-left: 38px;"
+                                    class="light-blue-text text-darken-1"><i
+                                        class="fas fa-home"></i>&nbsp;Dashboard</span></a>
+                        </li>
+                        <li><a class="waves-effect waves-blue" href="/users/my_profile"><span style="margin-left: 40px;"
+                                    class="light-blue-text text-darken-1"><i class="fas fa-id-badge"></i>&nbsp;Personal
+                                    Profile</span></a>
+                        </li>
+                        <li><a class="waves-effect waves-blue" href="/users/notifications"><span
+                                    style="margin-left: 38px;" class="light-blue-text text-darken-1"><i
+                                        class="far fa-bell"></i>&nbsp;Notifications</span></a>
+                        </li>
+                        <li><a class="waves-effect waves-blue" href="/users/messages"><span style="margin-left: 38px;"
+                                    class="light-blue-text text-darken-1"><i
+                                        class="fas fa-envelope-open-text"></i>&nbsp;Message
+                                    Box</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <ul class="collapsible collapsible-accordion">
+            <li id="level1">
+                <a class="collapsible-header waves-effect waves-blue"><i id="expand1" style="color: #2196f3;"
+                        class="fas fa-angle-right"></i><span class="black-text">Workspace</span></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <ul class="collapsible collapsible-accordion">
+                            <li id="level2">
+                                <a class="collapsible-header waves-effect waves-blue"><i id="expand2"
+                                        style="color: #2196f3;" class="fas fa-angle-right"></i><span
+                                        class="grey-text text-darken-1">Voting Management</span></a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <li>
+                                            <a class="waves-effect waves-blue"
+                                                href="/users/voting/unpublished/create"><span style="margin-left: 56px;"
+                                                    class="light-blue-text text-darken-1"><i class="fas fa-edit"></i>
+                                                    Voting Creator</span></a>
+                                        </li>
+                                        <li>
+                                            <a class="waves-effect waves-blue" href="/users/voting/unpublished"><span
+                                                    style="margin-left: 56px;" class="light-blue-text text-darken-1"><i
+                                                        class="fas fa-lock"></i>&nbsp;
+                                                    Unpublished Voting</span></a>
+                                        </li>
+                                        <li>
+                                            <a class="waves-effect waves-blue" href="/users/voting/published"><span
+                                                    style="margin-left: 56px;" class="light-blue-text text-darken-1"><i
+                                                        class="far fa-paper-plane"></i>&nbsp;
+                                                    Published Voting</span></a>
+                                        </li>
+                                        <li>
+                                            <a class="waves-effect waves-blue" href="/users/voting/preparing"><span
+                                                    style="margin-left: 56px;" class="light-blue-text text-darken-1"><i
+                                                        class="far fa-hourglass"></i>&nbsp;
+                                                    Voting In Preparation</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li style="margin-top: 20px;">
+            <a class="waves-effect waves-blue center" href="/users/logout"><span
+                    class="light-blue-text text-darken-1"><i class="fas fa-sign-out-alt"></i> Logout</span></a>
+        </li>
+    </ul>
 </ul>

@@ -1,8 +1,17 @@
 <header>
     <nav class="white z-depth-0" role="navigation">
         <div class="nav-wrapper container">
-            <a id="logo-container" href="/users/dashboard" class="brand-logo center blue-text text-lighten-1 hide-on-med-and-down"><i class="fas fa-home"></i> Dashboard</a>
-            
+            <a id="logo-container" href="/users/dashboard"
+                class="brand-logo center light-blue-text text-darken-1 hide-on-med-and-down"><i class="fas fa-home"></i>
+                Dashboard</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/users/notifications"><span class="light-blue-text text-darken-1"><i
+                                class="far fa-bell"></i>&nbsp;&nbsp;<span class="new badge red darken-1"
+                                data-badge-caption="New">{{newNotifications}}</span></span></a></li>
+                <li><a href="/users/messages"><span class="blue-text text-lighten-1"><i
+                                class="fas fa-envelope-open-text"></i>&nbsp;&nbsp;<span class="new badge green darken-1"
+                                data-badge-caption="New">{{newMessages}}</span></span></a></li>
+            </ul>
             <a href="/" data-target="slide-out" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
         </div>
     </nav>

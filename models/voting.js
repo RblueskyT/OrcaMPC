@@ -62,7 +62,7 @@ const votingSchema = new mongoose.Schema({
     status: {
         type: String,
         default: 'Unpublished',
-        enum: ['Unpublished', 'Published', 'Prepared', 'Initiated', 'Expired']
+        enum: ['Unpublished', 'Published', 'Preparing', 'Initiating', 'Expired']
     }
 
 });

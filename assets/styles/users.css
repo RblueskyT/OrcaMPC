@@ -37,10 +37,6 @@ main {
   width: 32px;
 }
 
-.nav_op2 {
-  margin-left: 3px;
-}
-
 .sidenav .user-view .circle {
   height: 64px;
   width: 64px;
@@ -67,12 +63,14 @@ header, main, footer {
 }
 
 /* Error Page */
-.error_img>img{
+
+.error_img>img {
   margin-top: 190px;
   height: 420px;
 }
 
 /* Error and success messages style */
+
 .success_msg {
   padding: 10px;
   background-color: #e8f5e9;
@@ -204,7 +202,7 @@ ul.dropdown-content.select-dropdown li span {
 }
 
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
-  color: #0277bd;
+  color: #039be5;
   margin-right: auto;
 }
 
@@ -253,13 +251,65 @@ ul.dropdown-content.select-dropdown li span {
   color: #42a5f5;
 }
 
-[type="radio"]:checked + span:after,
-[type="radio"].with-gap:checked + span:before,
-[type="radio"].with-gap:checked + span:after {
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before, [type="radio"].with-gap:checked+span:after {
   border: 2px solid #42a5f5;
 }
 
-[type="radio"]:checked + span:after,
-[type="radio"].with-gap:checked + span:after {
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:after {
   background-color: #42a5f5;
+}
+
+.modal .modal-footer {
+  text-align: center;
+}
+
+.tabs .tab a:focus, .tabs .tab a:focus.active {
+  background-color: #e3f2fd;
+}
+
+.tabs .indicator {
+  background-color: #42a5f5;
+}
+
+.tabs-content.carousel .carousel-item {
+  height: 600px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Materialize sidenav effect */
+
+.waves-effect.waves-blue .waves-ripple {
+  background-color: rgba(129, 212, 250, 0.65);
+}
+
+.sidenav li#level1.active {
+  background-color: #ffffff;
+}
+
+.sidenav li#level2.active {
+  background-color: #ffffff;
+}
+
+.sidenav .collapsible-body>ul:not(.collapsible)>li.active, .sidenav.sidenav-fixed .collapsible-body>ul:not(.collapsible)>li.active {
+  background-color: #e1f5fe;
+}
+
+.sidenav .collapsible li.active i#expand1 {
+  -ms-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.sidenav .collapsible .collapsible li.active i#expand2 {
+  -ms-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+input[type="checkbox"]:checked+span:not(.lever)::before {
+  border: 2px solid transparent;
+  border-bottom: 2px solid #039be5;
+  border-right: 2px solid #039be5;
+  background: transparent;
 }

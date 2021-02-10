@@ -1,0 +1,150 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <h3 style="padding-top: 35px;" class="light-blue-text text-darken-2 center"><i
+                    class="fas fa-envelope-open-text"></i>
+                Message Box</h3><br />
+            <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                {{#if flash_success_message}}
+                <div class="success_msg">
+                    <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_success_message}}
+                </div>
+                {{/if}}
+                {{#if flash_error_message}}
+                <div class="error_msg">
+                    <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_error_message}}
+                </div>
+                {{/if}}
+            </div>
+            <div class="divider"></div>
+            <div class="card-content">
+                <div style="height: 800px; overflow: auto;" class="row">
+                    {{#if messages1}}
+                    {{#each messages1}}
+                    <div class="col s12 m12">
+                        <div class="card grey lighten-5 hoverable">
+                            <div class="card-content">
+                                <div class="valign-wrapper">
+                                    <span class="light-blue-text text-darken-2">Message from </span><img
+                                        style="margin-left: 10px; margin-right: 10px;" class="circle"
+                                        src="{{sender.avatar}}"><a href="/users/profile/{{sender._id}}"
+                                        class="light-blue-text text-darken-2"><u>{{sender.firstName}}
+                                            {{sender.lastName}}</u>:</a><span class="new badge green darken-1"
+                                        data-badge-caption="!">New</span>
+                                </div><br />
+                                <p class="grey-text text-darken-2">{{formatDate emitTime 'MMMM Do YYYY, h:mm:ss a'}}</p>
+                                <br />
+                                <p style="text-align: justify;" class="black-text">{{content}}</p>
+                            </div>
+                            <div class="card-action">
+                                <div class="center">
+                                    <form id="message_mark{{serialNumber @index}}" action="/users/messages/mark"
+                                        method="POST">
+                                        <input type="hidden" id="unread_messageid{{serialNumber @index}}"
+                                            name="messageid" value={{_id}}>
+                                        <p>
+                                            <label>
+                                                <input type="checkbox"
+                                                    onchange="document.getElementById('message_mark{{serialNumber @index}}').submit()" />
+                                                <span>Mark as read</span>
+                                            </label>
+                                        </p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+
+                    {{else}}
+                    <div class="row">
+                        <h4 class="center light-blue-text text-darken-2"><i class="fas fa-inbox"></i></h4>
+                        <h6 class="center black-text">You have not received any new messages</h6>
+                    </div><br />
+                    {{/if}}
+
+                    {{#if messages2}}
+                    {{#each messages2}}
+                    <div class="col s12 m12">
+                        <div class="card grey lighten-5 hoverable">
+                            <div class="card-content">
+                                <div class="valign-wrapper">
+                                    <span class="light-blue-text text-darken-2">Message from </span><img
+                                        style="margin-left: 10px; margin-right: 10px;" class="circle"
+                                        src="{{sender.avatar}}"><a href="/users/profile/{{sender._id}}"
+                                        class="light-blue-text text-darken-2"><u>{{sender.firstName}}
+                                            {{sender.lastName}}</u>:</a>
+                                </div><br />
+                                <p class="grey-text text-darken-2">{{formatDate emitTime 'MMMM Do YYYY, h:mm:ss a'}}</p>
+                                <br />
+                                <p class="black-text">{{content}}</p>
+                            </div>
+                            <div class="card-action">
+                                <div class="left">
+                                    <p>
+                                        <label>
+                                            <input type="checkbox" checked="checked" disabled="disabled" />
+                                            <span>Read</span>
+                                        </label>
+                                    </p>
+                                </div>
+                                <div class="right">
+                                    <a href="#modal{{_id}}" class="modal-trigger"><strong><i
+                                                class="far fa-trash-alt"></i> Delete</strong></a>
+                                </div>
+                            </div><br />
+                            <div id="modal{{_id}}" class="modal">
+                                <form action="/users/messages/delete" method="POST">
+                                    <input type="hidden" id="read_messageid{{serialNumber @index}}" name="messageid"
+                                        value={{_id}}>
+                                    <div class="modal-content">
+                                        <h4 class="light-blue-text text-darken-2 center">Confirm Deletion</h4><br />
+                                        <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to delete
+                                                this
+                                                message? Please confirm it again.</strong></h6>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="modal-footer">
+                                        <div class="col s6">
+                                            <a href="#"
+                                                class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                        </div>
+                                        <div class="col s6">
+                                            <button class="modal-close waves-effect waves-green btn-flat" id="submit"
+                                                type="submit"><strong>Yes</strong></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+</main>

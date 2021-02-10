@@ -1,0 +1,92 @@
+<main>
+    <div class="container">
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="user_voting row z-depth-1">
+            <div class="white">
+                <h3 class="center brown-text text-darken-2" style="padding-top: 35px;"><i class="fas fa-lock"></i>&nbsp;
+                    Unpublished Voting</h3><br />
+                <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                    {{#if flash_success_message}}
+                    <div class="success_msg">
+                        <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                        {{flash_success_message}}
+                    </div>
+                    {{/if}}
+                    {{#if flash_error_message}}
+                    <div class="error_msg">
+                        <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                        {{flash_error_message}}
+                    </div>
+                    {{/if}}
+                </div>
+                <div class="divider"></div>
+            </div>
+            <ul id="voting-tab" class="tabs tabs-fixed-width">
+                <li class="tab"><a class="active" href="#unpublished-voting"><span
+                            class="purple-text text-darken-2"><strong>My
+                                Creations</strong></span></a></li>
+            </ul>
+            <div id="unpublished-voting" class="col s12 brown lighten-5">
+                <div class="unpublished">
+                    <div class="row">
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        {{#if myVoting}}
+                        {{#each myVoting}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title brown-text text-darken-2"><strong>{{truncate
+                                            votingTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="left"><a href="/users/voting/unpublished/edit/{{_id}}"><strong><i
+                                                    class="far fa-edit"></i>
+                                                Edit</strong></a></div>
+                                    <div class="right"><a href="/users/voting/unpublished/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div><br />
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">Please use &nbsp;<a href="/users/voting/unpublished/create"><span
+                                    class="light-blue-text text-darken-1"><i class="fas fa-edit"></i> Voting
+                                    Creator</span></a>&nbsp; to create the voting</p>
+                        <br />
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

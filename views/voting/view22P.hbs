@@ -1,0 +1,182 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <h3 style="padding-top: 35px; margin-right: 20px;" class="center yellow-text text-darken-2"><a
+                    style="float: left; margin-top: 5px; margin-left: 20px;" href="/users/voting"
+                    class="btn-floating waves-effect waves-light blue lighten-1"><i
+                        class="fas fa-arrow-left"></i></a>{{voting.votingTitle}}</h3><br />
+            <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                {{#if flash_success_message}}
+                <div class="success_msg">
+                    <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_success_message}}
+                </div>
+                {{/if}}
+                {{#if flash_error_message}}
+                <div class="error_msg">
+                    <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_error_message}}
+                </div>
+                {{/if}}
+            </div>
+            <div class="divider"></div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s9">
+                        <h6>
+                            <div class="valign-wrapper">
+                                <strong class="black-text">Voting Creator: </strong><img
+                                    style="margin-left: 20px; margin-right: 20px;" class="circle" src="{{this.avatar}}">
+                                <a href="/users/profile/{{voting.user._id}}"
+                                    class="light-blue-text text-darken-2"><u><strong>{{voting.user.firstName}}
+                                            {{voting.user.lastName}}</strong></u></a>
+                            </div>
+                        </h6><br />
+                        <h6 class="black-text" style="text-align:justify; line-height: 1.5;">
+                            <strong>Description:&nbsp;
+                            </strong> {{voting.description}}
+                        </h6><br />
+                        <h6 class="black-text"><strong>Estimated Voting Date and Time:&nbsp; </strong>
+                            {{voting.estimatedDate}}, {{voting.estimatedTime}}</h6><br />
+                        <h6 class="black-text"><strong>Estimated Voting Duration:&nbsp; </strong>
+                            {{voting.estimatedDuration}} minutes</h6><br />
+                        <h6 class="black-text"><strong>Expected Number of Participants:&nbsp; </strong>
+                            {{voting.partyCount}}</h6><br />
+                        <h6 class="black-text"><strong>Number of Options:&nbsp; </strong>
+                            {{voting.options.length}}</h6><br />
+                    </div>
+                    <div class="col s3"
+                        style="background-color: #e3f2fd; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 400px; overflow: auto;">
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <h6 class="center light-blue-text text-darken-2"><strong><i class="fas fa-users"></i>
+                                Registrants&nbsp;( {{voting.participants.length}} / {{voting.partyCount}} )
+                            </strong></h6><br />
+                        <div id="prompt_msg2"></div><br />
+                        <div class="light-blue-text text-darken-2">
+                            {{#each voting.participants}}
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="valign-wrapper">
+                                        <strong id="reg-serialNum{{serialNumber @index}}">{{serialNumber @index}}.
+                                        </strong><img style="margin-left: 20px; margin-right: 20px;" class="circle"
+                                            src="{{this.avatar}}">
+                                        <a href="/users/profile/{{this._id}}"
+                                            class="teal-text text-darken-1"><u><strong>{{this.firstName}}
+                                                    {{this.lastName}}</strong></u></a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div><br />
+                    </div>
+                </div>
+                <div class="hidden_inputs">
+                    <input type="hidden" id="all_participants" value="{{#each voting.participants}}{{this._id}},{{/each}}">
+                    <input type="hidden" id="user_id" value="{{userID}}">
+                    <input type="hidden" id="expected_num" value={{voting.partyCount}}>
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row center">
+                    <div class="col s6">
+                        <a href="#modal1" id="published-unreg-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger" disabled><strong>Unregister</strong></a>
+                    </div>
+                    <div class="col s6">
+                        <a href="#modal2" id="published-reg-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger" disabled><strong>Register</strong></a>
+                    </div>
+                    <div id="modal1" class="modal">
+                        <form id="published-unregister" action="/users/voting/published/unregister" method="POST">
+                            <div class="modal-content">
+                                <h4 class="light-blue-text text-darken-2 center">Confirm Unregistration</h4><br />
+                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to unregister this
+                                        voting? Please enter your password to confirm.</strong></h6><br /><br />
+                                <input type="hidden" id="votingid1" name="votingid" value={{voting._id}} required>
+                                <div class="row">
+                                    <div class="input-field col s6 offset-s3">
+                                        <input placeholder="Please enter here ..." type="password" data-length="100"
+                                            id="password_check1" name="password" onblur="checkPwd()"
+                                            onfocus="checkPwd()" onchange="checkPwd()" required>
+                                        <label for="password">Password</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="modal-footer">
+                                <div class="col s6">
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <button class="modal-close waves-effect waves-green btn-flat" id="punreg-button"
+                                        type="submit" disabled><strong>Yes</strong></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="modal2" class="modal">
+                        <form id="published-register" action="/users/voting/published/register" method="POST">
+                            <div class="modal-content">
+                                <h4 class="light-blue-text text-darken-2 center">Confirm Registration</h4><br />
+                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to register
+                                        this
+                                        voting? Please enter your password to confirm.</strong></h6><br /><br />
+                                <input type="hidden" id="votingid2" name="votingid" value={{voting._id}} required>
+                                <div class="row">
+                                    <div class="input-field col s6 offset-s3">
+                                        <input placeholder="Please enter here ..." type="password" data-length="100"
+                                            id="password_check2" name="password" onblur="checkPwd()"
+                                            onfocus="checkPwd()" onchange="checkPwd()" required>
+                                        <label for="password">Password</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="modal-footer">
+                                <div class="col s6">
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <button class="modal-close waves-effect waves-green btn-flat" id="register-button"
+                                        type="submit" disabled><strong>Yes</strong></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><br />
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

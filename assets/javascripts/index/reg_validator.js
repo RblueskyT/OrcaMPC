@@ -5,13 +5,13 @@ var input4 = document.getElementById("email");
 var input5 = document.getElementById("password");
 var input6 = document.getElementById("password_check");
 
-if(input1 && input2 && input3 && input4 && input5 && input6){
-document.getElementById("firstName").addEventListener("keyup", checkFirst);
-document.getElementById("lastName").addEventListener("keyup", checkLast);
-document.getElementById("career").addEventListener("keyup", checkCareer);
-document.getElementById("email").addEventListener("keyup", checkEmail);
-document.getElementById("password").addEventListener("keyup", checkPassword);
-document.getElementById("password_check").addEventListener("keyup", checkRepeat);
+if (input1 && input2 && input3 && input4 && input5 && input6) {
+    document.getElementById("firstName").addEventListener("keyup", checkFirst);
+    document.getElementById("lastName").addEventListener("keyup", checkLast);
+    document.getElementById("career").addEventListener("keyup", checkCareer);
+    document.getElementById("email").addEventListener("keyup", checkEmail);
+    document.getElementById("password").addEventListener("keyup", checkPassword);
+    document.getElementById("password_check").addEventListener("keyup", checkRepeat);
 }
 
 // Status flags
@@ -28,7 +28,8 @@ function checkFirst() {
     var val = document.getElementById("firstName").value;
 
     if (!val || !val.length) {
-        return;
+        s1 = false;
+        $("#submit").attr("disabled", true);
     }
 
     var regex = /^[0-9a-zA-Z]+$/;
@@ -49,7 +50,8 @@ function checkLast() {
     var val = document.getElementById("lastName").value;
 
     if (!val || !val.length) {
-        return;
+        s2 = false;
+        $("#submit").attr("disabled", true);
     }
 
     var regex = /^[0-9a-zA-Z]+$/;
@@ -70,19 +72,20 @@ function checkCareer() {
     var val = document.getElementById("career").value;
 
     if (!val || !val.length) {
-        return;
-    }
-
-    var regex = /^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$/;
-    if (regex.test(val)) {
-        document.getElementById("career").classList.remove("invalid");
-        document.getElementById("career").classList.add("valid");
         s3 = true;
     } else {
-        document.getElementById("career").classList.remove("valid");
-        document.getElementById("career").classList.add("invalid");
-        s3 = false;
+        var regex = /^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$/;
+        if (regex.test(val)) {
+            document.getElementById("career").classList.remove("invalid");
+            document.getElementById("career").classList.add("valid");
+            s3 = true;
+        } else {
+            document.getElementById("career").classList.remove("valid");
+            document.getElementById("career").classList.add("invalid");
+            s3 = false;
+        }
     }
+
     checkForm();
 }
 
@@ -91,7 +94,8 @@ function checkEmail() {
     var val = document.getElementById("email").value;
 
     if (!val || !val.length) {
-        return;
+        s4 = false;
+        $("#submit").attr("disabled", true);
     }
 
     var regex = /^[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*\.[a-z]{2,}$/;
@@ -112,7 +116,8 @@ function checkPassword() {
     var val = document.getElementById("password").value;
 
     if (!val || !val.length) {
-        return;
+        s5 = false;
+        $("#submit").attr("disabled", true);
     }
 
     var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,100}$/;
@@ -134,7 +139,8 @@ function checkRepeat() {
     var val2 = document.getElementById("password_check").value;
 
     if (!val2 || !val2.length) {
-        return;
+        s6 = false;
+        $("#submit").attr("disabled", true);
     }
     if (val2 === val1) {
         document.getElementById("password_check").classList.remove("invalid");

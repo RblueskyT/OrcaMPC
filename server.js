@@ -38,6 +38,8 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    rolling: true,
+    cookie: {maxAge: (6*60*60*1000)},
     store: new MongoStore({
         mongooseConnection: mongoose.connection
     })

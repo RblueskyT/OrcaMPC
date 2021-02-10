@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const votingSessionSchema = new mongoose.Schema({
     createTime: {
@@ -24,7 +25,26 @@ const votingSessionSchema = new mongoose.Schema({
         type: String
     },
 
+    token: {
+        type: String,
+        required: true
+    },
+
     participants: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+
+    confirmAttendance: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+
+    authenticatedUser: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
@@ -40,9 +60,25 @@ const votingSessionSchema = new mongoose.Schema({
 
     status: {
         type: String,
-        default: 'Normal',
-        enum: ['Normal', 'Canceled', 'Finished']
+        default: 'Initialized',
+        enum: ['Initialized', 'Ongoing', 'Failed', 'Finished', 'Cancelled']
     }
+
+});
+
+votingSessionSchema.pre('save', function (next) {
+
+    var votingSession = this;
+    if (!votingSession.isModified('token')) return next();
+
+    bcrypt.genSalt(10, function (err, salt) {
+        if (err) return next(err);
+        bcrypt.hash(votingSession.token, salt, function (err, hash) {
+            if (err) return next(err);
+            votingSession.token = hash;
+            next();
+        });
+    });
 
 });
 
