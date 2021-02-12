@@ -8,7 +8,6 @@ var secretkey_string = document.getElementById("secret_key");
 var publickey_string = document.getElementById("public_key");
 var jiffClient;
 var optionsLength = $('input[type=radio]').length;
-var AllOptions = document.getElementById("voting_options");
 var finalResults = [];
 
 // Automatically connect to jiff client - Only for initiator
@@ -84,7 +83,7 @@ function confirmChoice() {
     } else {
         var confirmButton = document.getElementById("confirmButton");
         confirmButton.setAttribute("disabled", true);
-        var computeButton = document.getElementById("initiatorSubmit");
+        var computeButton = document.getElementById("initiating-finish-button");
         computeButton.removeAttribute("disabled");
 
         var checkID = parseInt(myID.value);
@@ -102,15 +101,17 @@ function confirmChoice() {
 
 }
 
-// Reload submitters info for initiator
-$(document).ready(function(){
-    setInterval(function(){
-          $("#submitters").load(window.location.href + " #submitters" );
-    }, 3000);
-    });
+// Check compute button
+function checkSubmitters() {
 
-// Other participants vote
-$('#others_vote').submit(function () {
+    if ((document.getElementById("refresh_parnum").value - 1) == document.getElementById("refresh_submitnum").value) {
+        var computeButton = document.getElementById("initiating-compute-submit");
+        computeButton.removeAttribute("disabled");
+    }
+}
+
+function otherUserSubmit() {
+
     var inputs = [];
     var radios = $('input[type=radio]');
     var oneChecked = false;
@@ -121,32 +122,43 @@ $('#others_vote').submit(function () {
     }
 
     if (!oneChecked) {
+
         alert("Please choose an option");
-        return false;
+
+    } else {
+
+        var computationid = cid.value;
+        var partyid = parseInt(myID.value);
+        var partycount = parseInt(partiesNum.value) + 1;
+
+        var options = {
+            party_id: partyid + 1,
+            party_count: partycount
+        };
+
+        jiffClient = new JIFFClient('http://localhost:8080', computationid, options);
+
+        jiffClient.wait_for([1], function () {
+            jiffClient.share_array(inputs, optionsLength, 1, [1], [jiffClient.id]);
+            jiffClient.disconnect(true, true);
+        });
+
+        document.getElementById("initiating-submit-button").setAttribute("disabled", true);
+        document.getElementById("initiating-back-button").setAttribute("disabled", true);
+        document.getElementById("initiating-submit-button").innerHTML = ('<strong>Please Wait</strong>');
+        document.getElementById("loading_prompt").className = "progress";
+        document.getElementById("loading_prompt").innerHTML = ('<div class="indeterminate blue lighten-1"></div>');
+
+        setTimeout(function () {
+            $('#others_vote').submit();
+        }, 10000);
+
     }
 
-    var computationid = cid.value;
-    var partyid = parseInt(myID.value);
-    var partycount = parseInt(partiesNum.value) + 1;
+}
 
-    var options = {
-        party_id: partyid + 1,
-        party_count: partycount
-    };
+function initiatorCompute() {
 
-    jiffClient = new JIFFClient('http://localhost:8080', computationid, options);
-
-    jiffClient.wait_for([1], function () {
-        jiffClient.share_array(inputs, optionsLength, 1, [1], [jiffClient.id]);
-        jiffClient.disconnect(true, true);
-    });
-
-    return false;
-
-});
-
-// Compute and write the results into database
-$('#initiator_compute').submit(function () {
     var shares = {};
     for (var i = 2; i <= jiffClient.party_count; i++) {
         shares[i] = jiffClient.share_array(null, optionsLength, 1, [1], [i])[i];
@@ -165,7 +177,16 @@ $('#initiator_compute').submit(function () {
 
         var maxVote = 0;
         var maxIndex = [];
-        var OpArr = (AllOptions.value).split(',');
+        var OpArr = [];
+
+        for (var i = 1; i <= optionsLength; i++) {
+            var newoption = document.getElementById("voting_options" + i).value;
+            OpArr.push(newoption);
+        }
+
+        finalResults = results;
+        console.log(finalResults);
+        console.log(OpArr);
 
         for (var i = 0; i < results.length; i++) {
             if (results[i] > maxVote) {
@@ -191,6 +212,74 @@ $('#initiator_compute').submit(function () {
         jiffClient.disconnect(true, true);
     });
 
-    return false;
+    document.getElementById("initiating-finish-button").setAttribute("disabled", true);
+    document.getElementById("initiating-cancel-button").setAttribute("disabled", true);
+    document.getElementById("initiating-finish-button").innerHTML = ('<strong>Please Wait</strong>');
+    document.getElementById("loading_prompt").className = "progress";
+    document.getElementById("loading_prompt").innerHTML = ('<div class="indeterminate blue lighten-1"></div>');
 
+    setTimeout(function () {
+        $('#initiator_compute').submit();
+    }, 10000);
+
+}
+
+var cancelReason = document.getElementById("cancelReason");
+
+if(cancelReason){
+
+    document.getElementById("cancelReason").addEventListener("keyup", checkReason);
+
+}
+
+// Check if user enter the reason of cancellation
+function checkReason() {
+    var val = document.getElementById("cancelReason").value;
+
+    if (!val || !val.length) {
+        cancelFlag2 = false;
+        $("#initiating-cancel-submit-button").attr("disabled", true);
+    }
+
+    var regex = /^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$/;
+    if (val.length < 50 || val.length > 200) {
+        document.getElementById("cancelReason").classList.remove("valid");
+        document.getElementById("cancelReason").classList.add("invalid");
+        $("#initiating-cancel-submit-button").attr("disabled", true);
+    } else {
+        if (regex.test(val)) {
+            document.getElementById("cancelReason").classList.remove("invalid");
+            document.getElementById("cancelReason").classList.add("valid");
+            $("#initiating-cancel-submit-button").attr("disabled", false);
+        } else {
+            document.getElementById("cancelReason").classList.remove("valid");
+            document.getElementById("cancelReason").classList.add("invalid");
+            $("#initiating-cancel-submit-button").attr("disabled", true);
+        }
+    }
+
+}
+
+// Session Timer
+var sec = 0;
+function pad(val) { return val > 9 ? val : "0" + val; }
+setInterval(function () {
+    $("#seconds").html(pad(++sec % 60));
+    $("#minutes").html(pad(parseInt(sec / 60, 10)));
+}, 1000);
+
+// Click button to refresh the submitters div
+var refreshid = document.getElementById("refresh_votingid");
+var refreshval;
+
+if (refreshid) {
+    refreshval = document.getElementById("refresh_votingid").value;
+}
+
+$(document).ready(function () {
+    $("#submitters_refresh").click(function (evt) {
+        $("#submitter_refresh_div").load("/users/voting/initiating/view/" + refreshval + " #submitter_refresh_div");
+        evt.preventDefault();
+        console.log('yeah, refresh');
+    });
 });

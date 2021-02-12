@@ -51,7 +51,7 @@
                             {{voting.estimatedDuration}} minutes</h6><br />
                         <h6 class="black-text"><strong>Expected Number of Participants:&nbsp; </strong>
                             {{voting.partyCount}}</h6><br />
-                        <h6 class="black-text"><strong>Voting Options:&nbsp; </strong>
+                        <h6 class="black-text" style="text-align:justify; line-height: 1.5;"><strong>Voting Options:&nbsp; </strong>
                             {{#each voting.options}}
                             {{serialNumber @index}}. {{this}}&nbsp;
                             {{/each}}

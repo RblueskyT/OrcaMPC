@@ -1,0 +1,245 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <h3 style="padding-top: 35px;" class="center light-blue-text text-darken-1"><i class="fas fa-stopwatch"></i>
+                Session Timer</h3>
+            <h3 class="center light-blue-text text-darken-1"><span id="minutes">00</span> : <span id="seconds">00</span>
+            </h3><br />
+            <div class="divider"></div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s6">
+                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;"><strong>*** Voting Rules
+                                ***</strong></h6>
+                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;">
+                            <strong>Rule 1: Please do not reload this page or you will get an empty
+                                result</strong>
+                        </h6>
+                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;"><strong>Rule 2: Please
+                                cancel the old session if you want to initiate a new one</strong></h6>
+                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;">
+                            <strong>-------------------------------------------------------------------------------------</strong>
+                        </h6><br />
+                        <h6 class="black-text" style="text-align:justify; line-height: 1.5;">
+                            <strong>Question:&nbsp;
+                            </strong> {{voting.description}}
+                        </h6><br />
+                        <h6 class="center black-text"><strong>- Please select one of the following options -</strong>
+                        </h6><br /><br />
+                        <div id="voting_options" class="center">
+                            {{#each voting.options}}
+                            <label>
+                                <input class="with-gap" name="options" type="radio" />
+                                <span><strong>{{this}}</strong></span>
+                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {{/each}}
+                        </div><br /><br />
+                        <div class="row col s12 center">
+                            <button id="confirmButton" class="btn waves-effect waves-light blue lighten-1"
+                                onclick="confirmChoice()"><strong>Vote</strong></button>
+                        </div>
+                    </div>
+                    <div class="jiff_connection" style="display: none;">
+                        <div class="input-field col s12">
+                            <input disabled value={{votingsession._id}}{{voting._id}} id="voting_id" type="text"
+                                class="voting_id">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled value={{userID}} id="voting_user_id" type="text" class="voting_user_id">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled value={{voting.partyCount}} id="voting_partycount" type="text"
+                                class="voting_partycount">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled value={{votingsession.participants}} id="voting_people" type="text"
+                                class="voting_people">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled id="my_party_id" type="text" class="my_party_id">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled value={{votingsession.publicKey}} id="public_key" type="text"
+                                class="public_key">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled value={{votingsession.privateKey}} id="secret_key" type="text"
+                                class="secret_key">
+                        </div>
+                        {{#each voting.options}}
+                        <div class="input-field col s12">
+                            <input disabled value="{{this}}" id="voting_options{{serialNumber @index}}" type="text"
+                                class="voting_options">
+                        </div>
+                        {{/each}}
+
+                    </div>
+                    <div class="col s3"
+                        style="background-color: #e3f2fd; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 400px; overflow: auto;">
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <h6 style="padding-top: 15px;" class="center light-blue-text text-darken-2"><strong><i
+                                    class="fas fa-users"></i>&nbsp;Participants List</strong></h6><br /><br />
+                        <div class="light-blue-text text-darken-2">
+                            {{#each voting.participants}}
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="valign-wrapper">
+                                        <strong id="par-serialNum{{serialNumber @index}}">{{serialNumber
+                                            @index}}.
+                                        </strong><img style="margin-left: 20px; margin-right: 20px;" class="circle"
+                                            src="{{this.avatar}}">
+                                        <a class="teal-text text-darken-1"><strong>{{this.firstName}}
+                                                {{this.lastName}}</strong></a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div><br />
+                    </div>
+                    <div class="col s3"
+                        style="background-color: #e3f2fd; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 400px; overflow: auto;">
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <h6 class="center light-blue-text text-darken-2"><strong><i
+                                    class="fas fa-file-import"></i>&nbsp;Other
+                                Submitters</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="submitters_refresh"
+                                class="btn-floating btn-small waves-effect waves-light blue lighten-1"><i
+                                    class="fas fa-sync-alt"></i></a></h6><br />
+                        <div id="submitter_refresh_div">
+                            <input type="hidden" id="refresh_votingid" value={{voting._id}}>
+                            <input type="hidden" id="refresh_parnum" value={{voting.participants.length}}>
+                            <input type="hidden" id="refresh_submitnum" value={{votingsession.submitters.length}}>
+                            <div style="padding-top: 16px;" class="light-blue-text text-darken-2">
+                                {{#each votingsession.submitters}}
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="valign-wrapper">
+                                            <strong id="submit-serialNum{{serialNumber @index}}">{{serialNumber
+                                                @index}}.
+                                            </strong><img style="margin-left: 20px; margin-right: 20px;" class="circle"
+                                                src="{{this.avatar}}">
+                                            <a class="teal-text text-darken-1"><strong>{{this.firstName}}
+                                                    {{this.lastName}}</strong></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </div><br />
+                        </div>
+                    </div>
+                </div><br />
+                <div id="loading_prompt"></div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row center">
+                    <h6><strong>- Please be informed that it will take some time to submit the final result -</strong>
+                    </h6><br /><br />
+                    <div class="col s6">
+                        <a href="#modal1" id="initiating-cancel-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Cancel</strong></a>
+                    </div>
+                    <div class="col s6">
+                        <a href="#modal2" id="initiating-finish-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"
+                            onclick="checkSubmitters()" disabled><strong>Finish</strong></a>
+                    </div>
+                    <div id="modal1" class="modal">
+                        <form id="initiating-cancel" action="/users/voting/initiating/cancel" method="POST">
+                            <div class="modal-content">
+                                <h4 class="light-blue-text text-darken-2 center">Confirm Cancel</h4><br />
+                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to cancel this
+                                        voting? Please enter the reason of cancellation to confirm.</strong></h6><br />
+                                <h6 class="red-text center"><strong>(Please be informed that the status
+                                        of this voting will change to <span
+                                            class="red-text text-darken-2">EXPIRED</span>.)</strong></h6>
+                                <br />
+                                <input type="hidden" id="votingid1" name="votingid" value={{voting._id}} required>
+                                <input type="hidden" id="sessionid1" name="sessionid" value={{votingsession._id}}
+                                    required>
+                                <div class="row">
+                                    <div class="input-field col s6 offset-s3">
+                                        <textarea
+                                            placeholder="50 - 200 characters and no special characters (e.g. @, # and $)"
+                                            type="text" data-length="200" id="cancelReason" name="cancelreason"
+                                            onblur="checkReason()" onfocus="checkReason()" onchange="checkReason()"
+                                            class="materialize-textarea validate" required></textarea>
+                                        <label for="cancelreason">Reason of Cancellation</label>
+                                        <span class="helper-text"
+                                            data-error="Please fill in this field or check your input"
+                                            data-success="Input finished"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="modal-footer">
+                                <div class="col s6">
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <button class="modal-close waves-effect waves-green btn-flat"
+                                        id="initiating-cancel-submit-button" type="submit" disabled><strong>Yes</strong></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="modal2" class="modal">
+                        <form id="initiator_compute" action="/users/voting/initiating/finish" method="POST">
+                            <div class="modal-content">
+                                <h4 class="light-blue-text text-darken-2 center">Confirm Finishing</h4><br />
+                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to finish
+                                        this voting session? Please be informed that you cannot finish this session if
+                                        there are insufficient submitters.</strong></h6>
+                                <br />
+                                <input type="hidden" id="votingid2" name="votingid" value={{voting._id}} required>
+                                <input type="hidden" id="sessionid2" name="sessionid" value={{votingsession._id}}
+                                    required>
+                                <input type="hidden" id="result" name="result" class="result">
+                            </div>
+                            <div class="divider"></div>
+                            <div class="modal-footer">
+                                <div class="col s6">
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <a class="modal-close waves-effect waves-green btn-flat"
+                                        id="initiating-compute-submit" onclick="initiatorCompute()"
+                                        disabled><strong>Yes</strong></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><br />
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

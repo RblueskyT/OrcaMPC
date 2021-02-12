@@ -1,0 +1,245 @@
+body {
+    background-color: #fafafa;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 1280px;
+    width: 90%;
+}
+
+@media only screen and (min-width: 601px) {
+    .container {
+        width: 85%;
+    }
+}
+
+@media only screen and (min-width: 993px) {
+    .container {
+        width: 100%;
+    }
+}
+
+.container .circle {
+    height: 64px;
+    width: 64px;
+}
+
+.valign-wrapper .circle {
+    height: 32px;
+    width: 32px;
+}
+
+@media only screen and (max-width: 992px) {
+    header, main, footer {
+        padding-left: 0;
+    }
+}
+
+/* Error Page */
+
+.error_img>img {
+    margin-top: 190px;
+    height: 420px;
+}
+
+/* Error and success messages style */
+
+.success_msg {
+    padding: 10px;
+    background-color: #e8f5e9;
+    color: #66bb6a;
+    opacity: 1;
+    transition: opacity 0.6s;
+    margin-bottom: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #c8e6c9;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.closebtn-s {
+    margin-left: 15px;
+    color: #c8e6c9;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn-s:hover {
+    color: #a5d6a7;
+}
+
+.error_msg {
+    padding: 10px;
+    background-color: #ffebee;
+    color: #ef5350;
+    opacity: 1;
+    transition: opacity 0.6s;
+    margin-bottom: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ffcdd2;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.closebtn-e {
+    margin-left: 15px;
+    color: #ffcdd2;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn-e:hover {
+    color: #ef9a9a;
+}
+
+/* Change the default color of materialize */
+
+.input-field label {
+    color: #90a4ae;
+}
+
+input:focus {
+    border-bottom: 1px solid #42a5f5 !important;
+    box-shadow: 0 1px 0 0 #42a5f5 !important;
+}
+
+input:focus+label {
+    color: #42a5f5 !important;
+}
+
+input:focus.valid {
+    border-bottom: 1px solid #4caf50 !important;
+    box-shadow: 0 1px 0 0 #4caf50 !important;
+}
+
+input:focus.valid+label {
+    color: #4caf50 !important;
+}
+
+input:focus.invalid {
+    border-bottom: 1px solid #f44336 !important;
+    box-shadow: 0 1px 0 0 #f44336 !important;
+}
+
+input:focus.invalid+label {
+    color: #f44336 !important;
+}
+
+textarea:focus {
+    border-bottom: 1px solid #42a5f5 !important;
+    box-shadow: 0 1px 0 0 #42a5f5 !important;
+}
+
+textarea:focus+label {
+    color: #42a5f5 !important;
+}
+
+textarea:focus.valid {
+    border-bottom: 1px solid #4caf50 !important;
+    box-shadow: 0 1px 0 0 #4caf50 !important;
+}
+
+textarea:focus.valid+label {
+    color: #4caf50 !important;
+}
+
+textarea:focus.invalid {
+    border-bottom: 1px solid #f44336 !important;
+    box-shadow: 0 1px 0 0 #f44336 !important;
+}
+
+textarea:focus.invalid+label {
+    color: #f44336 !important;
+}
+
+ul.dropdown-content.select-dropdown li.disabled {
+    display: none;
+}
+
+ul.dropdown-content.select-dropdown li span {
+    color: #42a5f5;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
+    color: #039be5;
+    margin-right: auto;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating):hover {
+    color: #81d4fa;
+}
+
+.datepicker-date-display {
+    background-color: #42a5f5;
+}
+
+.datepicker-cancel, .datepicker-clear, .datepicker-today, .datepicker-done {
+    color: #42a5f5;
+}
+
+.datepicker-table td.is-today {
+    color: #42a5f5;
+}
+
+.datepicker-table td.is-selected {
+    background-color: #42a5f5;
+    color: #fff;
+}
+
+.timepicker-digital-display {
+    background-color: #42a5f5;
+}
+
+.timepicker-tick.active, .timepicker-tick:hover {
+    background-color: #42a5f5;
+}
+
+.timepicker-canvas line {
+    stroke: #42a5f5;
+}
+
+.timepicker-canvas-bearing {
+    fill: #42a5f5;
+}
+
+.timepicker-canvas-bg {
+    fill: #42a5f5;
+}
+
+.timepicker-close {
+    color: #42a5f5;
+}
+
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before, [type="radio"].with-gap:checked+span:after {
+    border: 2px solid #42a5f5;
+}
+
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:after {
+    background-color: #42a5f5;
+}
+
+.modal .modal-footer {
+    text-align: center;
+}

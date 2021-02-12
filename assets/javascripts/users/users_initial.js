@@ -5,7 +5,7 @@ $(document).ready(function () {
 
 // Materialize Character Counter
 $(document).ready(function () {
-  $('input#votingTitle, input[name = "password"], input#votingToken, input#userNotice, textarea#cancelReason, textarea#description').characterCounter();
+  $('input#votingTitle, input[name = "password"], input#votingToken, input#userNotice, input#sessiontoken, textarea#cancelReason, textarea#description').characterCounter();
 });
 
 

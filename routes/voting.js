@@ -1129,7 +1129,7 @@ router.post('/preparing/cancel', ensureAuthenticated, async (req, res) => {
                         });
                     }
                 }
-                await Message.updateMany({relatedVoting: {$in: [req.body.votingid]}, messageLabel: {$in: ['Notification']}}, {$set: {status: 'Read'}});
+                await Message.updateMany({ relatedVoting: { $in: [req.body.votingid] }, messageLabel: { $in: ['Notification'] } }, { $set: { status: 'Read' } });
                 await Voting.updateOne({ _id: req.body.votingid, user: req.user.id, status: 'Preparing' }, { participants: req.user.id, status: 'Unpublished' });
 
                 if (votingsession) {
@@ -1156,6 +1156,76 @@ router.post('/preparing/cancel', ensureAuthenticated, async (req, res) => {
     }
 
 });
+
+// Initiate a specific preparing voting
+router.post('/preparing/initiate', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        let voting1 = await Voting.findOne({ user: req.user.id, status: 'Initiating' })
+            .lean();
+
+        if (voting1) {
+
+            req.flash('flash_error_message', 'Sorry, you can only initiate one voting session at a time');
+            res.redirect('/users/voting/preparing');
+
+        } else {
+
+            let voting2 = await Voting.findOne({ _id: req.body.votingid, user: req.user.id, status: 'Preparing' })
+                .populate('participants')
+                .lean();
+
+            if (!voting2) {
+
+                req.flash('flash_error_message', 'Sorry, this voting is not existing');
+                res.redirect('/users/voting/preparing');
+
+            } else {
+
+                var creator = await User.findOne({ _id: req.user.id });
+                const pwdMatch = await bcrypt.compare(req.body.password, creator.password);
+
+                if (pwdMatch) {
+
+                    await Message.updateMany({ relatedVoting: { $in: [req.body.votingid] }, messageLabel: { $in: ['Notification'] } }, { $set: { status: 'Read' } });
+
+                    if (voting2.participants.length > 1) {
+                        for (var i = 1; i < voting2.participants.length; i++) {
+                            await Message.create({
+                                sender: req.user.id,
+                                receiver: voting2.participants[i]._id,
+                                content: 'The creator of the voting "' + voting2.votingTitle
+                                    + '" has initiated the voting session, please click the button below to go to attend the voting session.',
+                                relatedVoting: req.body.votingid,
+                                messageLabel: 'Notification'
+                            });
+                        }
+                    }
+                    await Voting.updateOne({ _id: req.body.votingid, user: req.user.id, status: 'Preparing' }, { status: 'Initiating' });
+                    await VotingSession.updateOne({ _id: req.body.sessionid, initiator: req.user.id, status: 'Initialized' }, { authenticatedUser: req.user.id, status: 'Ongoing' });
+                    res.redirect('/users/voting/initiating/view/' + req.body.votingid);
+
+                } else {
+
+                    req.flash('flash_error_message', 'Sorry, you cannot initiate this voting because of the incorrect password');
+                    res.redirect('/users/voting/preparing/view/' + req.body.votingid);
+
+                }
+
+            }
+
+        }
+
+    } catch (err) {
+
+        req.flash('flash_error_message', 'Sorry, an unknown error occurred');
+        res.redirect('/users/voting/preparing');
+
+    }
+
+});
+
 
 // Confirm Attendance for a specific preparing voting
 router.post('/preparing/confirmattandence', ensureAuthenticated, async (req, res) => {
@@ -1221,6 +1291,443 @@ router.post('/preparing/confirmattandence', ensureAuthenticated, async (req, res
     }
 
 });
+
+/* Initiating Voting */
+
+// Manage all initiating voting
+router.get('/initiating', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        var newMessages;
+        var newNotifications;
+        const myVoting1 = await Voting.find({ user: req.user.id, status: 'Initiating' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const myVoting2 = await Voting.find({ user: { $ne: req.user.id }, participants: req.user.id, status: 'Initiating' })
+            .sort({ createTime: 'desc' })
+            .lean();
+
+        await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Message', status: 'Unread' }, function (err, count) {
+            if (err) {
+                newMessages = 0;
+            } else {
+                newMessages = count;
+            }
+        });
+
+        await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Notification', status: 'Unread' }, function (err, count) {
+            if (err) {
+                newNotifications = 0;
+            } else {
+                newNotifications = count;
+            }
+        });
+
+        res.render('voting/viewAll4P', {
+            avatar: req.user.avatar,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            email: req.user.email,
+            newMessages,
+            newNotifications,
+            myVoting1,
+            myVoting2,
+            title: 'Initiating Voting of ' + req.user.firstName + ' ' + req.user.lastName + ' - Orca MPC',
+            layout: 'users'
+        });
+
+    } catch (err) {
+
+        res.render('errors/error_500', {
+            avatar: req.user.avatar,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            email: req.user.email,
+            title: 'ERROR 500 - Orca MPC',
+            layout: 'users'
+        });
+
+    }
+
+});
+
+// View specifc initiating voting (vote page)
+router.get('/initiating/view/:id', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        let votingsession = await VotingSession.findOne({ voting: req.params.id, initiator: req.user.id, status: 'Ongoing' })
+            .populate('initiator')
+            .populate('voting')
+            .populate('submitters')
+            .lean();
+
+        if (!votingsession) {
+
+            let votingsession = await VotingSession.findOne({ voting: req.params.id, participants: req.user.id, status: 'Ongoing' })
+                .populate('initiator')
+                .populate('voting')
+                .lean();
+
+            if (!votingsession) {
+
+                var newMessages;
+                var newNotifications;
+
+                await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Message', status: 'Unread' }, function (err, count) {
+                    if (err) {
+                        newMessages = 0;
+                    } else {
+                        newMessages = count;
+                    }
+                });
+
+                await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Notification', status: 'Unread' }, function (err, count) {
+                    if (err) {
+                        newNotifications = 0;
+                    } else {
+                        newNotifications = count;
+                    }
+                });
+
+                res.render('errors/error_404', {
+                    avatar: req.user.avatar,
+                    firstName: req.user.firstName,
+                    lastName: req.user.lastName,
+                    email: req.user.email,
+                    newMessages,
+                    newNotifications,
+                    title: 'ERROR 404 - Orca MPC',
+                    layout: 'users'
+                });
+
+            } else {
+
+                let voting = await Voting.findOne({ _id: req.params.id, participants: req.user.id, status: 'Initiating' })
+                    .populate('participants')
+                    .lean();
+
+                let votingsession = await VotingSession.findOne({ voting: req.params.id, authenticatedUser: req.user.id, status: 'Ongoing' })
+                    .populate('initiator')
+                    .lean();
+
+                if (!votingsession) {
+
+                    res.render('voting/view41P', {
+                        voting,
+                        title: req.user.firstName + ' ' + req.user.lastName + ' / View: ' + voting.votingTitle + ' - Orca MPC',
+                        layout: 'votingsession'
+                    });
+
+                } else {
+
+                    let votingsession = await VotingSession.findOne({ voting: req.params.id, submitters: req.user.id, status: 'Ongoing' })
+                        .populate('initiator')
+                        .lean();
+
+                    if (votingsession) {
+
+                        req.flash('flash_error_message', 'Sorry, you have already submitted your answer, please wait for the initiator to finish this voting session');
+                        res.redirect('/users/voting/initiating');
+
+                    } else {
+
+                        let votingsession = await VotingSession.findOne({ voting: req.params.id, authenticatedUser: req.user.id, status: 'Ongoing' })
+                            .populate('initiator')
+                            .lean();
+
+                        res.render('voting/view43P', {
+                            userID: req.user.id,
+                            voting,
+                            votingsession,
+                            title: req.user.firstName + ' ' + req.user.lastName + ' / View: ' + voting.votingTitle + ' - Orca MPC',
+                            layout: 'votingsession'
+                        });
+
+                    }
+
+                }
+
+            }
+
+
+        } else {
+
+            let voting = await Voting.findOne({ _id: req.params.id, user: req.user.id, status: 'Initiating' })
+                .populate('participants')
+                .lean();
+
+            res.render('voting/view42P', {
+                userID: req.user.id,
+                voting,
+                votingsession,
+                title: req.user.firstName + ' ' + req.user.lastName + ' / View: ' + voting.votingTitle + ' - Orca MPC',
+                layout: 'votingsession'
+            });
+
+        }
+
+    } catch (err) {
+
+        res.render('errors/error_500', {
+            avatar: req.user.avatar,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            email: req.user.email,
+            title: 'ERROR 500 - Orca MPC',
+            layout: 'users'
+        });
+
+    }
+
+});
+
+// Voting session authentication
+router.post('/initiating/authenticate', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        let votingsession = await VotingSession.findOne({ voting: req.body.votingid, participants: req.user.id, authenticatedUser: { $ne: req.user.id }, status: 'Ongoing' })
+            .lean();
+
+        if (!votingsession) {
+
+            req.flash('flash_error_message', 'Sorry, this voting session is not existing');
+            res.redirect('/users/voting/initiating');
+
+        } else {
+
+            const pwdMatch = await bcrypt.compare(req.body.sessiontoken, votingsession.token);
+
+            if (pwdMatch) {
+
+                await VotingSession.updateOne({ voting: req.body.votingid, participants: req.user.id, status: 'Ongoing' }, { $push: { authenticatedUser: req.user.id } });
+                res.redirect('/users/voting/initiating/view/' + req.body.votingid);
+
+            } else {
+
+                req.flash('flash_error_message', 'Sorry, you cannot access this voting session');
+                res.redirect('/users/voting/initiating/view/' + req.body.votingid);
+
+            }
+
+        }
+
+    } catch (err) {
+
+        req.flash('flash_error_message', 'Sorry, an unknown error occurred');
+        res.redirect('/users/voting/initiating');
+
+    }
+
+});
+
+// Initiating voting submit
+router.post('/initiating/submit', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        let votingsession = await VotingSession.findOne({ _id: req.body.sessionid, authenticatedUser: req.user.id, submitters: { $ne: req.user.id }, status: 'Ongoing' })
+            .lean();
+
+        if (!votingsession) {
+
+            req.flash('flash_error_message', 'Sorry, this voting session is not existing');
+            res.redirect('/users/voting/initiating');
+
+        } else {
+
+            await VotingSession.updateOne({ _id: req.body.sessionid, authenticatedUser: req.user.id, status: 'Ongoing' }, { $push: { submitters: req.user.id } });
+            req.flash('flash_success_message', 'You have sucessfully submitted your answer, please wait for the initiator to finish this voting session');
+            res.redirect('/users/voting/initiating');
+
+        }
+
+    } catch (err) {
+
+        req.flash('flash_error_message', 'Sorry, an unknown error occurred');
+        res.redirect('/users/voting/initiating');
+
+    }
+
+});
+
+// Initiating voting cancel
+router.post('/initiating/cancel', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        let votingsession = await VotingSession.findOne({ _id: req.body.sessionid, initiator: req.user.id, status: 'Ongoing' })
+            .populate('participants')
+            .lean();
+
+        if (!votingsession) {
+
+            req.flash('flash_error_message', 'Sorry, this voting session is not existing');
+            res.redirect('/users/voting/initiating');
+
+        } else {
+
+            let voting = await Voting.findOne({ _id: req.body.votingid, user: req.user.id });
+
+            if (votingsession.participants.length > 1) {
+                for (var i = 1; i < votingsession.participants.length; i++) {
+                    await Message.create({
+                        sender: req.user.id,
+                        receiver: voting.participants[i]._id,
+                        content: 'Sorry, the initiating voting "' + voting.votingTitle
+                            + '" that you participated has been cancelled by the creator. The reasons are as follows: '
+                            + req.body.cancelreason + '.',
+                        relatedVoting: req.body.votingid
+                    });
+                }
+            }
+
+            await Message.updateMany({ relatedVoting: { $in: [req.body.votingid] }, messageLabel: { $in: ['Notification'] } }, { $set: { status: 'Read' } });
+            await Voting.updateOne({ _id: req.body.votingid, user: req.user.id, status: 'Initiating' }, { result: 'Cancelled Voting', status: 'Expired' });
+            await VotingSession.updateOne({ _id: req.body.sessionid, initiator: req.user.id, status: 'Ongoing' }, { status: 'Cancelled' });
+            req.flash('flash_success_message', 'You have sucessfully cancelled this voting');
+            res.redirect('/users/voting/expired');
+
+        }
+
+    } catch (err) {
+
+        req.flash('flash_error_message', 'Sorry, an unknown error occurred');
+        res.redirect('/users/voting/initiating');
+
+    }
+
+});
+
+// Initiating voting finish
+router.post('/initiating/finish', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        let votingsession = await VotingSession.findOne({ _id: req.body.sessionid, initiator: req.user.id, status: 'Ongoing' })
+            .populate('participants')
+            .lean();
+
+        if (!votingsession) {
+
+            req.flash('flash_error_message', 'Sorry, this voting is not existing');
+            res.redirect('/users/voting/initiating');
+
+        } else {
+
+            let voting = await Voting.findOne({ _id: req.body.votingid, user: req.user.id });
+
+            if (votingsession.participants.length > 1) {
+                for (var i = 1; i < votingsession.participants.length; i++) {
+                    await Message.create({
+                        sender: req.user.id,
+                        receiver: voting.participants[i]._id,
+                        content: 'The initiating voting "' + voting.votingTitle
+                            + '" that you participated has finished. Please go to your "Expired Voting" tab to view the result.',
+                        relatedVoting: req.body.votingid
+                    });
+                }
+            }
+
+            await Message.updateMany({ relatedVoting: { $in: [req.body.votingid] }, messageLabel: { $in: ['Notification'] } }, { $set: { status: 'Read' } });
+            await Voting.updateOne({ _id: req.body.votingid, user: req.user.id, status: 'Initiating' }, { result: req.body.result, status: 'Expired' });
+            await VotingSession.updateOne({ _id: req.body.sessionid, initiator: req.user.id, status: 'Ongoing' }, { status: 'Finished' });
+            req.flash('flash_success_message', 'You have sucessfully finished this voting, you can now view the result');
+            res.redirect('/users/voting/expired');
+
+        }
+
+    } catch (err) {
+
+        req.flash('flash_error_message', 'Sorry, an unknown error occurred');
+        res.redirect('/users/voting/initiating');
+
+    }
+
+});
+
+/* Expired Voting */
+
+// Manage all expired voting
+router.get('/expired', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        var newMessages;
+        var newNotifications;
+        const myVoting1 = await Voting.find({ user: req.user.id, status: 'Expired' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const myVoting2 = await Voting.find({ user: { $ne: req.user.id }, participants: req.user.id, status: 'Expired' })
+            .sort({ createTime: 'desc' })
+            .lean();
+
+        await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Message', status: 'Unread' }, function (err, count) {
+            if (err) {
+                newMessages = 0;
+            } else {
+                newMessages = count;
+            }
+        });
+
+        await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Notification', status: 'Unread' }, function (err, count) {
+            if (err) {
+                newNotifications = 0;
+            } else {
+                newNotifications = count;
+            }
+        });
+
+        res.render('voting/viewAll5P', {
+            avatar: req.user.avatar,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            email: req.user.email,
+            newMessages,
+            newNotifications,
+            myVoting1,
+            myVoting2,
+            title: 'Expired Voting of ' + req.user.firstName + ' ' + req.user.lastName + ' - Orca MPC',
+            layout: 'users'
+        });
+
+    } catch (err) {
+
+        res.render('errors/error_500', {
+            avatar: req.user.avatar,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            email: req.user.email,
+            title: 'ERROR 500 - Orca MPC',
+            layout: 'users'
+        });
+
+    }
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* All following parts will be modified  */
 
@@ -1356,20 +1863,6 @@ router.get('/vote/:id', ensureAuthenticated, async (req, res) => {
             title: 'ERROR 500 - Orca MPC',
             layout: 'users'
         });
-    }
-
-});
-
-// Voting session creator (voting initiating)
-router.post('/initiate', ensureAuthenticated, async (req, res) => {
-    try {
-        req.body.initiator = req.user.id;
-        await VotingSession.create(req.body);
-        await Voting.updateOne({ _id: req.body.voting, user: req.body.initiator, status: 'Prepared' }, { status: 'Initiated' });
-        let createdVotingSession = await VotingSession.findOne({ initiator: req.body.initiator, voting: req.body.voting }).lean();
-        res.redirect('/users/voting/vote/' + createdVotingSession._id);
-    } catch (err) {
-        console.error(err);
     }
 
 });

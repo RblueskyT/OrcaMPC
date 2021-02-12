@@ -1,0 +1,162 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s12">
+                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;"><strong>*** Voting Rule
+                                ***</strong></h6>
+                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;">
+                            <strong>Please do not reload this page when you have already clicked the submit button or
+                                you will get an empty
+                                result</strong>
+                        </h6>
+                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;">
+                            <strong>---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</strong>
+                        </h6><br />
+                        <h5 class="black-text center" style="line-height: 1.5;">
+                            <strong>Question:&nbsp;
+                            </strong> {{voting.description}}
+                        </h5><br /><br />
+                        <h6 class="center black-text"><strong>- Please select one of the following options -</strong>
+                        </h6><br /><br /><br />
+                        <div id="voting_options" class="center">
+                            {{#each voting.options}}
+                            <label>
+                                <input class="with-gap" name="options" type="radio" />
+                                <span><strong>{{this}}</strong></span>
+                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {{/each}}
+                        </div><br /><br />
+                    </div>
+                    <div class="jiff_connection" style="display: none;">
+                        <div class="input-field col s12">
+                            <input disabled value={{votingsession._id}}{{voting._id}} id="voting_id" type="text"
+                                class="voting_id">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled value={{voting.partyCount}} id="voting_partycount" type="text"
+                                class="voting_partycount">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled value={{userID}} id="voting_user_id" type="text" class="voting_user_id">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled value={{votingsession.participants}} id="voting_people" type="text"
+                                class="voting_people">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled id="my_party_id" type="text" class="my_party_id">
+                        </div>
+                    </div>
+                </div><br />
+                <div id="loading_prompt"></div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row center">
+                    <div class="col s6">
+                        <a href="#modal1" id="initiating-back-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Back</strong></a>
+                    </div>
+                    <div class="col s6">
+                        <a href="#modal2" id="initiating-submit-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Submit</strong></a>
+                    </div>
+                    <div id="modal1" class="modal">
+                        <div class="modal-content">
+                            <h4 class="light-blue-text text-darken-2 center">Confirm Back</h4><br />
+                            <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to back to your
+                                    dashboard? You can still come back to finish your work if the voting session is not
+                                    closed.</strong></h6><br />
+                        </div>
+                        <div class="divider"></div>
+                        <div class="modal-footer">
+                            <div class="col s6">
+                                <a href="#" class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                            </div>
+                            <div class="col s6">
+                                <a href="/users/dashboard"
+                                    class="modal-close waves-effect waves-green btn-flat"><strong>Yes</strong></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="modal2" class="modal">
+                        <form id="others_vote" action="/users/voting/initiating/submit" method="POST">
+                            <div class="modal-content">
+                                <h4 class="light-blue-text text-darken-2 center">Confirm Submission</h4><br />
+                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to submit your
+                                        answer? Please confirm it again.</strong></h6>
+                                <br /><br />
+                                <input type="hidden" id="sessionid2" name="sessionid" value={{votingsession._id}}
+                                    required>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="modal-footer">
+                                <div class="col s6">
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <a class="modal-close waves-effect waves-green btn-flat" id="initiate-submit-button"
+                                        onclick="otherUserSubmit()"><strong>Yes</strong></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><br />
+            </div>
+        </div>
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+</main>

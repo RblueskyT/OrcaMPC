@@ -51,7 +51,7 @@
                             {{voting.estimatedDuration}} minutes</h6><br />
                         <h6 class="black-text"><strong>Number of Participants:&nbsp; </strong>
                             {{voting.partyCount}}</h6><br />
-                        <h6 class="black-text"><strong>Voting Options:&nbsp; </strong>
+                        <h6 class="black-text" style="text-align:justify; line-height: 1.5;"><strong>Voting Options:&nbsp; </strong>
                             {{#each voting.options}}
                             {{serialNumber @index}}. {{this}}&nbsp;
                             {{/each}}
@@ -239,7 +239,7 @@
                         </form>
                     </div>
                     <div id="modal2" class="modal">
-                        <form id="preparing-initiate" action="/users/voting/preparing/initiate" method="POST">
+                        <form id="preparing-initiate" action="/users/voting/preparing/initiate" method="POST" target="_blank">
                             <div class="modal-content">
                                 <h4 class="light-blue-text text-darken-2 center">Confirm Initiating</h4><br />
                                 <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to initiate
