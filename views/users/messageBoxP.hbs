@@ -59,7 +59,7 @@
                                         <p>
                                             <label>
                                                 <input type="checkbox"
-                                                    onchange="document.getElementById('message_mark{{serialNumber @index}}').submit()" />
+                                                    onchange="setTimeout(function () {document.getElementById('message_mark{{serialNumber @index}}').submit();}, 500);" />
                                                 <span>Mark as read</span>
                                             </label>
                                         </p>

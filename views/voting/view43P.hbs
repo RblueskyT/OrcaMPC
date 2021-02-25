@@ -20,41 +20,36 @@
     <div class="row col s12">
         <!-- Add a blank line -->
     </div>
-    <div class="row col s12">
-        <!-- Add a blank line -->
-    </div>
-    <div class="row col s12">
-        <!-- Add a blank line -->
-    </div>
     <div class="container">
         <div class="card white">
             <div class="card-content">
                 <div class="row">
                     <div class="col s12">
-                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;"><strong>*** Voting Rule
-                                ***</strong></h6>
-                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;">
+                        <h5 class="red-text text-darken-1 center" style="line-height: 1.8;"><strong>*** Voting Rule
+                                ***</strong></h5><br />
+                        <h6 class="red-text text-darken-1 center" style="line-height: 1.8;">
                             <strong>Please do not reload this page when you have already clicked the submit button or
-                                you will get an empty
-                                result</strong>
-                        </h6>
-                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;">
-                            <strong>---------------------------------------------------------------------------------------------------------------------------------------------------------------------------</strong>
+                                the voting session will get failed</strong>
                         </h6><br />
-                        <h5 class="black-text center" style="line-height: 1.5;">
+                        <h6 class="red-text text-darken-1 center" style="line-height: 1.8;">
+                            <strong>------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</strong>
+                        </h6><br />
+                        <h5 class="black-text" style="line-height: 1.8;">
                             <strong>Question:&nbsp;
                             </strong> {{voting.description}}
                         </h5><br /><br />
                         <h6 class="center black-text"><strong>- Please select one of the following options -</strong>
                         </h6><br /><br /><br />
-                        <div id="voting_options" class="center">
+                        <div id="voting_options">
                             {{#each voting.options}}
-                            <label>
-                                <input class="with-gap" name="options" type="radio" />
-                                <span><strong>{{this}}</strong></span>
-                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="col s3">
+                                <label>
+                                    <input class="with-gap" name="options" type="radio" />
+                                    <span><strong>{{this}}</strong></span>
+                                </label>
+                            </div>
                             {{/each}}
-                        </div><br /><br />
+                        </div><br />
                     </div>
                     <div class="jiff_connection" style="display: none;">
                         <div class="input-field col s12">
@@ -95,9 +90,9 @@
                     </div>
                     <div id="modal1" class="modal">
                         <div class="modal-content">
-                            <h4 class="light-blue-text text-darken-2 center">Confirm Back</h4><br />
-                            <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to back to your
-                                    dashboard? You can still come back to finish your work if the voting session is not
+                            <h4 class="light-blue-text text-darken-2 center">Confirm to Leave</h4><br />
+                            <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to leave this voting
+                                    session? You can still come back to finish your work if the session is not
                                     closed.</strong></h6><br />
                         </div>
                         <div class="divider"></div>
@@ -106,7 +101,7 @@
                                 <a href="#" class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
                             </div>
                             <div class="col s6">
-                                <a href="/users/dashboard"
+                                <a href="/users/voting/initiating"
                                     class="modal-close waves-effect waves-green btn-flat"><strong>Yes</strong></a>
                             </div>
                         </div>
@@ -137,12 +132,6 @@
                 </div><br />
             </div>
         </div>
-    </div>
-    <div class="row col s12">
-        <!-- Add a blank line -->
-    </div>
-    <div class="row col s12">
-        <!-- Add a blank line -->
     </div>
     <div class="row col s12">
         <!-- Add a blank line -->

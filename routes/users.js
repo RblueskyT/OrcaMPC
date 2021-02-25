@@ -35,6 +35,24 @@ router.get('/dashboard', ensureAuthenticated, async (req, res) => {
         const myVoting22 = await Voting.find({ user: { $ne: req.user.id }, participants: req.user.id, status: 'Published' })
             .sort({ createTime: 'desc' })
             .lean();
+        const myVoting31 = await Voting.find({ user: req.user.id, status: 'Preparing' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const myVoting32 = await Voting.find({ user: { $ne: req.user.id }, participants: req.user.id, status: 'Preparing' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const myVoting41 = await Voting.find({ user: req.user.id, status: 'Initiating' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const myVoting42 = await Voting.find({ user: { $ne: req.user.id }, participants: req.user.id, status: 'Initiating' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const myVoting51 = await Voting.find({ user: req.user.id, status: 'Expired' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const myVoting52 = await Voting.find({ user: { $ne: req.user.id }, participants: req.user.id, status: 'Expired' })
+            .sort({ createTime: 'desc' })
+            .lean();
 
         await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Message', status: 'Unread' }, function (err, count) {
             if (err) {
@@ -63,6 +81,12 @@ router.get('/dashboard', ensureAuthenticated, async (req, res) => {
             myVoting1,
             myVoting21,
             myVoting22,
+            myVoting31,
+            myVoting32,
+            myVoting41,
+            myVoting42,
+            myVoting51,
+            myVoting52,
             title: req.user.firstName + ', welcome to your dashboard! - Orca MPC',
             layout: 'users'
         });

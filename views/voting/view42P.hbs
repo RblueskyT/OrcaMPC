@@ -20,32 +20,43 @@
             <div class="divider"></div>
             <div class="card-content">
                 <div class="row">
-                    <div class="col s6">
-                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;"><strong>*** Voting Rules
-                                ***</strong></h6>
-                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;">
-                            <strong>Rule 1: Please do not reload this page or you will get an empty
-                                result</strong>
+                    <div class="col s12">
+                        <h5 class="red-text text-darken-1 center" style="line-height: 1.8;"><strong>*** Voting Rules
+                                ***</strong></h5><br />
+                        <h6 style="padding-left: 97px; line-height: 1.8;" class="red-text text-darken-1 center">
+                            <strong>Rule 1: Please do not leave or reload this page or the voting session will get
+                                failed</strong>
                         </h6>
-                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;"><strong>Rule 2: Please
-                                cancel the old session if you want to initiate a new one</strong></h6>
-                        <h6 class="red-text text-darken-1 center" style="line-height: 1.5;">
-                            <strong>-------------------------------------------------------------------------------------</strong>
+                        <h6 style="line-height: 1.8;" class="red-text text-darken-1 center">
+                            <strong>Rule 2: Please
+                                cancel the old session if you want to initiate a new one</strong>
+                        </h6>
+                        <h6 style="padding-left: 12px; line-height: 1.8;" class="red-text text-darken-1 center">
+                            <strong>Rule 3: You can only
+                                finish the voting session after all users have voted</strong>
                         </h6><br />
-                        <h6 class="black-text" style="text-align:justify; line-height: 1.5;">
+                        <h6 class="red-text text-darken-1 center" style="line-height: 1.8;">
+                            <strong>------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</strong>
+                        </h6><br />
+                        <h6 class="black-text" style="text-align:justify; line-height: 1.8;">
                             <strong>Question:&nbsp;
                             </strong> {{voting.description}}
                         </h6><br />
                         <h6 class="center black-text"><strong>- Please select one of the following options -</strong>
                         </h6><br /><br />
-                        <div id="voting_options" class="center">
+                        <div id="voting_options">
                             {{#each voting.options}}
-                            <label>
-                                <input class="with-gap" name="options" type="radio" />
-                                <span><strong>{{this}}</strong></span>
-                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="col s3">
+                                <label>
+                                    <input class="with-gap" name="options" type="radio" />
+                                    <span><strong>{{this}}</strong></span>
+                                </label>
+                            </div>
                             {{/each}}
-                        </div><br /><br />
+                        </div><br /><br /><br />
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
                         <div class="row col s12 center">
                             <button id="confirmButton" class="btn waves-effect waves-light blue lighten-1"
                                 onclick="confirmChoice()"><strong>Vote</strong></button>
@@ -84,9 +95,14 @@
                                 class="voting_options">
                         </div>
                         {{/each}}
-
                     </div>
-                    <div class="col s3"
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="col s3 offset-s3"
                         style="background-color: #e3f2fd; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 400px; overflow: auto;">
                         <div class="row col s12">
                             <!-- Add a blank line -->
@@ -116,8 +132,8 @@
                             <!-- Add a blank line -->
                         </div>
                         <h6 class="center light-blue-text text-darken-2"><strong><i
-                                    class="fas fa-file-import"></i>&nbsp;Other
-                                Submitters</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="submitters_refresh"
+                                    class="fas fa-file-import"></i>&nbsp;Submitters List</strong>&nbsp;&nbsp;&nbsp;<a
+                                id="submitters_refresh"
                                 class="btn-floating btn-small waves-effect waves-light blue lighten-1"><i
                                     class="fas fa-sync-alt"></i></a></h6><br />
                         <div id="submitter_refresh_div">
@@ -152,7 +168,7 @@
                 </div>
                 <div class="row center">
                     <h6><strong>- Please be informed that it will take some time to submit the final result -</strong>
-                    </h6><br /><br />
+                    </h6><br /><br /><br />
                     <div class="col s6">
                         <a href="#modal1" id="initiating-cancel-button"
                             class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Cancel</strong></a>
@@ -197,7 +213,8 @@
                                 </div>
                                 <div class="col s6">
                                     <button class="modal-close waves-effect waves-green btn-flat"
-                                        id="initiating-cancel-submit-button" type="submit" disabled><strong>Yes</strong></button>
+                                        id="initiating-cancel-submit-button" type="submit"
+                                        disabled><strong>Yes</strong></button>
                                 </div>
                             </div>
                         </form>
@@ -207,8 +224,9 @@
                             <div class="modal-content">
                                 <h4 class="light-blue-text text-darken-2 center">Confirm Finishing</h4><br />
                                 <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to finish
-                                        this voting session? Please be informed that you cannot finish this session if
-                                        there are insufficient submitters.</strong></h6>
+                                        this voting session? Please confirm it again.</strong></h6><br />
+                                <h6 class="red-text center"><strong>(Please be informed that you
+                                        cannot finish this session if there are insufficient submitters.)</strong></h6>
                                 <br />
                                 <input type="hidden" id="votingid2" name="votingid" value={{voting._id}} required>
                                 <input type="hidden" id="sessionid2" name="sessionid" value={{votingsession._id}}

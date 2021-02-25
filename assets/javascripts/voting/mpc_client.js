@@ -10,7 +10,7 @@ var jiffClient;
 var optionsLength = $('input[type=radio]').length;
 var finalResults = [];
 
-// Automatically connect to jiff client - Only for initiator
+// Automatically connect to jiff client - Only for the voting initiator
 if (userID && partiesNum && parties) {
     var partiesArr = (parties.value).split(',');
     var myPartyID;
@@ -83,6 +83,10 @@ function confirmChoice() {
     } else {
         var confirmButton = document.getElementById("confirmButton");
         confirmButton.setAttribute("disabled", true);
+        var radios = document.getElementsByClassName("with-gap");
+        for (var i = 0; i < radios.length; i++) {
+            radios[i].disabled = true;
+        }
         var computeButton = document.getElementById("initiating-finish-button");
         computeButton.removeAttribute("disabled");
 
@@ -101,7 +105,7 @@ function confirmChoice() {
 
 }
 
-// Check compute button
+// Check finish button
 function checkSubmitters() {
 
     if ((document.getElementById("refresh_parnum").value - 1) == document.getElementById("refresh_submitnum").value) {
@@ -110,6 +114,7 @@ function checkSubmitters() {
     }
 }
 
+// Handle submissions from other users
 function otherUserSubmit() {
 
     var inputs = [];
@@ -145,6 +150,10 @@ function otherUserSubmit() {
 
         document.getElementById("initiating-submit-button").setAttribute("disabled", true);
         document.getElementById("initiating-back-button").setAttribute("disabled", true);
+        var radios = document.getElementsByClassName("with-gap");
+        for (var i = 0; i < radios.length; i++) {
+            radios[i].disabled = true;
+        }
         document.getElementById("initiating-submit-button").innerHTML = ('<strong>Please Wait</strong>');
         document.getElementById("loading_prompt").className = "progress";
         document.getElementById("loading_prompt").innerHTML = ('<div class="indeterminate blue lighten-1"></div>');
@@ -157,6 +166,7 @@ function otherUserSubmit() {
 
 }
 
+// Compute the final results
 function initiatorCompute() {
 
     var shares = {};
@@ -172,8 +182,6 @@ function initiatorCompute() {
     }
 
     jiffClient.open_array(results, [1]).then(function (results) {
-        console.log("Original Results: ");
-        console.log(results);
 
         var maxVote = 0;
         var maxIndex = [];
@@ -185,8 +193,6 @@ function initiatorCompute() {
         }
 
         finalResults = results;
-        console.log(finalResults);
-        console.log(OpArr);
 
         for (var i = 0; i < results.length; i++) {
             if (results[i] > maxVote) {
@@ -203,8 +209,6 @@ function initiatorCompute() {
         for (var i = 0; i < maxIndex.length; i++) {
             finalResults.push(OpArr[maxIndex[i]]);
         }
-        console.log("Results that will be written to database: ");
-        console.log(finalResults);
 
         var inputResults = document.getElementById("result");
         inputResults.setAttribute("value", finalResults);
@@ -226,7 +230,7 @@ function initiatorCompute() {
 
 var cancelReason = document.getElementById("cancelReason");
 
-if(cancelReason){
+if (cancelReason) {
 
     document.getElementById("cancelReason").addEventListener("keyup", checkReason);
 
@@ -280,6 +284,17 @@ $(document).ready(function () {
     $("#submitters_refresh").click(function (evt) {
         $("#submitter_refresh_div").load("/users/voting/initiating/view/" + refreshval + " #submitter_refresh_div");
         evt.preventDefault();
-        console.log('yeah, refresh');
     });
 });
+
+// User Interface Style
+var participant1 = document.getElementById("par-serialNum1");
+var submitter1 = document.getElementById("submit-serialNum1");
+
+if (participant1) {
+    participant1.setAttribute("style", "margin-right: 2px;");
+}
+
+if (submitter1) {
+    submitter1.setAttribute("style", "margin-right: 2px;");
+}

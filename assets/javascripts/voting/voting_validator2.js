@@ -3,6 +3,7 @@ var input2 = document.getElementById("userNotice");
 var password1 = document.getElementById("password_check1");
 var password2 = document.getElementById("password_check2");
 var password3 = document.getElementById("password_check3");
+var participant1 = document.getElementById("par-serialNum1");
 var cancelFlag1 = false;
 var cancelFlag2 = false;
 
@@ -22,6 +23,10 @@ if (password1 && password2 && !password3) {
     document.getElementById("password_check2").addEventListener("keyup", checkPwd);
     document.getElementById("password_check3").addEventListener("keyup", checkPwd2);
 
+}
+
+if (participant1) {
+    participant1.setAttribute("style", "margin-right: 1px;");
 }
 
 // Status flags - voting configuration

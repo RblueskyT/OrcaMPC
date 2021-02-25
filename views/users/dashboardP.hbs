@@ -84,9 +84,9 @@
                             class="brown-text text-darken-2"><strong>Unpublished</strong></span></a></li>
                 <li class="tab"><a href="#published-voting"><span
                             class="yellow-text text-darken-2"><strong>Published</strong></span></a></li>
-                <li class="tab"><a href="#prepared-voting"><span
+                <li class="tab"><a href="#preparing-voting"><span
                             class="cyan-text text-darken-2"><strong>Preparing</strong></span></a></li>
-                <li class="tab"><a class="active" href="#initiated-voting"><span
+                <li class="tab"><a class="active" href="#initiating-voting"><span
                             class="green-text text-darken-2"><strong>Initiating</strong></span></a></li>
                 <li class="tab"><a href="#expired-voting"><span
                             class="red-text text-darken-2"><strong>Expired</strong></span></a></li>
@@ -205,9 +205,207 @@
                     </div>
                 </div>
             </div>
-            <div id="prepared-voting" class="col s12 cyan lighten-5">Prepared</div>
-            <div id="initiated-voting" class="col s12 green lighten-5">Initiated</div>
-            <div id="expired-voting" class="col s12 red lighten-5">Expired</div>
+            <div id="preparing-voting" class="col s12 cyan lighten-5">
+                <div class="preparing">
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="purple-text text-darken-2">1.&nbsp;My Creations</h6>
+                        <br />
+                        {{#if myVoting31}}
+                        {{#each myVoting31}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title cyan-text text-darken-2"><strong>{{truncate
+                                            votingTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/voting/preparing/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">You do not have any voting in preparation yet</p><br />
+                        {{/if}}
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="green-text text-darken-2">2.&nbsp;My Registrations</h6>
+                        <br />
+                        {{#if myVoting32}}
+                        {{#each myVoting32}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title cyan-text text-darken-2"><strong>{{truncate
+                                            votingTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/voting/preparing/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">None of the voting that you registered are in preparation yet</p><br />
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            <div id="initiating-voting" class="col s12 green lighten-5">
+                <div class="initiating">
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="purple-text text-darken-2">1.&nbsp;My Creations</h6>
+                        <br />
+                        {{#if myVoting41}}
+                        {{#each myVoting41}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title green-text text-darken-2"><strong>{{truncate
+                                            votingTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/voting/initiating/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">You do not have any initiating voting yet</p><br />
+                        {{/if}}
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="green-text text-darken-2">2.&nbsp;My Registrations</h6>
+                        <br />
+                        {{#if myVoting42}}
+                        {{#each myVoting42}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title green-text text-darken-2"><strong>{{truncate
+                                            votingTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/voting/initiating/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">None of the voting that you registered are being initiated yet</p><br />
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            <div id="expired-voting" class="col s12 red lighten-5">
+                <div class="expired">
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="purple-text text-darken-2">1.&nbsp;My Creations</h6>
+                        <br />
+                        {{#if myVoting51}}
+                        {{#each myVoting51}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title red-text text-darken-2"><strong>{{truncate
+                                            votingTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/voting/expired/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">You do not have any expired voting yet</p><br />
+                        {{/if}}
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="green-text text-darken-2">2.&nbsp;My Registrations</h6>
+                        <br />
+                        {{#if myVoting52}}
+                        {{#each myVoting52}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title red-text text-darken-2"><strong>{{truncate
+                                            votingTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/voting/expired/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">None of the voting that you registered are expired yet</p><br />
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row col s12">

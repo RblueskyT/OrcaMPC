@@ -1,0 +1,166 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <h3 style="padding-top: 35px; margin-right: 20px;" class="center red-text text-darken-2"><a
+                    style="float: left; margin-top: 5px; margin-left: 20px;" href="/users/voting/expired"
+                    class="btn-floating waves-effect waves-light blue lighten-1"><i
+                        class="fas fa-arrow-left"></i></a>{{voting.votingTitle}}</h3><br />
+            <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                {{#if flash_success_message}}
+                <div class="success_msg">
+                    <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_success_message}}
+                </div>
+                {{/if}}
+                {{#if flash_error_message}}
+                <div class="error_msg">
+                    <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_error_message}}
+                </div>
+                {{/if}}
+            </div>
+            <div class="divider"></div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s9">
+                        <h6>
+                            <div class="valign-wrapper">
+                                <strong class="black-text">Voting Creator: </strong><img
+                                    style="margin-left: 20px; margin-right: 20px;" class="circle" src="{{this.avatar}}">
+                                <a href="/users/profile/{{voting.user._id}}"
+                                    class="light-blue-text text-darken-2"><u><strong>{{voting.user.firstName}}
+                                            {{voting.user.lastName}}</strong></u></a>
+                            </div>
+                        </h6><br />
+                        <h6 class="black-text" style="text-align:justify; line-height: 1.5;">
+                            <strong>Description:&nbsp;
+                            </strong> {{voting.description}}
+                        </h6><br />
+                        <h6 class="black-text"><strong>Voting Date and Time:&nbsp; </strong>
+                            {{voting.estimatedDate}}, {{voting.estimatedTime}}</h6><br />
+                        <h6 class="black-text"><strong>Voting Duration:&nbsp; </strong>
+                            {{voting.estimatedDuration}} minutes</h6><br />
+                        <h6 class="black-text"><strong>Number of Participants:&nbsp; </strong>
+                            {{voting.partyCount}}</h6><br />
+                        <h6 class="black-text" style="text-align:justify; line-height: 1.5;"><strong>Voting
+                                Options:&nbsp; </strong>
+                            {{#each voting.options}}
+                            {{serialNumber @index}}. {{this}}&nbsp;
+                            {{/each}}
+                        </h6><br />
+                    </div>
+                    <div class="col s3"
+                        style="background-color: #e3f2fd; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 400px; overflow: auto;">
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <h6 class="center light-blue-text text-darken-2"><strong><i
+                                    class="fas fa-users"></i>&nbsp;Participants List</strong></h6><br />
+                        <div id="prompt_msg">
+                            {{#ifEquals voting.result "Voting Failed"}}
+                            <p class="red-text text-darken-1 center">- Sorry, this voting was failed -</p>
+                            {{/ifEquals}}
+                            {{#ifEquals voting.result "Voting Cancelled"}}
+                            <p class="red-text text-darken-1 center">- Sorry, this voting was cancelled -</p>
+                            {{/ifEquals}}
+                            {{#ifNEquals voting.result "Voting Failed"}}
+                            {{#ifNEquals voting.result "Voting Cancelled"}}
+                            <p class="green-text text-darken-1 center">- This voting was successfully finished -</p>
+                            {{/ifNEquals}}
+                            {{/ifNEquals}}
+                        </div><br />
+                        <div class="light-blue-text text-darken-2">
+                            {{#each voting.participants}}
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="valign-wrapper">
+                                        <strong id="par-serialNum{{serialNumber @index}}">{{serialNumber @index}}.
+                                        </strong><img style="margin-left: 20px; margin-right: 20px;" class="circle"
+                                            src="{{this.avatar}}">
+                                        <a href="/users/profile/{{this._id}}"
+                                            class="teal-text text-darken-1"><u><strong>{{this.firstName}}
+                                                    {{this.lastName}}</strong></u></a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div><br />
+                    </div>
+                </div><br />
+                {{#ifEquals voting.result "Voting Failed"}}
+                <div class="row">
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <h6 class="red-text text-darken-2 center">- This voting was failed, please wait for the voting
+                        creator to delete or reopen -</h6>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                </div>
+                {{/ifEquals}}
+                {{#ifEquals voting.result "Voting Cancelled"}}
+                <div class="row">
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <h6 class="red-text text-darken-2 center">- This voting was cancelled, please wait for the voting
+                        creator to delete or reopen -</h6>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                </div>
+                {{/ifEquals}}
+                {{#ifNEquals voting.result "Voting Failed"}}
+                {{#ifNEquals voting.result "Voting Cancelled"}}
+                <div class="row">
+                    <input type="hidden" id="voting_result" value="{{voting.result}}">
+                    <input type="hidden" id="voting_optionslen" value={{voting.options.length}}>
+                    {{#each voting.options}}
+                    <input type="hidden" value="{{this}}" id="voting_options{{serialNumber @index}}"
+                        class="voting_options">
+                    {{/each}}
+                    <h5 class="green-text text-darken-1 center"><strong>- <i class="fas fa-poll"></i> Voting Result
+                            -</strong></h5><br /><br />
+                    <h6 id="most_voted" style="line-height: 1.5;" class="green-text text-darken-1"></h6><br />
+                    <canvas id="votingChart"></canvas><br />
+                </div>
+                {{/ifNEquals}}
+                {{/ifNEquals}}
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

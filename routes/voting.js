@@ -1168,7 +1168,7 @@ router.post('/preparing/initiate', ensureAuthenticated, async (req, res) => {
         if (voting1) {
 
             req.flash('flash_error_message', 'Sorry, you can only initiate one voting session at a time');
-            res.redirect('/users/voting/preparing');
+            res.redirect('/users/voting/preparing/view/' + req.body.votingid);
 
         } else {
 
@@ -1585,10 +1585,10 @@ router.post('/initiating/cancel', ensureAuthenticated, async (req, res) => {
             }
 
             await Message.updateMany({ relatedVoting: { $in: [req.body.votingid] }, messageLabel: { $in: ['Notification'] } }, { $set: { status: 'Read' } });
-            await Voting.updateOne({ _id: req.body.votingid, user: req.user.id, status: 'Initiating' }, { result: 'Cancelled Voting', status: 'Expired' });
+            await Voting.updateOne({ _id: req.body.votingid, user: req.user.id, status: 'Initiating' }, { result: 'Voting Cancelled', status: 'Expired' });
             await VotingSession.updateOne({ _id: req.body.sessionid, initiator: req.user.id, status: 'Ongoing' }, { status: 'Cancelled' });
             req.flash('flash_success_message', 'You have sucessfully cancelled this voting');
-            res.redirect('/users/voting/expired');
+            res.redirect('/users/voting/expired/view/' + req.body.votingid);
 
         }
 
@@ -1632,10 +1632,17 @@ router.post('/initiating/finish', ensureAuthenticated, async (req, res) => {
             }
 
             await Message.updateMany({ relatedVoting: { $in: [req.body.votingid] }, messageLabel: { $in: ['Notification'] } }, { $set: { status: 'Read' } });
-            await Voting.updateOne({ _id: req.body.votingid, user: req.user.id, status: 'Initiating' }, { result: req.body.result, status: 'Expired' });
-            await VotingSession.updateOne({ _id: req.body.sessionid, initiator: req.user.id, status: 'Ongoing' }, { status: 'Finished' });
+
+            if (!req.body.result || !req.body.result.length) {
+                await Voting.updateOne({ _id: req.body.votingid, user: req.user.id, status: 'Initiating' }, { result: 'Voting Failed', status: 'Expired' });
+                await VotingSession.updateOne({ _id: req.body.sessionid, initiator: req.user.id, status: 'Ongoing' }, { status: 'Failed' });
+            } else {
+                await Voting.updateOne({ _id: req.body.votingid, user: req.user.id, status: 'Initiating' }, { result: req.body.result, status: 'Expired' });
+                await VotingSession.updateOne({ _id: req.body.sessionid, initiator: req.user.id, status: 'Ongoing' }, { status: 'Finished' });
+            }
+
             req.flash('flash_success_message', 'You have sucessfully finished this voting, you can now view the result');
-            res.redirect('/users/voting/expired');
+            res.redirect('/users/voting/expired/view/' + req.body.votingid);
 
         }
 
@@ -1708,26 +1715,312 @@ router.get('/expired', ensureAuthenticated, async (req, res) => {
 
 });
 
+// View specific expired voting
+router.get('/expired/view/:id', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        var newMessages;
+        var newNotifications;
+
+        await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Message', status: 'Unread' }, function (err, count) {
+            if (err) {
+                newMessages = 0;
+            } else {
+                newMessages = count;
+            }
+        });
+
+        await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Notification', status: 'Unread' }, function (err, count) {
+            if (err) {
+                newNotifications = 0;
+            } else {
+                newNotifications = count;
+            }
+        });
+
+        let voting = await Voting.findOne({ _id: req.params.id, user: req.user.id, status: 'Expired' })
+            .populate('user')
+            .populate('participants')
+            .lean();
+
+        if (!voting) {
+
+            let voting = await Voting.findOne({ _id: req.params.id, participants: req.user.id, status: 'Expired' })
+                .populate('user')
+                .populate('participants')
+                .lean();
+
+            if (!voting) {
+
+                res.render('errors/error_404', {
+                    avatar: req.user.avatar,
+                    firstName: req.user.firstName,
+                    lastName: req.user.lastName,
+                    email: req.user.email,
+                    newMessages,
+                    newNotifications,
+                    title: 'ERROR 404 - Orca MPC',
+                    layout: 'users'
+                });
+
+            } else {
+
+                res.render('voting/view52P', {
+                    avatar: req.user.avatar,
+                    firstName: req.user.firstName,
+                    lastName: req.user.lastName,
+                    email: req.user.email,
+                    newMessages,
+                    newNotifications,
+                    voting,
+                    title: req.user.firstName + ' ' + req.user.lastName + ' / View: ' + voting.votingTitle + ' - Orca MPC',
+                    layout: 'voting2'
+                });
+
+            }
 
 
+        } else {
+
+            res.render('voting/view51P', {
+                avatar: req.user.avatar,
+                firstName: req.user.firstName,
+                lastName: req.user.lastName,
+                email: req.user.email,
+                newMessages,
+                newNotifications,
+                voting,
+                title: req.user.firstName + ' ' + req.user.lastName + ' / View: ' + voting.votingTitle + ' - Orca MPC',
+                layout: 'voting2'
+            });
+
+        }
+
+    } catch (err) {
+
+        res.render('errors/error_500', {
+            avatar: req.user.avatar,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            email: req.user.email,
+            title: 'ERROR 500 - Orca MPC',
+            layout: 'users'
+        });
+
+    }
+
+});
+
+// Reopen a specific expired voting
+router.get('/expired/reopen/:id', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        var newMessages;
+        var newNotifications;
+
+        await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Message', status: 'Unread' }, function (err, count) {
+            if (err) {
+                newMessages = 0;
+            } else {
+                newMessages = count;
+            }
+        });
+
+        await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Notification', status: 'Unread' }, function (err, count) {
+            if (err) {
+                newNotifications = 0;
+            } else {
+                newNotifications = count;
+            }
+        });
+
+        let voting = await Voting.findOne({ _id: req.params.id, user: req.user.id, result: 'Voting Failed', status: 'Expired' })
+            .lean();
+
+        if (!voting) {
+
+            let voting = await Voting.findOne({ _id: req.params.id, user: req.user.id, result: 'Voting Cancelled', status: 'Expired' })
+                .lean();
+
+            if (!voting) {
+
+                res.render('errors/error_404', {
+                    avatar: req.user.avatar,
+                    firstName: req.user.firstName,
+                    lastName: req.user.lastName,
+                    email: req.user.email,
+                    newMessages,
+                    newNotifications,
+                    title: 'ERROR 404 - Orca MPC',
+                    layout: 'users'
+                });
+
+            } else {
+
+                res.render('voting/edit3P', {
+                    avatar: req.user.avatar,
+                    firstName: req.user.firstName,
+                    lastName: req.user.lastName,
+                    email: req.user.email,
+                    newMessages,
+                    newNotifications,
+                    voting,
+                    title: req.user.firstName + ' ' + req.user.lastName + ' / Reopen: ' + voting.votingTitle + ' - Orca MPC',
+                    layout: 'voting2'
+                });
+
+            }
 
 
+        } else {
 
+            res.render('voting/edit3P', {
+                avatar: req.user.avatar,
+                firstName: req.user.firstName,
+                lastName: req.user.lastName,
+                email: req.user.email,
+                newMessages,
+                newNotifications,
+                voting,
+                title: req.user.firstName + ' ' + req.user.lastName + ' / Reopen: ' + voting.votingTitle + ' - Orca MPC',
+                layout: 'voting2'
+            });
 
+        }
 
+    } catch (err) {
 
+        res.render('errors/error_500', {
+            avatar: req.user.avatar,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            email: req.user.email,
+            title: 'ERROR 500 - Orca MPC',
+            layout: 'users'
+        });
 
+    }
 
+});
 
+router.post('/expired/reopen', ensureAuthenticated, async (req, res) => {
 
+    try {
 
+        let voting = await Voting.findOne({ _id: req.body.votingid, user: req.user.id, result: { $in: ['Voting Failed', 'Voting Cancelled'] }, status: 'Expired' })
+            .populate('participants')
+            .lean();
 
+        if (!voting) {
 
+            req.flash('flash_error_message', 'Sorry, this voting is not existing');
+            res.redirect('/users/voting/expired');
 
+        } else {
 
+            var creator = await User.findOne({ _id: req.user.id });
+            const pwdMatch = await bcrypt.compare(req.body.password, creator.password);
 
+            if (pwdMatch) {
 
+                if (voting.participants.length > 1) {
+                    for (var i = 1; i < voting.participants.length; i++) {
+                        await Message.create({
+                            sender: req.user.id,
+                            receiver: voting.participants[i]._id,
+                            content: 'The voting "' + voting.votingTitle
+                                + '" has been reopened, Please click the button bellow to go to check this voting. The reason of reopening are follows: '
+                                + req.body.reopenreason + '.',
+                            relatedVoting: req.body.votingid,
+                            messageLabel: 'Notification'
+                        });
+                    }
+                }
 
+                await Voting.updateOne({ _id: req.body.votingid, user: req.user.id, status: 'Expired' }, {
+                    estimatedDate: req.body.estimatedDate, estimatedTime: req.body.estimatedTime, estimatedDuration: req.body.estimatedDuration, status: 'Preparing'
+                });
+                await VotingSession.deleteOne({ initiator: req.user.id, voting: req.body.votingid });
+                req.flash('flash_success_message', 'You have successfully reopened this voting, please configure the voting session for all participants first');
+                res.redirect('/users/voting/preparing/view/' + req.body.votingid);
+
+            } else {
+
+                req.flash('flash_error_message', 'Sorry, you cannot reopen this voting because of the incorrect password');
+                res.redirect('/users/voting/expired/view/' + req.body.votingid);
+
+            }
+
+        }
+
+    } catch (err) {
+
+        req.flash('flash_error_message', 'Sorry, an unknown error occurred');
+        res.redirect('/users/voting/expired');
+
+    }
+
+});
+
+// Delete a specific expired voting
+router.post('/expired/delete', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        let voting = await Voting.findOne({ _id: req.body.votingid, user: req.user.id, result: { $in: ['Voting Failed', 'Voting Cancelled'] }, status: 'Expired' })
+            .populate('participants')
+            .lean();
+
+        if (!voting) {
+
+            req.flash('flash_error_message', 'Sorry, this voting is not existing');
+            res.redirect('/users/voting/expired');
+
+        } else {
+
+            var creator = await User.findOne({ _id: req.user.id });
+            const pwdMatch = await bcrypt.compare(req.body.password, creator.password);
+
+            if (pwdMatch) {
+
+                if (voting.participants.length > 1) {
+                    for (var i = 1; i < voting.participants.length; i++) {
+                        await Message.create({
+                            sender: req.user.id,
+                            receiver: voting.participants[i]._id,
+                            content: 'The expired voting "' + voting.votingTitle
+                                + '" has been deleted, the reason of reopening are follows: '
+                                + req.body.deletereason + '.',
+                            relatedVoting: req.body.votingid,
+                            messageLabel: 'Message'
+                        });
+                    }
+                }
+
+                await Voting.deleteOne({ _id: req.body.votingid, user: req.user.id, status: 'Expired' });
+                await VotingSession.deleteOne({ initiator: req.user.id, voting: req.body.votingid });
+                req.flash('flash_success_message', 'You have successfully deleted this voting');
+                res.redirect('/users/voting/expired');
+
+            } else {
+
+                req.flash('flash_error_message', 'Sorry, you cannot delete this voting because of the incorrect password');
+                res.redirect('/users/voting/expired/view/' + req.body.votingid);
+
+            }
+
+        }
+
+    } catch (err) {
+
+        req.flash('flash_error_message', 'Sorry, an unknown error occurred');
+        res.redirect('/users/voting/expired');
+
+    }
+
+});
 
 /* All following parts will be modified  */
 
@@ -1747,199 +2040,6 @@ router.get('/', ensureAuthenticated, async (req, res) => {
             title: 'All Published Voting - Orca MPC',
             layout: 'users'
         });
-    } catch (err) {
-        console.error(err);
-        res.render('errors/error_500', {
-            avatar: req.user.avatar,
-            firstName: req.user.firstName,
-            lastName: req.user.lastName,
-            email: req.user.email,
-            title: 'ERROR 500 - Orca MPC',
-            layout: 'users'
-        });
-    }
-
-});
-
-// This part will be splited to groups and topics in the future
-router.get('/public/:id', ensureAuthenticated, async (req, res) => {
-    try {
-        let voting = await Voting.findOne({ _id: req.params.id, status: 'Published' })
-            .populate('user')
-            .populate('participants')
-            .lean();
-
-        if (!voting) {
-            res.render('errors/error_404', {
-                avatar: req.user.avatar,
-                firstName: req.user.firstName,
-                lastName: req.user.lastName,
-                email: req.user.email,
-                title: 'ERROR 404 - Orca MPC',
-                layout: 'users'
-            });
-        } else {
-            res.render('voting/view0P', {
-                avatar: req.user.avatar,
-                firstName: req.user.firstName,
-                lastName: req.user.lastName,
-                email: req.user.email,
-                voting,
-                title: 'Details of Published Voting - Orca MPC',
-                layout: 'users'
-            });
-        }
-    } catch (err) {
-        console.error(err);
-        res.render('errors/error_500', {
-            avatar: req.user.avatar,
-            firstName: req.user.firstName,
-            lastName: req.user.lastName,
-            email: req.user.email,
-            title: 'ERROR 500 - Orca MPC',
-            layout: 'users'
-        });
-    }
-
-});
-
-// Attend one specific voting
-router.get('/vote/:id', ensureAuthenticated, async (req, res) => {
-
-    try {
-        let votingSession = await VotingSession.findOne({ _id: req.params.id, initiator: req.user.id, status: 'Normal' })
-            .populate('voting')
-            .populate('initiator')
-            .populate('submitters')
-            .lean();
-
-        if (votingSession) {
-            res.render('voting/vote1P', {
-                userID: req.user.id,
-                avatar: req.user.avatar,
-                firstName: req.user.firstName,
-                lastName: req.user.lastName,
-                email: req.user.email,
-                votingSession,
-                title: 'Voting Initiator - Orca MPC',
-                layout: 'voting'
-            });
-        } else {
-            let votingSession = await VotingSession.findOne({ _id: req.params.id, participants: req.user.id, status: 'Normal' })
-                .populate('voting')
-                .populate('initiator')
-                .lean();
-
-            if (votingSession) {
-                res.render('voting/vote2P', {
-                    userID: req.user.id,
-                    avatar: req.user.avatar,
-                    firstName: req.user.firstName,
-                    lastName: req.user.lastName,
-                    email: req.user.email,
-                    votingSession,
-                    title: 'Voting participants - Orca MPC',
-                    layout: 'voting'
-                });
-            } else {
-                res.render('errors/error_404', {
-                    avatar: req.user.avatar,
-                    firstName: req.user.firstName,
-                    lastName: req.user.lastName,
-                    email: req.user.email,
-                    title: 'ERROR 404 - Orca MPC',
-                    layout: 'users'
-                });
-            }
-        }
-
-    } catch (err) {
-        console.error(err);
-        res.render('errors/error_500', {
-            avatar: req.user.avatar,
-            firstName: req.user.firstName,
-            lastName: req.user.lastName,
-            email: req.user.email,
-            title: 'ERROR 500 - Orca MPC',
-            layout: 'users'
-        });
-    }
-
-});
-
-// Voting session update
-router.post('/others_vote', ensureAuthenticated, async (req, res) => {
-    try {
-        await VotingSession.updateOne({ _id: req.body.sessionid, participants: req.user.id }, { $push: { submitters: req.user.id } });
-        req.flash('flash_success_message', 'You have successfully voted on the voting');
-        res.redirect('/users/dashboard');
-
-    } catch (err) {
-        console.error(err);
-    }
-
-});
-
-// Voting Finish
-router.post('/initiator_finish', ensureAuthenticated, async (req, res) => {
-    try {
-        await VotingSession.updateOne({ _id: req.body.sessionid, voting: req.body.votingid, initiator: req.user.id }, { $push: { submitters: req.user.id }, status: 'Finished' });
-        await Voting.updateOne({ _id: req.body.votingid, user: req.user.id }, { result: req.body.result, status: 'Expired' });
-        req.flash('flash_success_message', 'You have successfully finished the voting and now you can view the results');
-        res.redirect('/users/dashboard');
-
-    } catch (err) {
-        console.error(err);
-    }
-
-});
-
-// View specific prepared voting
-router.get('/view/prepared/:id', ensureAuthenticated, async (req, res) => {
-    try {
-        let voting = await Voting.findOne({ _id: req.params.id, user: req.user.id, status: 'Prepared' })
-            .populate('user')
-            .populate('participants')
-            .lean();
-
-        if (voting) {
-            res.render('voting/view31P', {
-                avatar: req.user.avatar,
-                firstName: req.user.firstName,
-                lastName: req.user.lastName,
-                email: req.user.email,
-                voting,
-                title: 'Managing Prepared Voting - Orca MPC',
-                layout: 'voting'
-            });
-        } else {
-            let voting = await Voting.findOne({ _id: req.params.id, participants: req.user.id, status: 'Prepared' })
-                .populate('user')
-                .populate('participants')
-                .lean();
-
-            if (voting) {
-                res.render('voting/view32P', {
-                    avatar: req.user.avatar,
-                    firstName: req.user.firstName,
-                    lastName: req.user.lastName,
-                    email: req.user.email,
-                    voting,
-                    title: 'View Prepared Voting - Orca MPC',
-                    layout: 'users'
-                });
-            } else {
-                res.render('errors/error_404', {
-                    avatar: req.user.avatar,
-                    firstName: req.user.firstName,
-                    lastName: req.user.lastName,
-                    email: req.user.email,
-                    title: 'ERROR 404 - Orca MPC',
-                    layout: 'users'
-                });
-            }
-        }
-
     } catch (err) {
         console.error(err);
         res.render('errors/error_500', {

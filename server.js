@@ -39,7 +39,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     rolling: true,
-    cookie: {maxAge: (6*60*60*1000)},
+    cookie: { maxAge: (6 * 60 * 60 * 1000) },
     store: new MongoStore({
         mongooseConnection: mongoose.connection
     })
@@ -55,14 +55,18 @@ if (process.env.NODE_ENV === 'development') {
 };
 
 // View Engine config: Handlebars helpers
-const { formatDate, truncate, serialNumber} = require('./config/hbs_helpers');
+const { formatDate, truncate, serialNumber, ifEquals, ifNEquals } = require('./config/hbs_helpers');
 
 // View Engine: Handlebars
-app.engine('.hbs', exphbs({ helpers: {
-    formatDate,
-    truncate,
-    serialNumber
-}, defaultLayout: 'index', extname: '.hbs' }));
+app.engine('.hbs', exphbs({
+    helpers: {
+        formatDate,
+        truncate,
+        serialNumber,
+        ifEquals,
+        ifNEquals
+    }, defaultLayout: 'index', extname: '.hbs'
+}));
 app.set('view engine', '.hbs');
 
 // Static folder
