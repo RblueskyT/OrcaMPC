@@ -1,0 +1,238 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            {{#ifEquals question.questionType "Radio"}}
+            <h3 style="padding-top: 35px; margin-right: 20px;" class="center pink-text text-darken-2">
+                <a style="float: left; margin-top: 5px; margin-left: 20px;" href="/users/surveys/question"
+                    class="btn-floating waves-effect waves-light blue lighten-1"><i
+                        class="fas fa-arrow-left"></i></a>{{question.questionName}}
+            </h3><br />
+            {{/ifEquals}}
+            {{#ifEquals question.questionType "Checkbox"}}
+            <h3 style="padding-top: 35px; margin-right: 20px;" class="center indigo-text text-darken-2">
+                <a style="float: left; margin-top: 5px; margin-left: 20px;" href="/users/surveys/question"
+                    class="btn-floating waves-effect waves-light blue lighten-1"><i
+                        class="fas fa-arrow-left"></i></a>{{question.questionName}}
+            </h3><br />
+            {{/ifEquals}}
+            {{#ifEquals question.questionType "Input"}}
+            <h3 style="padding-top: 35px; margin-right: 20px;" class="center teal-text text-darken-2">
+                <a style="float: left; margin-top: 5px; margin-left: 20px;" href="/users/surveys/question"
+                    class="btn-floating waves-effect waves-light blue lighten-1"><i
+                        class="fas fa-arrow-left"></i></a>{{question.questionName}}
+            </h3><br />
+            {{/ifEquals}}
+            <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                {{#if flash_success_message}}
+                <div class="success_msg">
+                    <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_success_message}}
+                </div>
+                {{/if}}
+                {{#if flash_error_message}}
+                <div class="error_msg">
+                    <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_error_message}}
+                </div>
+                {{/if}}
+            </div>
+            <div class="divider"></div>
+            <div class="card-content">
+                <h6 class="black-text"><strong>Creation Date and Time:&nbsp; </strong> {{formatDate
+                    question.createTime 'MMMM Do YYYY, h:mm:ss a'}}</h6><br />
+                <h6 class="black-text"><strong>Creator Name:&nbsp; </strong> {{question.user.firstName}}
+                    {{question.user.lastName}}</h6><br />
+                <h6 class="black-text" style="text-align:justify; line-height: 1.5;">
+                    <strong>Description:&nbsp;
+                    </strong> {{question.description}}
+                </h6><br />
+                {{#ifEquals question.questionType "Radio"}}
+                <h6 class="black-text"><strong>Question Type:&nbsp; </strong> Single Choice</h6><br />
+                <h6 class="black-text" style="text-align:justify; line-height: 1.5;"><strong>Question Options:&nbsp;
+                    </strong>
+                    {{#each question.options}}
+                    {{serialNumber @index}}. {{this}}&nbsp;
+                    {{/each}}
+                </h6><br />
+                {{/ifEquals}}
+                {{#ifEquals question.questionType "Checkbox"}}
+                <h6 class="black-text"><strong>Question Type:&nbsp; </strong> Multiple Choices</h6><br />
+                <h6 class="black-text" style="text-align:justify; line-height: 1.5;"><strong>Question Options:&nbsp;
+                    </strong>
+                    {{#each question.options}}
+                    {{serialNumber @index}}. {{this}}&nbsp;
+                    {{/each}}
+                </h6><br />
+                <h6 class="black-text"><strong>Limit of Number of Choices:&nbsp; </strong> {{question.optionLimit}}</h6>
+                <br />
+                {{/ifEquals}}
+                {{#ifEquals question.questionType "Input"}}
+                <h6 class="black-text"><strong>Question Type:&nbsp; </strong> Fill In the Blank (Numbers Only)</h6>
+                <br />
+                <h6 class="black-text" style="text-align:justify; line-height: 1.5;"><strong>Limit of the Input
+                        Number:&nbsp;
+                    </strong>
+                    {{#each question.inputLimit}}
+                    {{#ifEquals @index "0"}}
+                    1. Lower Limit: {{this}} &nbsp;
+                    {{/ifEquals}}
+                    {{#ifEquals @index "1"}}
+                    2. Upper Limit: {{this}} &nbsp;
+                    {{/ifEquals}}
+                    {{/each}}
+                </h6><br />
+                {{/ifEquals}}
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row">
+                    {{#ifEquals relatedSurveyNum "0"}}
+                    <h6 class="green-text text-darken-2 center">- This question is not contained in any surveys, you can
+                        choose to delete this question -</h6>
+                    {{/ifEquals}}
+                    {{#ifNEquals relatedSurveyNum "0"}}
+                    <h6 class="red-text text-darken-2 center">- This question is contained in some surveys, you cannot
+                        delete this question -</h6>
+                    {{/ifNEquals}}
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row center">
+                    <div class="col s6">
+                        {{#ifEquals relatedSurveyNum "0"}}
+                        <a href="#modal1" id="delete-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Delete</strong></a>
+                        {{/ifEquals}}
+                        {{#ifNEquals relatedSurveyNum "0"}}
+                        <a href="#modal1" id="delete-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"
+                            disabled><strong>Delete</strong></a>
+                        {{/ifNEquals}}
+                    </div>
+                    <div class="col s6">
+                        <a href="#modal2" id="addtosurvey-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Add To
+                                Survey</strong></a>
+                    </div>
+                    <div id="modal1" class="modal">
+                        <form action="/users/surveys/question/delete" method="POST">
+                            <input type="hidden" id="questionid" name="questionid" value={{question._id}} required>
+                            <div class="modal-content">
+                                <h4 class="light-blue-text text-darken-2 center">Confirm Deletion</h4><br />
+                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to delete this
+                                        question? Please confirm it again.</strong></h6>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="modal-footer">
+                                <div class="col s6">
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <button class="modal-close waves-effect waves-green btn-flat"
+                                        id="delete-submit-button" type="submit"><strong>Yes</strong></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="modal2" class="modal">
+                        <form action="/users/surveys/question/addtosurvey" method="POST">
+                            <input type="hidden" id="questionid" name="questionid" value={{question._id}} required>
+                            <input type="hidden" id="questiontype" name="questiontype" value={{question.questionType}}
+                                required>
+                            <div class="modal-content">
+                                <h4 class="light-blue-text text-darken-2 center">Choose A Survey</h4><br />
+                                <h6 class="light-blue-text text-darken-2 center"><strong>Please choose the survey that
+                                        you want to add this question to and then click <span
+                                            class="black-text">YES</span> to confirm.</strong></h6><br /><br />
+                                {{#if mySurveys}}
+                                <div class="input-field col s6 offset-s3">
+                                    <select id="mysurveys" name="surveyid" required>
+                                        <option value="" disabled selected>Please select here ...</option>
+                                        {{#each mySurveys}}
+                                        <option value="{{this._id}}">{{this.surveyTitle}}</option>
+                                        {{/each}}
+                                    </select>
+                                    <label for="mysurveys">My Unpublished Surveys</label>
+                                </div>
+                                <div class="row">
+                                    <p>&nbsp;</p>
+                                </div>
+                                {{else}}
+                                <h6 class="red-text text-darken-2 center"><strong>- You have no unpublished or published
+                                        surveys, please click <span class="black-text">CREATE</span> to create a new one
+                                        -</strong></h6>
+                                <br />
+                                {{/if}}
+                            </div>
+                            <div class="divider"></div>
+                            <div class="modal-footer">
+                                <div class="col s6">
+                                    {{#if mySurveys}}
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                    {{else}}
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>Back</strong></a>
+                                    {{/if}}
+                                </div>
+                                <div class="col s6">
+                                    {{#if mySurveys}}
+                                    <button class="modal-close waves-effect waves-green btn-flat" id="add-button"
+                                        type="submit"><strong>Yes</strong></button>
+                                    {{else}}
+                                    <a href="/users/surveys/unpublished/create"
+                                        class="modal-close waves-effect waves-green btn-flat"><strong>Create</strong></a>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><br />
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

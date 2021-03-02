@@ -86,10 +86,12 @@ app.use(function (req, res, next) {
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const votingRouter = require('./routes/voting');
+const surveysRouter = require('./routes/surveys');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/users/voting', votingRouter);
+app.use('/users/surveys', surveysRouter);
 
 // Server Connecting
 const PORT = process.env.PORT || 8080;

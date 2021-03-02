@@ -1,0 +1,422 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <h3 style="padding-top: 35px; margin-right: 20px;" class="center yellow-text text-darken-2"><a
+                    style="float: left; margin-top: 5px; margin-left: 20px;" href="/users/surveys/published"
+                    class="btn-floating waves-effect waves-light blue lighten-1"><i
+                        class="fas fa-arrow-left"></i></a>{{survey.surveyTitle}}</h3><br />
+            <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                {{#if flash_success_message}}
+                <div class="success_msg">
+                    <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_success_message}}
+                </div>
+                {{/if}}
+                {{#if flash_error_message}}
+                <div class="error_msg">
+                    <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_error_message}}
+                </div>
+                {{/if}}
+            </div>
+            <div class="divider"></div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s9">
+                        <h6 class="black-text"><strong>Creation Date and Time:&nbsp; </strong>
+                            {{formatDate
+                            survey.createTime 'MMMM Do YYYY, h:mm:ss a'}}</h6><br />
+                        <h6 class="black-text"><strong>Creator Name:&nbsp; </strong>
+                            {{survey.user.firstName}}
+                            {{survey.user.lastName}}</h6><br />
+                        <h6 class="black-text" style="text-align:justify; line-height: 1.5;">
+                            <strong>Description:&nbsp;
+                            </strong> {{survey.description}}
+                        </h6><br />
+                        <h6 class="black-text"><strong>Survey Pattern:&nbsp; </strong>
+                            {{#ifEquals survey.pattern "Participate"}}
+                            Participant Pattern
+                            {{/ifEquals}}
+                            {{#ifEquals survey.pattern "Collect"}}
+                            Collector Pattern
+                            {{/ifEquals}}
+                        </h6><br />
+                        <h6 class="black-text"><strong>Estimated Survey Date and Time:&nbsp; </strong>
+                            {{survey.estimatedDate}}, {{survey.estimatedTime}}</h6><br />
+                        <h6 class="black-text"><strong>Estimated Survey Duration:&nbsp; </strong>
+                            {{survey.estimatedDuration}} minutes</h6><br />
+                        <h6 class="black-text"><strong>Expected Number of Participants:&nbsp; </strong>
+                            {{survey.partyCount}}</h6><br />
+                    </div>
+                    <div class="col s3"
+                        style="background-color: #e3f2fd; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 400px; overflow: auto;">
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <h6 class="center light-blue-text text-darken-2"><strong><i class="fas fa-users"></i>
+                                Registrants&nbsp;( {{survey.participants.length}} / {{survey.partyCount}} )
+                            </strong></h6><br />
+                        <div id="prompt_msg"></div><br />
+                        <div class="light-blue-text text-darken-2">
+                            {{#each survey.participants}}
+                            <div class="row">
+                                <div class="col s9">
+                                    <div class="valign-wrapper">
+                                        <strong id="reg-serialNum{{serialNumber @index}}">{{serialNumber @index}}.
+                                        </strong><img style="margin-left: 20px; margin-right: 20px;" class="circle"
+                                            src="{{this.avatar}}">
+                                        <a href="/users/profile/{{this._id}}"
+                                            class="teal-text text-darken-1"><u><strong>{{this.firstName}}
+                                                    {{this.lastName}}</strong></u></a>
+                                    </div>
+                                </div>
+                                <div class="col s3">
+                                    <a href="#modal{{this._id}}" id="reg-remove-button{{serialNumber @index}}"
+                                        class="btn-floating btn-small waves-effect waves-light red lighten-2 modal-trigger"
+                                        disabled><i class="fas fa-times"></i></a>
+                                    <div id="modal{{this._id}}" class="modal">
+                                        <form id="reg-remove{{serialNumber @index}}"
+                                            action="/users/surveys/published/remove/registrant" method="POST">
+                                            <div class="modal-content">
+                                                <h4 class="light-blue-text text-darken-2 center">Confirm Removal</h4>
+                                                <br />
+                                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
+                                                        remove this registrant? Please enter your password to
+                                                        confirm.</strong></h6>
+                                                <br /><br />
+                                                <input type="hidden" id="surveyidR{{serialNumber @index}}"
+                                                    name="surveyid" required>
+                                                <input type="hidden" id="regid{{serialNumber @index}}" name="regid"
+                                                    value={{this._id}} required>
+                                                <div class="row">
+                                                    <div class="input-field col s6 offset-s3">
+                                                        <input placeholder="Please enter here ..." type="password"
+                                                            data-length="100"
+                                                            id="password_check3{{serialNumber @index}}" name="password"
+                                                            onblur="checkPwd()" onfocus="checkPwd()"
+                                                            onchange="checkPwd()" required>
+                                                        <label for="password">Password</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="modal-footer">
+                                                <div class="col s6">
+                                                    <a href="#"
+                                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                                </div>
+                                                <div class="col s6">
+                                                    <button class="modal-close waves-effect waves-green btn-flat"
+                                                        id="remove-button{{serialNumber @index}}" type="submit"
+                                                        disabled><strong>Yes</strong></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div><br />
+                    </div>
+                </div><br />
+                <div class="row">
+                    <h6 class="black-text center"><strong>Questions In This Survey&nbsp; </strong></h6><br />
+                    <p id="QuestionNum" class="green-text center"></p><br />
+                    <div class="radioQuestionsDiv row">
+                        <p class="pink-text text-darken-2"><strong>1. Single-Select Question(s):&nbsp; </strong></p>
+                        <br /><br />
+                        {{#if survey.radioQuestions}}
+                        {{#each survey.radioQuestions}}
+                        <div class="col s12">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title pink-text text-darken-2"><strong>{{truncate
+                                            questionName
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify; line-height: 2.0;"><strong>Description:
+                                        </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                    <p style="line-height: 2.0;"><strong>Options: </strong>
+                                        {{#each options}}
+                                        {{serialNumber @index}}. {{this}}&nbsp;
+                                        {{/each}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="#modal{{_id}}" class="modal-trigger"><strong><i
+                                                    class="far fa-times-circle"></i> Remove</strong></a></div>
+                                </div>
+                                <div id="modal{{_id}}" class="modal">
+                                    <form action="/users/surveys/published/remove/question" method="POST" required>
+                                        <input type="hidden" id="questionid1{{serialNumber @index}}" name="questionid" value={{_id}}>
+                                        <input type="hidden" id="questiontype1{{serialNumber @index}}" name="questiontype"
+                                            value={{questionType}} requried>
+                                        <input type="hidden" id="surveyid1{{serialNumber @index}}" name="surveyid"
+                                            required>
+                                        <div class="modal-content">
+                                            <h4 class="light-blue-text text-darken-2 center">Confirm Removal</h4><br />
+                                            <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
+                                                    remove this question? Please confirm it again.</strong></h6>
+                                        </div>
+                                        <div class="divider"></div>
+                                        <div class="modal-footer">
+                                            <div class="col s6">
+                                                <a href="#"
+                                                    class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                            </div>
+                                            <div class="col s6">
+                                                <button class="modal-close waves-effect waves-green btn-flat"
+                                                    type="submit"><strong>Yes</strong></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                        {{else}}
+                        <br />
+                        <p class="red-text center">- This survey contains no single-select question -</p><br />
+                        {{/if}}
+                    </div><br />
+                    <div class="checkboxQuestionsDiv row">
+                        <p class="indigo-text text-darken-2"><strong>2. Multi-Select Question(s):&nbsp; </strong>
+                        </p>
+                        <br /><br />
+                        {{#if survey.checkboxQuestions}}
+                        {{#each survey.checkboxQuestions}}
+                        <div class="col s12">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title indigo-text text-darken-2"><strong>{{truncate
+                                            questionName
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify; line-height: 2.0;"><strong>Description:
+                                        </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                    <p style="line-height: 2.0;"><strong>Options: </strong>
+                                        {{#each options}}
+                                        {{serialNumber @index}}. {{this}}&nbsp;
+                                        {{/each}}
+                                        (At Most {{optionLimit}} Opions)
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="#modal{{_id}}" class="modal-trigger"><strong><i
+                                                    class="far fa-times-circle"></i> Remove</strong></a></div>
+                                </div>
+                                <div id="modal{{_id}}" class="modal">
+                                    <form action="/users/surveys/published/remove/question" method="POST" required>
+                                        <input type="hidden" id="questionid2{{serialNumber @index}}" name="questionid" value={{_id}}>
+                                        <input type="hidden" id="questiontype2{{serialNumber @index}}" name="questiontype"
+                                            value={{questionType}} requried>
+                                        <input type="hidden" id="surveyid2{{serialNumber @index}}" name="surveyid"
+                                            required>
+                                        <div class="modal-content">
+                                            <h4 class="light-blue-text text-darken-2 center">Confirm Removal</h4><br />
+                                            <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
+                                                    remove this question? Please confirm it again.</strong></h6>
+                                        </div>
+                                        <div class="divider"></div>
+                                        <div class="modal-footer">
+                                            <div class="col s6">
+                                                <a href="#"
+                                                    class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                            </div>
+                                            <div class="col s6">
+                                                <button class="modal-close waves-effect waves-green btn-flat"
+                                                    type="submit"><strong>Yes</strong></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                        {{else}}
+                        <br />
+                        <p class="red-text center">- This survey contains no multi-select question -</p><br />
+                        {{/if}}
+                    </div><br />
+                    <div class="checkboxQuestionsDiv row">
+                        <p class="teal-text text-darken-2"><strong>3. Fill In the Blank Question(s):&nbsp; </strong></p>
+                        <br /><br />
+                        {{#if survey.inputQuestions}}
+                        {{#each survey.inputQuestions}}
+                        <div class="col s12">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title teal-text text-darken-2"><strong>{{truncate
+                                            questionName
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify; line-height: 2.0;"><strong>Description:
+                                        </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                    <p style="line-height: 2.0;"><strong>Input Limits: </strong>
+                                        {{#each inputLimit}}
+                                        {{#ifEquals @index "0"}}
+                                        1. Lower Limit: {{this}} &nbsp;
+                                        {{/ifEquals}}
+                                        {{#ifEquals @index "1"}}
+                                        2. Upper Limit: {{this}} &nbsp;
+                                        {{/ifEquals}}
+                                        {{/each}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="#modal{{_id}}" class="modal-trigger"><strong><i
+                                                    class="far fa-times-circle"></i> Remove</strong></a></div>
+                                </div>
+                                <div id="modal{{_id}}" class="modal">
+                                    <form action="/users/surveys/published/remove/question" method="POST" required>
+                                        <input type="hidden" id="questionid3{{serialNumber @index}}" name="questionid" value={{_id}}>
+                                        <input type="hidden" id="questiontype3{{serialNumber @index}}" name="questiontype"
+                                            value={{questionType}} requried>
+                                        <input type="hidden" id="surveyid3{{serialNumber @index}}" name="surveyid"
+                                            required>
+                                        <div class="modal-content">
+                                            <h4 class="light-blue-text text-darken-2 center">Confirm Removal</h4><br />
+                                            <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
+                                                    remove this question? Please confirm it again.</strong></h6>
+                                        </div>
+                                        <div class="divider"></div>
+                                        <div class="modal-footer">
+                                            <div class="col s6">
+                                                <a href="#"
+                                                    class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                            </div>
+                                            <div class="col s6">
+                                                <button class="modal-close waves-effect waves-green btn-flat"
+                                                    type="submit"><strong>Yes</strong></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                        {{else}}
+                        <br />
+                        <p class="red-text center">- This survey contains no fill in the blank question -</p><br />
+                        {{/if}}
+                    </div><br />
+                </div>
+                <div class="hidden_inputs">
+                    <input type="hidden" id="surveyidval" value={{survey._id}}>
+                    <input type="hidden" id="radioQNum" value={{survey.radioQuestions.length}}>
+                    <input type="hidden" id="checkboxQNum" value={{survey.checkboxQuestions.length}}>
+                    <input type="hidden" id="inputQNum" value={{survey.inputQuestions.length}}>
+                    <input type="hidden" id="expected_num" value={{survey.partyCount}}>
+                    <input type="hidden" id="reg_num" value={{survey.participants.length}}>
+                </div>
+                <div class="row center">
+                    <div class="col s6">
+                        <a href="#modal1" id="published-cancel-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Cancel</strong></a>
+                    </div>
+                    <div class="col s6">
+                        <a href="#modal2" id="consent-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"
+                            disabled><strong>Consent</strong></a>
+                    </div>
+                    <div id="modal1" class="modal">
+                        <form id="published-cancel" action="/users/surveys/published/cancel" method="POST">
+                            <div class="modal-content">
+                                <h4 class="light-blue-text text-darken-2 center">Confirm Cancel</h4><br />
+                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to cancel this
+                                        survey? Please enter your password to confirm.</strong></h6><br />
+                                <h6 class="red-text center"><strong>(Please be informed that the status
+                                        of this survey will change to <span
+                                            class="brown-text text-darken-2">UNPUBLISHED</span>.)</strong></h6>
+                                <br /><br />
+                                <input type="hidden" id="surveyidval1" name="surveyid" value={{survey._id}} required>
+                                <div class="row">
+                                    <div class="input-field col s6 offset-s3">
+                                        <input placeholder="Please enter here ..." type="password" data-length="100"
+                                            id="password_check1" name="password" onblur="checkPwd()"
+                                            onfocus="checkPwd()" onchange="checkPwd()" required>
+                                        <label for="password">Password</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="modal-footer">
+                                <div class="col s6">
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <button class="modal-close waves-effect waves-green btn-flat" id="pcancel-button"
+                                        type="submit" disabled><strong>Yes</strong></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="modal2" class="modal">
+                        <form id="published-consent" action="/users/surveys/published/consent" method="POST">
+                            <div class="modal-content">
+                                <h4 class="light-blue-text text-darken-2 center">Confirm Consent</h4><br />
+                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to consent
+                                        this
+                                        survey? Please enter your password to confirm.</strong></h6><br /><br />
+                                <input type="hidden" id="surveyidval2" name="surveyid" value={{survey._id}} required>
+                                <div class="row">
+                                    <div class="input-field col s6 offset-s3">
+                                        <input placeholder="Please enter here ..." type="password" data-length="100"
+                                            id="password_check2" name="password" onblur="checkPwd()"
+                                            onfocus="checkPwd()" onchange="checkPwd()" required>
+                                        <label for="password">Password</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="modal-footer">
+                                <div class="col s6">
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <button class="modal-close waves-effect waves-green btn-flat" id="prepare-button"
+                                        type="submit" disabled><strong>Yes</strong></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><br />
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

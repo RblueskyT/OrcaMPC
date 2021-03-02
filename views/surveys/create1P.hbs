@@ -1,0 +1,400 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <h3 style="padding-top: 35px;" class="light-blue-text text-darken-2 center"><i class="fas fa-pen-fancy"></i>
+                Question Creator</h3><br />
+            <div class="divider"></div>
+            <div class="card-content">
+                <div class="col s12">
+                    <br />
+                    <p>Please choose <span class="red-text"><strong>ONE</strong></span> type of questions to create</p>
+                    <br /><br />
+                </div>
+                <ul class="collapsible z-depth-0">
+                    <li class="active">
+                        <div class="collapsible-header light-blue-text text-darken-2"><strong><i
+                                    class="fas fa-check"></i> Single-Select</strong></div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <p class="center">- This type of question can only be used for <span
+                                        class="red-text"><strong>overall
+                                            statistics</strong></span> -</p><br />
+                                <p><span class="red-text"><strong>All</strong></span> fields are required</p><br />
+                                <form id="sc_create" action="/users/surveys/question/create" method="POST">
+                                    <input type="hidden" id="questionType1" name="questionType" value="Radio" required>
+                                    <div class="input-field">
+                                        <input
+                                            placeholder="Maximum 100 characters and no special characters (e.g. @, # and $)"
+                                            type="text" id="questionName1" name="questionName" onblur="checkName1()"
+                                            onfocus="checkName1()" onchange="checkName1()" class="validate"
+                                            data-length="100" required>
+                                        <label for="questionName1">Question Name</label>
+                                        <span class="helper-text"
+                                            data-error="Please fill in this field or check your format"
+                                            data-success="Format correct"></span>
+                                    </div><br />
+                                    <div class="input-field">
+                                        <textarea placeholder="At least 50 characters" id="description1"
+                                            name="description" onblur="checkDes1()" onfocus="checkDes1()"
+                                            onchange="checkDes1()" class="materialize-textarea validate"
+                                            required></textarea>
+                                        <label for="description1">Question Description</label>
+                                        <span class="helper-text"
+                                            data-error="Please fill in this field or check your format"
+                                            data-success="Input completed"></span>
+                                    </div><br />
+                                    <div class="input-field">
+                                        <div class="valign-wrapper">
+                                            <div class="col s4">
+                                                <label for="opNum1">Number of Options</label>
+                                                <input placeholder="Please enter a number between 2 - 10" type="text"
+                                                    id="opNum1" name="opNum" onblur="checkNum1()" onfocus="checkNum1()"
+                                                    onchange="checkNum1()" class="validate" required>
+                                                <span class="helper-text"
+                                                    data-error="Please fill in the field or check your format"
+                                                    data-success="Format correct"></span>
+                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <div class="col s8">
+                                                <a href="#" id="addOps1" onclick="addOps1()"
+                                                    class="btn waves-effect waves-light blue lighten-1 disabled"><strong>Add
+                                                        Options</strong></a>
+                                            </div>
+                                        </div><br /><br />
+                                        <div id="container1" />
+                                    </div>
+                                    <div class="row col s12">
+                                        <!-- Add a blank line -->
+                                    </div>
+                                    <div class="row col s12">
+                                        <!-- Add a blank line -->
+                                    </div>
+                                    <div class="row center">
+                                        <div class="col s6">
+                                            <a href="#modal1" id="cancel-button1"
+                                                class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Cancel</strong></a>
+                                        </div>
+                                        <div class="col s6">
+                                            <a href="#modal2" id="create-button1"
+                                                class="waves-effect waves-light blue lighten-1 btn modal-trigger"
+                                                disabled><strong>Create</strong></a>
+                                        </div>
+                                        <div id="modal1" class="modal">
+                                            <div class="modal-content">
+                                                <h4 class="light-blue-text text-darken-2 center">Cancel Creation</h4>
+                                                <br />
+                                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
+                                                        cancel the
+                                                        question
+                                                        creation? Please be informed that your work won't be
+                                                        saved.</strong></h6>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="modal-footer">
+                                                <div class="col s6">
+                                                    <a href="#"
+                                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                                </div>
+                                                <div class="col s6">
+                                                    <a href="/users/surveys/question"
+                                                        class="modal-close waves-effect waves-green btn-flat"><strong>Yes</strong></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="modal2" class="modal">
+                                            <div class="modal-content">
+                                                <h4 class="light-blue-text text-darken-2 center">Confirm Creation</h4>
+                                                <br />
+                                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
+                                                        create this
+                                                        question? Please confirm it again.</strong></h6>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="modal-footer">
+                                                <div class="col s6">
+                                                    <a href="#"
+                                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                                </div>
+                                                <div class="col s6">
+                                                    <button class="modal-close waves-effect waves-green btn-flat"
+                                                        id="submit1" type="submit"><strong>Yes</strong></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header light-blue-text text-darken-2"><strong><i
+                                    class="fas fa-check-double"></i> Multi-Select</strong></div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <p class="center">- This type of question can only be used for <span
+                                        class="red-text"><strong>overall
+                                            statistics</strong></span> -</p><br />
+                                <p><span class="red-text"><strong>All</strong></span> fields are required</p><br />
+                                <form id="mcs_create" action="/users/surveys/question/create" method="POST">
+                                    <input type="hidden" id="questionType2" name="questionType" value="Checkbox"
+                                        required>
+                                    <div class="input-field">
+                                        <input
+                                            placeholder="Maximum 100 characters and no special characters (e.g. @, # and $)"
+                                            type="text" id="questionName2" name="questionName" onblur="checkName2()"
+                                            onfocus="checkName2()" onchange="checkName2()" class="validate"
+                                            data-length="100" required>
+                                        <label for="questionName2">Question Name</label>
+                                        <span class="helper-text"
+                                            data-error="Please fill in this field or check your format"
+                                            data-success="Format correct"></span>
+                                    </div><br />
+                                    <div class="input-field">
+                                        <textarea placeholder="At least 50 characters" id="description2"
+                                            name="description" onblur="checkDes2()" onfocus="checkDes2()"
+                                            onchange="checkDes2()" class="materialize-textarea validate"
+                                            required></textarea>
+                                        <label for="description2">Question Description</label>
+                                        <span class="helper-text"
+                                            data-error="Please fill in this field or check your format"
+                                            data-success="Input completed"></span>
+                                    </div><br />
+                                    <div class="input-field">
+                                        <div class="valign-wrapper">
+                                            <div class="col s4">
+                                                <label for="opNum2">Number of Options</label>
+                                                <input placeholder="Please enter a number between 2 - 10" type="text"
+                                                    id="opNum2" name="opNum" onblur="checkNum2()" onfocus="checkNum2()"
+                                                    onchange="checkNum2()" class="validate" required>
+                                                <span class="helper-text"
+                                                    data-error="Please fill in the field or check your format"
+                                                    data-success="Format correct"></span>
+                                            </div>
+                                            <div class="col s4">
+                                                <label for="numLimit1">Limit of Number of Choices</label>
+                                                <input placeholder="Please enter a number between 2 - 10" type="text"
+                                                    id="numLimit1" name="optionLimit" onblur="checkLimit1()"
+                                                    onfocus="checkLimit1()" onchange="checkLimit1()" class="validate"
+                                                    required>
+                                                <span class="helper-text"
+                                                    data-error="Please fill in the field or check your format (this number must be smaller than the number of options)"
+                                                    data-success="Format correct"></span>
+                                            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <div class="col s4">
+                                                <a href="#" id="addOps2" onclick="addOps2()"
+                                                    class="btn waves-effect waves-light blue lighten-1 disabled"><strong>Add
+                                                        Options</strong></a>
+                                            </div>
+                                        </div><br /><br />
+                                        <div id="container2" />
+                                    </div>
+                                    <div class="row col s12">
+                                        <!-- Add a blank line -->
+                                    </div>
+                                    <div class="row col s12">
+                                        <!-- Add a blank line -->
+                                    </div>
+                                    <div class="row center">
+                                        <div class="col s6">
+                                            <a href="#modal3" id="cancel-button2"
+                                                class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Cancel</strong></a>
+                                        </div>
+                                        <div class="col s6">
+                                            <a href="#modal4" id="create-button2"
+                                                class="waves-effect waves-light blue lighten-1 btn modal-trigger"
+                                                disabled><strong>Create</strong></a>
+                                        </div>
+                                        <div id="modal3" class="modal">
+                                            <div class="modal-content">
+                                                <h4 class="light-blue-text text-darken-2 center">Cancel Creation</h4>
+                                                <br />
+                                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
+                                                        cancel the
+                                                        question
+                                                        creation? Please be informed that your work won't be
+                                                        saved.</strong></h6>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="modal-footer">
+                                                <div class="col s6">
+                                                    <a href="#"
+                                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                                </div>
+                                                <div class="col s6">
+                                                    <a href="/users/surveys/question"
+                                                        class="modal-close waves-effect waves-green btn-flat"><strong>Yes</strong></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="modal4" class="modal">
+                                            <div class="modal-content">
+                                                <h4 class="light-blue-text text-darken-2 center">Confirm Creation</h4>
+                                                <br />
+                                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
+                                                        create this
+                                                        question? Please confirm it again.</strong></h6>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="modal-footer">
+                                                <div class="col s6">
+                                                    <a href="#"
+                                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                                </div>
+                                                <div class="col s6">
+                                                    <button class="modal-close waves-effect waves-green btn-flat"
+                                                        id="submit2" type="submit"><strong>Yes</strong></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header light-blue-text text-darken-2"><strong><i
+                                    class="fas fa-pen-square"></i> Fill In the Blank (Numbers Only)</strong></div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <p class="center">- This type of question can only be used for <span
+                                        class="red-text"><strong>calculated
+                                            average</strong></span> -</p><br />
+                                <p><span class="red-text"><strong>All</strong></span> fields are required</p><br />
+                                <form id="fib_create" action="/users/surveys/question/create" method="POST">
+                                    <input type="hidden" id="questionType3" name="questionType" value="Input" required>
+                                    <div class="input-field">
+                                        <input
+                                            placeholder="Maximum 100 characters and no special characters (e.g. @, # and $)"
+                                            type="text" id="questionName3" name="questionName" onblur="checkName3()"
+                                            onfocus="checkName3()" onchange="checkName3()" class="validate"
+                                            data-length="100" required>
+                                        <label for="questionName1">Question Name</label>
+                                        <span class="helper-text"
+                                            data-error="Please fill in this field or check your format"
+                                            data-success="Format correct"></span>
+                                    </div><br />
+                                    <div class="input-field">
+                                        <textarea placeholder="At least 50 characters" id="description3"
+                                            name="description" onblur="checkDes3()" onfocus="checkDes3()"
+                                            onchange="checkDes3()" class="materialize-textarea validate"
+                                            required></textarea>
+                                        <label for="description1">Question Description</label>
+                                        <span class="helper-text"
+                                            data-error="Please fill in this field or check your format"
+                                            data-success="Input completed"></span>
+                                    </div><br />
+                                    <div class="input-field col s6">
+                                        <input placeholder="A integer between 0 - 10000" type="text" id="inputLimit1"
+                                            name="inputLimit" onblur="checkLimit2()" onfocus="checkLimit2()"
+                                            onchange="checkLimit2()" class="validate" required>
+                                        <label for="inputLimit1">Lower Limit of the Input</label>
+                                        <span class="helper-text"
+                                            data-error="Please fill in this field or check your format (this number must be smaller than the upper limit)"
+                                            data-success="Format correct"></span>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <input placeholder="A integer between 0 - 10000" type="text" id="inputLimit2"
+                                            name="inputLimit" onblur="checkLimit3()" onfocus="checkLimit3()"
+                                            onchange="checkLimit3()" class="validate" required>
+                                        <label for="inputLimit2">Upper Limit of the Input</label>
+                                        <span class="helper-text"
+                                            data-error="Please fill in this field or check your format (this number must be greater than the lower limit)"
+                                            data-success="Format correct"></span>
+                                    </div>
+                                    <div class="row col s12">
+                                        <!-- Add a blank line -->
+                                    </div>
+                                    <div class="row col s12">
+                                        <!-- Add a blank line -->
+                                    </div>
+                                    <div class="row center">
+                                        <div class="col s6">
+                                            <a href="#modal5" id="cancel-button3"
+                                                class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Cancel</strong></a>
+                                        </div>
+                                        <div class="col s6">
+                                            <a href="#modal6" id="create-button3"
+                                                class="waves-effect waves-light blue lighten-1 btn modal-trigger"
+                                                disabled><strong>Create</strong></a>
+                                        </div>
+                                        <div id="modal5" class="modal">
+                                            <div class="modal-content">
+                                                <h4 class="light-blue-text text-darken-2 center">Cancel Creation</h4>
+                                                <br />
+                                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
+                                                        cancel the
+                                                        question
+                                                        creation? Please be informed that your work won't be
+                                                        saved.</strong></h6>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="modal-footer">
+                                                <div class="col s6">
+                                                    <a href="#"
+                                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                                </div>
+                                                <div class="col s6">
+                                                    <a href="/users/surveys/question"
+                                                        class="modal-close waves-effect waves-green btn-flat"><strong>Yes</strong></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="modal6" class="modal">
+                                            <div class="modal-content">
+                                                <h4 class="light-blue-text text-darken-2 center">Confirm Creation</h4>
+                                                <br />
+                                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
+                                                        create this
+                                                        question? Please confirm it again.</strong></h6>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="modal-footer">
+                                                <div class="col s6">
+                                                    <a href="#"
+                                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                                </div>
+                                                <div class="col s6">
+                                                    <button class="modal-close waves-effect waves-green btn-flat"
+                                                        id="submit3" type="submit"><strong>Yes</strong></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+</main>

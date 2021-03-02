@@ -1,4 +1,4 @@
-var input1 = document.getElementById("votingToken");
+var input1 = document.getElementById("surveyToken");
 var input2 = document.getElementById("userNotice");
 var password1 = document.getElementById("password_check1");
 var password2 = document.getElementById("password_check2");
@@ -8,7 +8,7 @@ var cancelFlag1 = false;
 var cancelFlag2 = false;
 
 if (input1 && input2) {
-    document.getElementById("votingToken").addEventListener("keyup", checkToken);
+    document.getElementById("surveyToken").addEventListener("keyup", checkToken);
     document.getElementById("userNotice").addEventListener("keyup", checkNotice);
 }
 
@@ -29,13 +29,13 @@ if (participant1) {
     participant1.setAttribute("style", "margin-right: 1px;");
 }
 
-// Status flags - voting configuration
+// Status flags - survey configuration
 s1 = false;
 s2 = false;
 
-// Check the voting token
+// Check the survey token
 function checkToken() {
-    var val = document.getElementById("votingToken").value;
+    var val = document.getElementById("surveyToken").value;
 
     if (!val || !val.length) {
         s1 = false;
@@ -43,12 +43,12 @@ function checkToken() {
     }
 
     if (val.length > 30 || val.length == 0) {
-        document.getElementById("votingToken").classList.remove("valid");
-        document.getElementById("votingToken").classList.add("invalid");
+        document.getElementById("surveyToken").classList.remove("valid");
+        document.getElementById("surveyToken").classList.add("invalid");
         s1 = false;
     } else {
-        document.getElementById("votingToken").classList.remove("invalid");
-        document.getElementById("votingToken").classList.add("valid");
+        document.getElementById("surveyToken").classList.remove("invalid");
+        document.getElementById("surveyToken").classList.add("valid");
         s1 = true;
     }
 
@@ -127,7 +127,7 @@ function checkPwd2() {
 
 }
 
-// Validate preparing voting
+// Validate preparing survey
 var participantsNum = document.getElementById("participants_num");
 var participants = document.getElementById("session_participants");
 var attendance = document.getElementById("session_attendance");
@@ -148,7 +148,7 @@ if (participantsNum && participants && attendance) {
     } else {
 
         promptcontent.className = "green-text text-darken-1 center";
-        promptcontent.innerHTML = ("- This voting is ready to be initiated -");
+        promptcontent.innerHTML = ("- This survey is ready to be initiated -");
         $("#initiate-button").attr("disabled", false);
     }
 
@@ -243,4 +243,17 @@ function checkCancel() {
         $("#preparing-cancel-submit-button").attr("disabled", true);
     }
 
+}
+
+// Count the number of questions
+var radioQNum = document.getElementById("radioQNum");
+var checkboxQNum = document.getElementById("checkboxQNum");
+var inputQNum = document.getElementById("inputQNum");
+
+if (radioQNum && checkboxQNum && inputQNum) {
+
+    var Qnum = parseInt(radioQNum.value) + parseInt(checkboxQNum.value) + parseInt(inputQNum.value);
+
+    document.getElementById("QuestionNum").innerHTML = ('Number of Questions:&nbsp;&nbsp; ' + Qnum);
+    
 }

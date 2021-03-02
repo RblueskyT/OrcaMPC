@@ -1,0 +1,125 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col s6 offset-s3">
+                <div class="card grey lighten-5 hoverable">
+                    <div class="card-content">
+                        <h3 class="center blue-text text-lighten-1">Session Authentication</h3></br>
+                        <div class="message_area row">
+                            {{#if flash_success_message}}
+                            <div class="success_msg">
+                                <span class="closebtn-s"
+                                    onclick="this.parentElement.style.display='none';">&times;</span>
+                                {{flash_success_message}}
+                            </div>
+                            {{/if}}
+                            {{#if flash_error_message}}
+                            <div class="error_msg">
+                                <span class="closebtn-e"
+                                    onclick="this.parentElement.style.display='none';">&times;</span>
+                                {{flash_error_message}}
+                            </div>
+                            {{/if}}
+                        </div>
+                        <form id="session_authenticate" action="/users/surveys/initiating/authenticate" method="POST">
+                            <input type="hidden" id="surveyid" name="surveyid" value={{survey._id}} required>
+                            <div class="input-field col s12">
+                                <input placeholder="Please enter here ..." type="password" id="sessiontoken"
+                                    name="sessiontoken" data-length="30" required>
+                                <label for="sessiontoken">Session Token</label>
+                            </div>
+                            <div class="row col s12">
+                                <!-- Add a blank line -->
+                            </div>
+                            <div class="row col s12">
+                                <!-- Add a blank line -->
+                            </div>
+                            <div class="row center">
+                                <div class="col s6">
+                                    <a href="/users/surveys/initiating" id="auth-cancel-button"
+                                        class="btn waves-effect waves-light blue lighten-1"><strong>Cancel</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <button class="btn waves-effect waves-light blue lighten-1" id="submit"
+                                        type="submit"><strong>Submit</strong></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

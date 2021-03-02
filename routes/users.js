@@ -3,7 +3,7 @@ const session = require('express-session');
 const { ensureAuthenticated } = require('../config/login_auth');
 const Message = require('../models/message');
 const Voting = require('../models/voting');
-const VotingSession = require('../models/votingSession');
+const Survey = require('../models/survey');
 const router = express.Router();
 
 /* User Personal Space */
@@ -53,6 +53,33 @@ router.get('/dashboard', ensureAuthenticated, async (req, res) => {
         const myVoting52 = await Voting.find({ user: { $ne: req.user.id }, participants: req.user.id, status: 'Expired' })
             .sort({ createTime: 'desc' })
             .lean();
+        const mySurveys1 = await Survey.find({ user: req.user.id, status: 'Unpublished' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const mySurveys21 = await Survey.find({ user: req.user.id, status: 'Published' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const mySurveys22 = await Survey.find({ user: { $ne: req.user.id }, participants: req.user.id, status: 'Published' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const mySurveys31 = await Survey.find({ user: req.user.id, status: 'Preparing' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const mySurveys32 = await Survey.find({ user: { $ne: req.user.id }, participants: req.user.id, status: 'Preparing' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const mySurveys41 = await Survey.find({ user: req.user.id, status: 'Initiating' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const mySurveys42 = await Survey.find({ user: { $ne: req.user.id }, participants: req.user.id, status: 'Initiating' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const mySurveys51 = await Survey.find({ user: req.user.id, status: 'Expired' })
+            .sort({ createTime: 'desc' })
+            .lean();
+        const mySurveys52 = await Survey.find({ user: { $ne: req.user.id }, participants: req.user.id, status: 'Expired' })
+            .sort({ createTime: 'desc' })
+            .lean();
 
         await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Message', status: 'Unread' }, function (err, count) {
             if (err) {
@@ -87,6 +114,15 @@ router.get('/dashboard', ensureAuthenticated, async (req, res) => {
             myVoting42,
             myVoting51,
             myVoting52,
+            mySurveys1,
+            mySurveys21,
+            mySurveys22,
+            mySurveys31,
+            mySurveys32,
+            mySurveys41,
+            mySurveys42,
+            mySurveys51,
+            mySurveys52,
             title: req.user.firstName + ', welcome to your dashboard! - Orca MPC',
             layout: 'users'
         });

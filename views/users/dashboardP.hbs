@@ -55,7 +55,7 @@
                                     <a href="/users/voting/{{relatedVoting.status}}/view/{{relatedVoting._id}}"><strong><i
                                                 class="far fa-hand-point-right"></i> Go to Finish</strong></a>
                                     {{else}}
-                                    <a href="/users/survey/{{relatedSurvey.status}}/view/{{relatedSurvey._id}}"><strong><i
+                                    <a href="/users/surveys/{{relatedSurvey.status}}/view/{{relatedSurvey._id}}"><strong><i
                                                 class="far fa-hand-point-right"></i> Go to Finish</strong></a>
                                     {{/if}}
                                 </div>
@@ -402,6 +402,340 @@
 
                         {{else}}
                         <p class="center">None of the voting that you registered are expired yet</p><br />
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="user_survey row z-depth-1">
+            <div class="center white">
+                <h3 class="light-blue-text text-darken-2" style="padding-top: 35px;"><i
+                        class="fas fa-poll-h"></i>&nbsp;Survey</h3><br />
+                <div class="divider"></div>
+            </div>
+            <ul id="survey-tabs" class="tabs tabs-fixed-width">
+                <li class="tab"><a href="#unpublished-survey"><span
+                            class="brown-text text-darken-2"><strong>Unpublished</strong></span></a></li>
+                <li class="tab"><a href="#published-survey"><span
+                            class="yellow-text text-darken-2"><strong>Published</strong></span></a></li>
+                <li class="tab"><a href="#preparing-survey"><span
+                            class="cyan-text text-darken-2"><strong>Preparing</strong></span></a></li>
+                <li class="tab"><a class="active" href="#initiating-survey"><span
+                            class="green-text text-darken-2"><strong>Initiating</strong></span></a></li>
+                <li class="tab"><a href="#expired-survey"><span
+                            class="red-text text-darken-2"><strong>Expired</strong></span></a></li>
+            </ul>
+            <div id="unpublished-survey" class="col s12 brown lighten-5">
+                <div class="unpublished">
+                    <div class="row">
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        {{#if mySurveys1}}
+                        {{#each mySurveys1}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title brown-text text-darken-2"><strong>{{truncate
+                                            surveyTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate
+                                        description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="left"><a href="/users/surveys/unpublished/edit/{{_id}}"><strong><i
+                                                    class="far fa-edit"></i>
+                                                Edit</strong></a></div>
+                                    <div class="right"><a href="/users/surveys/unpublished/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div><br />
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">Please use &nbsp;<a href="/users/surveys/unpublished/create"><span
+                                    class="light-blue-text text-darken-1"><i class="fas fa-edit"></i> Survey
+                                    Creator</span></a>&nbsp; to create a survey</p>
+                        <br />
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            <div id="published-survey" class="col s12 yellow lighten-5">
+                <div class="published">
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="purple-text text-darken-2">1.&nbsp;My Creations</h6>
+                        <br />
+                        {{#if mySurveys21}}
+                        {{#each mySurveys21}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title yellow-text text-darken-2"><strong>{{truncate
+                                            surveyTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate
+                                        description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="left"><a href="/users/surveys/published/edit/{{_id}}"><strong><i
+                                                    class="far fa-edit"></i>
+                                                Edit</strong></a></div>
+                                    <div class="right"><a href="/users/surveys/published/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div><br />
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">You do not have any published survey yet</p><br />
+                        {{/if}}
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="green-text text-darken-2">2.&nbsp;My Registrations</h6>
+                        <br />
+                        {{#if mySurveys22}}
+                        {{#each mySurveys22}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title yellow-text text-darken-2"><strong>{{truncate
+                                            surveyTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate
+                                        description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/surveys/published/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">You do not have any registrations for the surveys yet</p><br />
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            <div id="preparing-survey" class="col s12 cyan lighten-5">
+                <div class="preparing">
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="purple-text text-darken-2">1.&nbsp;My Creations</h6>
+                        <br />
+                        {{#if mySurveys31}}
+                        {{#each mySurveys31}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title cyan-text text-darken-2"><strong>{{truncate
+                                            surveyTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/surveys/preparing/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">You do not have any survey in preparation yet</p><br />
+                        {{/if}}
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="green-text text-darken-2">2.&nbsp;My Registrations</h6>
+                        <br />
+                        {{#if mySurveys32}}
+                        {{#each mySurveys32}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title cyan-text text-darken-2"><strong>{{truncate
+                                            surveyTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/surveys/preparing/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">None of the surveys that you registered are in preparation yet</p><br />
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            <div id="initiating-survey" class="col s12 green lighten-5">
+                <div class="initiating">
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="purple-text text-darken-2">1.&nbsp;My Creations</h6>
+                        <br />
+                        {{#if mySurveys41}}
+                        {{#each mySurveys41}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title green-text text-darken-2"><strong>{{truncate
+                                            surveyTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/surveys/initiating/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">You do not have any initiating survey yet</p><br />
+                        {{/if}}
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="green-text text-darken-2">2.&nbsp;My Registrations</h6>
+                        <br />
+                        {{#if mySurveys42}}
+                        {{#each mySurveys42}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title green-text text-darken-2"><strong>{{truncate
+                                            surveyTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/surveys/initiating/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">None of the surveys that you registered are being initiated yet</p><br />
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            <div id="expired-survey" class="col s12 red lighten-5">
+                <div class="expired">
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="purple-text text-darken-2">1.&nbsp;My Creations</h6>
+                        <br />
+                        {{#if mySurveys51}}
+                        {{#each mySurveys51}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title red-text text-darken-2"><strong>{{truncate
+                                            surveyTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/surveys/expired/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">You do not have any expired survey yet</p><br />
+                        {{/if}}
+                    </div>
+                    <div class="row">
+                        <h6 style="padding-left: 10px;" class="green-text text-darken-2">2.&nbsp;My Registrations</h6>
+                        <br />
+                        {{#if mySurveys52}}
+                        {{#each mySurveys52}}
+                        <div class="col s12 m4">
+                            <div class="card grey lighten-5 hoverable">
+                                <div class="card-content">
+                                    <span class="center card-title red-text text-darken-2"><strong>{{truncate
+                                            surveyTitle
+                                            32}}</strong></span><br />
+                                    <p><i class="far fa-calendar-check"></i> &nbsp;{{formatDate createTime 'MMMM Do
+                                        YYYY,
+                                        h:mm:ss a'}}</p><br />
+                                    <p style="text-align:justify"><strong>Description: </strong>{{truncate description
+                                        95}}
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="center"><a href="/users/surveys/expired/view/{{_id}}"><strong><i
+                                                    class="far fa-file-alt"></i> View</strong></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                        {{else}}
+                        <p class="center">None of the surveys that you registered are expired yet</p><br />
                         {{/if}}
                     </div>
                 </div>

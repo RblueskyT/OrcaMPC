@@ -1,0 +1,196 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <h3 style="padding-top: 35px; margin-right: 20px;" class="center red-text text-darken-2"><a
+                    style="float: left; margin-top: 5px; margin-left: 20px;" href="/users/surveys/expired"
+                    class="btn-floating waves-effect waves-light blue lighten-1"><i
+                        class="fas fa-arrow-left"></i></a>{{survey.surveyTitle}}</h3><br />
+            <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                {{#if flash_success_message}}
+                <div class="success_msg">
+                    <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_success_message}}
+                </div>
+                {{/if}}
+                {{#if flash_error_message}}
+                <div class="error_msg">
+                    <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_error_message}}
+                </div>
+                {{/if}}
+            </div>
+            <div class="divider"></div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s9">
+                        <h6 class="black-text"><strong>Creation Date and Time:&nbsp; </strong>
+                            {{formatDate
+                            survey.createTime 'MMMM Do YYYY, h:mm:ss a'}}</h6><br />
+                        <h6 class="black-text"><strong>Creator Name:&nbsp; </strong>
+                            {{survey.user.firstName}}
+                            {{survey.user.lastName}}</h6><br />
+                        <h6 class="black-text" style="text-align:justify; line-height: 1.5;">
+                            <strong>Description:&nbsp;
+                            </strong> {{survey.description}}
+                        </h6><br />
+                        <h6 class="black-text"><strong>Survey Date and Time:&nbsp; </strong>
+                            {{survey.estimatedDate}}, {{survey.estimatedTime}}</h6><br />
+                        <h6 class="black-text"><strong>Survey Duration:&nbsp; </strong>
+                            {{survey.estimatedDuration}} minutes</h6><br />
+                        <h6 class="black-text"><strong>Number of Participants:&nbsp; </strong>
+                            {{survey.partyCount}}</h6><br />
+                        <h6 class="black-text"><strong>Composition of Questions:&nbsp;
+                            </strong>{{survey.radioQuestions.length}} single-select questions,
+                            {{survey.checkboxQuestions.length}} multi-select questions and
+                            {{survey.inputQuestions.length}} fill in the blank questions</h6><br />
+                    </div>
+                    <div class="col s3"
+                        style="background-color: #e3f2fd; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 400px; overflow: auto;">
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <h6 class="center light-blue-text text-darken-2"><strong><i
+                                    class="fas fa-users"></i>&nbsp;Participants List</strong></h6><br />
+                        <div id="prompt_msg">
+                            {{#ifEquals survey.result "Survey Failed"}}
+                            <p class="red-text text-darken-1 center">- Sorry, this survey was failed -</p>
+                            {{/ifEquals}}
+                            {{#ifEquals survey.result "Survey Cancelled"}}
+                            <p class="red-text text-darken-1 center">- Sorry, this survey was cancelled -</p>
+                            {{/ifEquals}}
+                            {{#ifNEquals survey.result "Survey Failed"}}
+                            {{#ifNEquals survey.result "Survey Cancelled"}}
+                            <p class="green-text text-darken-1 center">- This survey was successfully finished -</p>
+                            {{/ifNEquals}}
+                            {{/ifNEquals}}
+                        </div><br />
+                        <div class="light-blue-text text-darken-2">
+                            {{#each survey.participants}}
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="valign-wrapper">
+                                        <strong id="par-serialNum{{serialNumber @index}}">{{serialNumber @index}}.
+                                        </strong><img style="margin-left: 20px; margin-right: 20px;" class="circle"
+                                            src="{{this.avatar}}">
+                                        <a href="/users/profile/{{this._id}}"
+                                            class="teal-text text-darken-1"><u><strong>{{this.firstName}}
+                                                    {{this.lastName}}</strong></u></a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div><br />
+                    </div>
+                </div><br />
+                {{#ifEquals survey.result "Survey Failed"}}
+                <div class="row">
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <h6 class="red-text text-darken-2 center">- This survey was failed, please wait for the survey
+                        creator to delete or reopen -</h6>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                </div>
+                {{/ifEquals}}
+                {{#ifEquals survey.result "Survey Cancelled"}}
+                <div class="row">
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <h6 class="red-text text-darken-2 center">- This survey was cancelled, please wait for the survey
+                        creator to delete or reopen -</h6>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                </div>
+                {{/ifEquals}}
+                {{#ifNEquals survey.result "Survey Failed"}}
+                {{#ifNEquals survey.result "Survey Cancelled"}}
+                <div class="row">
+                    <input type="hidden" id="survey_result" value="{{survey.result}}">
+                    <h5 class="green-text text-darken-1 center"><strong>- <i class="fas fa-poll"></i> Survey Results
+                            -</strong></h5><br /><br />
+                    {{#if survey.radioQuestions}}
+                    <h6 class="pink-text text-darken-2"><strong>Single-Select Question(s):&nbsp; </strong></h6>
+                    <br /><br />
+                    <input type="hidden" id="radioQNum" value={{survey.radioQuestions.length}}>
+                    {{#each survey.radioQuestions}}
+                    <div class="radioQdiv{{@index}}">
+                        <input type="hidden" id="radioQOpNum{{@index}}" value={{options.length}}>
+                        {{#each options}}
+                        <input type="hidden" value="{{this}}" id="radioQOpNum{{@../index}}{{@index}}">
+                        {{/each}}
+                        <h6 class="grey-text text-darken-2 center"><strong>{{serialNumber @index}}. {{description}}</strong></h6><br /><br />
+                        <canvas id="radioChart{{@index}}"></canvas><br /><br />
+                    </div><br />
+                    {{/each}}
+                    {{/if}}
+                    {{#if survey.checkboxQuestions}}
+                    <h6 class="indigo-text text-darken-2"><strong>Multi-Select Question(s):&nbsp; </strong></h6>
+                    <br /><br />
+                    <input type="hidden" id="checkboxQNum" value={{survey.checkboxQuestions.length}}>
+                    {{#each survey.checkboxQuestions}}
+                    <div class="checkboxQdiv{{@index}}">
+                        <input type="hidden" id="checkboxQOpNum{{@index}}" value={{options.length}}>
+                        {{#each options}}
+                        <input type="hidden" value="{{this}}" id="checkboxQOpNum{{@../index}}{{@index}}">
+                        {{/each}}
+                        <h6 class="grey-text text-darken-2 center"><strong>{{serialNumber @index}}. {{description}}</strong></h6><br /><br />
+                        <canvas id="checkboxChart{{@index}}"></canvas><br /><br />
+                    </div><br />
+                    {{/each}}
+                    {{/if}}
+                    {{#if survey.inputQuestions}}
+                    <input type="hidden" id="participantsNum" value={{survey.participants.length}}>
+                    <h6 class="teal-text text-darken-2"><strong>Fill In the Blank Question(s):&nbsp; </strong></h6>
+                    <br /><br />
+                    <input type="hidden" id="inputQNum" value={{survey.inputQuestions.length}}>
+                    {{#each survey.inputQuestions}}
+                    <div class="inputQdiv{{@index}}">
+                        <h6 class="grey-text text-darken-2 center"><strong>{{serialNumber @index}}. {{description}}</strong></h6><br /><br />
+                        <canvas id="inputChart{{@index}}"></canvas><br /><br />
+                    </div><br />
+                    {{/each}}
+                    {{/if}}
+                </div>
+                {{/ifNEquals}}
+                {{/ifNEquals}}
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

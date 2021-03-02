@@ -1,0 +1,239 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <h3 style="padding-top: 35px;" class="light-blue-text text-darken-2 center"><i class="fas fa-pen-fancy"></i>
+                Question Editor</h3><br />
+            <div class="divider"></div>
+            <div class="card-content">
+                <div class="col s12">
+                    <p><span class="red-text"><strong>All</strong></span> fields are required</p><br />
+                </div>
+                <div class="edit_form">
+                    <form id="question_edit" action="/users/surveys/question/edit" method="POST">
+                        <input type="hidden" id="questionid" name="questionid" value={{question._id}} required>
+                        <input type="hidden" id="checkQuestionType" name="checkType" value="{{question.questionType}}" required>
+                        {{#ifEquals question.questionType "Radio"}}
+                        <div class="input-field">
+                            <input placeholder="Maximum 100 characters and no special characters (e.g. @, # and $)"
+                                type="text" id="questionName1" name="questionName" onblur="checkName1()"
+                                onfocus="checkName1()" onchange="checkName1()" class="validate" data-length="100"
+                                value="{{question.questionName}}" required>
+                            <label for="questionName1">Question Name</label>
+                            <span class="helper-text" data-error="Please fill in this field or check your format"
+                                data-success="Format correct"></span>
+                        </div><br />
+                        <div class="input-field">
+                            <textarea placeholder="At least 50 characters" id="description1" name="description"
+                                onblur="checkDes1()" onfocus="checkDes1()" onchange="checkDes1()"
+                                class="materialize-textarea validate" required>{{question.description}}</textarea>
+                            <label for="description1">Question Description</label>
+                            <span class="helper-text" data-error="Please fill in this field or check your format"
+                                data-success="Input completed"></span>
+                        </div><br />
+                        <p><span class="red-text"><strong>Your previous options: </strong></span>
+                            {{#each question.options}}
+                            {{serialNumber @index}}. {{this}}&nbsp;
+                            {{/each}}
+                        </p>
+                        <div class="input-field">
+                            <div class="valign-wrapper">
+                                <div class="col s4">
+                                    <label for="opNum1">Number of Options</label>
+                                    <input placeholder="Please enter a number between 2 - 10" type="text" id="opNum1"
+                                        name="opNum" onblur="checkNum1()" onfocus="checkNum1()" onchange="checkNum1()"
+                                        class="validate" required>
+                                    <span class="helper-text" data-error="Please fill in the field or check your format"
+                                        data-success="Format correct"></span>
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="col s8">
+                                    <a href="#" id="addOps1" onclick="addOps1()"
+                                        class="btn waves-effect waves-light blue lighten-1 disabled"><strong>Add
+                                            Options</strong></a>
+                                </div>
+                            </div><br /><br />
+                            <div id="container1" />
+                        </div>
+                        {{/ifEquals}}
+                        {{#ifEquals question.questionType "Checkbox"}}
+                        <div class="input-field">
+                            <input placeholder="Maximum 100 characters and no special characters (e.g. @, # and $)"
+                                type="text" id="questionName2" name="questionName" onblur="checkName2()"
+                                onfocus="checkName2()" onchange="checkName2()" class="validate" data-length="100"
+                                value="{{question.questionName}}" required>
+                            <label for="questionName2">Question Name</label>
+                            <span class="helper-text" data-error="Please fill in this field or check your format"
+                                data-success="Format correct"></span>
+                        </div><br />
+                        <div class="input-field">
+                            <textarea placeholder="At least 50 characters" id="description2" name="description"
+                                onblur="checkDes2()" onfocus="checkDes2()" onchange="checkDes2()"
+                                class="materialize-textarea validate" required>{{question.description}}</textarea>
+                            <label for="description2">Question Description</label>
+                            <span class="helper-text" data-error="Please fill in this field or check your format"
+                                data-success="Input completed"></span>
+                        </div><br />
+                        <p><span class="red-text"><strong>Your previous options: </strong></span>
+                            {{#each question.options}}
+                            {{serialNumber @index}}. {{this}}&nbsp;
+                            {{/each}}
+                        </p>
+                        <div class="input-field row">
+                            <div class="valign-wrapper">
+                                <div class="col s4">
+                                    <label for="opNum2">Number of Options</label>
+                                    <input placeholder="Please enter a number between 2 - 10" type="text" id="opNum2"
+                                        name="opNum" onblur="checkNum2()" onfocus="checkNum2()" onchange="checkNum2()"
+                                        class="validate" required>
+                                    <span class="helper-text" data-error="Please fill in the field or check your format"
+                                        data-success="Format correct"></span>
+                                </div>
+                                <div class="col s4">
+                                    <label for="numLimit1">Limit of Number of Choices</label>
+                                    <input placeholder="Please enter a number between 2 - 10" type="text" id="numLimit1"
+                                        name="optionLimit" onblur="checkLimit1()" onfocus="checkLimit1()"
+                                        onchange="checkLimit1()" class="validate" required>
+                                    <span class="helper-text"
+                                        data-error="Please fill in the field or check your format (this number must be smaller than the number of options)"
+                                        data-success="Format correct"></span>
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="col s4">
+                                    <a href="#" id="addOps2" onclick="addOps2()"
+                                        class="btn waves-effect waves-light blue lighten-1 disabled"><strong>Add
+                                            Options</strong></a>
+                                </div>
+                            </div><br /><br />
+                            <div id="container2" />
+                        </div>
+                        {{/ifEquals}}
+                        {{#ifEquals question.questionType "Input"}}
+                        <div class="input-field">
+                            <input placeholder="Maximum 100 characters and no special characters (e.g. @, # and $)"
+                                type="text" id="questionName3" name="questionName" onblur="checkName3()"
+                                onfocus="checkName3()" onchange="checkName3()" class="validate" data-length="100"
+                                value="{{question.questionName}}" required>
+                            <label for="questionName1">Question Name</label>
+                            <span class="helper-text" data-error="Please fill in this field or check your format"
+                                data-success="Format correct"></span>
+                        </div><br />
+                        <div class="input-field">
+                            <textarea placeholder="At least 50 characters" id="description3" name="description"
+                                onblur="checkDes3()" onfocus="checkDes3()" onchange="checkDes3()"
+                                class="materialize-textarea validate" required>{{question.description}}</textarea>
+                            <label for="description1">Question Description</label>
+                            <span class="helper-text" data-error="Please fill in this field or check your format"
+                                data-success="Input completed"></span>
+                        </div><br />
+                        <p><span class="red-text"><strong>Your previous settings: </strong></span>
+                            {{#each question.inputLimit}}
+                            {{#ifEquals @index "0"}}
+                            1. Lower Limit: {{this}}&nbsp;
+                            {{/ifEquals}}
+                            {{#ifEquals @index "1"}}
+                            1. Upper Limit: {{this}}&nbsp;
+                            {{/ifEquals}}
+                            {{/each}}
+                        </p><br />
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input placeholder="A integer between 0 - 10000" type="text" id="inputLimit1"
+                                    name="inputLimit" onblur="checkLimit2()" onfocus="checkLimit2()"
+                                    onchange="checkLimit2()" class="validate" required>
+                                <label for="inputLimit1">Lower Limit of the Input</label>
+                                <span class="helper-text"
+                                    data-error="Please fill in this field or check your format (this number must be smaller than the upper limit)"
+                                    data-success="Format correct"></span>
+                            </div>
+                            <div class="input-field col s6">
+                                <input placeholder="A integer between 0 - 10000" type="text" id="inputLimit2"
+                                    name="inputLimit" onblur="checkLimit3()" onfocus="checkLimit3()"
+                                    onchange="checkLimit3()" class="validate" required>
+                                <label for="inputLimit2">Upper Limit of the Input</label>
+                                <span class="helper-text"
+                                    data-error="Please fill in this field or check your format (this number must be greater than the lower limit)"
+                                    data-success="Format correct"></span>
+                            </div>
+                        </div>
+                        {{/ifEquals}}
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <div class="row center">
+                            <div class="col s6">
+                                <a href="#modal1" id="cancel-button"
+                                    class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Cancel</strong></a>
+                            </div>
+                            <div class="col s6">
+                                <a href="#modal2" id="update-button1"
+                                    class="waves-effect waves-light blue lighten-1 btn modal-trigger"
+                                    disabled><strong>Update</strong></a>
+                            </div>
+                            <div id="modal1" class="modal">
+                                <div class="modal-content">
+                                    <h4 class="light-blue-text text-darken-2 center">Cancel Edit</h4><br />
+                                    <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to cancel this
+                                            edit? Please be informed that your work won't be saved.</strong></h6>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="modal-footer">
+                                    <div class="col s6">
+                                        <a href="#"
+                                            class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                    </div>
+                                    <div class="col s6">
+                                        <a href="/users/surveys/question"
+                                            class="modal-close waves-effect waves-green btn-flat"><strong>Yes</strong></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="modal2" class="modal">
+                                <div class="modal-content">
+                                    <h4 class="light-blue-text text-darken-2 center">Confirm Edit</h4><br />
+                                    <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to update this
+                                            question? Please confirm it again.</strong></h6>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="modal-footer">
+                                    <div class="col s6">
+                                        <a href="#"
+                                            class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                    </div>
+                                    <div class="col s6">
+                                        <button class="modal-close waves-effect waves-green btn-flat" id="submit"
+                                            type="submit"><strong>Yes</strong></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+</main>

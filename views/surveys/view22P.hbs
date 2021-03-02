@@ -14,9 +14,9 @@
     <div class="container">
         <div class="card white">
             <h3 style="padding-top: 35px; margin-right: 20px;" class="center yellow-text text-darken-2"><a
-                    style="float: left; margin-top: 5px; margin-left: 20px;" href="/users/voting"
+                    style="float: left; margin-top: 5px; margin-left: 20px;" href="/users/surveys"
                     class="btn-floating waves-effect waves-light blue lighten-1"><i
-                        class="fas fa-arrow-left"></i></a>{{voting.votingTitle}}</h3><br />
+                        class="fas fa-arrow-left"></i></a>{{survey.surveyTitle}}</h3><br />
             <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
                 {{#if flash_success_message}}
                 <div class="success_msg">
@@ -37,25 +37,36 @@
                     <div class="col s9">
                         <h6>
                             <div class="valign-wrapper">
-                                <strong class="black-text">Voting Creator: </strong><img
-                                    style="margin-left: 20px; margin-right: 20px;" class="circle" src="{{voting.user.avatar}}">
-                                <a href="/users/profile/{{voting.user._id}}"
-                                    class="light-blue-text text-darken-2"><u><strong>{{voting.user.firstName}}
-                                            {{voting.user.lastName}}</strong></u></a>
+                                <strong class="black-text">Survey Creator: </strong><img
+                                    style="margin-left: 20px; margin-right: 20px;" class="circle"
+                                    src="{{survey.user.avatar}}">
+                                <a href="/users/profile/{{survey.user._id}}"
+                                    class="light-blue-text text-darken-2"><u><strong>{{survey.user.firstName}}
+                                            {{survey.user.lastName}}</strong></u></a>
                             </div>
                         </h6><br />
                         <h6 class="black-text" style="text-align:justify; line-height: 1.5;">
                             <strong>Description:&nbsp;
-                            </strong> {{voting.description}}
+                            </strong> {{survey.description}}
                         </h6><br />
-                        <h6 class="black-text"><strong>Estimated Voting Date and Time:&nbsp; </strong>
-                            {{voting.estimatedDate}}, {{voting.estimatedTime}}</h6><br />
-                        <h6 class="black-text"><strong>Estimated Voting Duration:&nbsp; </strong>
-                            {{voting.estimatedDuration}} minutes</h6><br />
+                        <h6 class="black-text"><strong>Survey Pattern:&nbsp; </strong>
+                            {{#ifEquals survey.pattern "Participate"}}
+                            Participant Pattern
+                            {{/ifEquals}}
+                            {{#ifEquals survey.pattern "Collect"}}
+                            Collector Pattern
+                            {{/ifEquals}}
+                        </h6><br />
+                        <h6 class="black-text"><strong>Estimated Survey Date and Time:&nbsp; </strong>
+                            {{survey.estimatedDate}}, {{survey.estimatedTime}}</h6><br />
+                        <h6 class="black-text"><strong>Estimated Survey Duration:&nbsp; </strong>
+                            {{survey.estimatedDuration}} minutes</h6><br />
                         <h6 class="black-text"><strong>Expected Number of Participants:&nbsp; </strong>
-                            {{voting.partyCount}}</h6><br />
-                        <h6 class="black-text"><strong>Number of Options:&nbsp; </strong>
-                            {{voting.options.length}}</h6><br />
+                            {{survey.partyCount}}</h6><br />
+                        <h6 class="black-text"><strong>Composition of Questions:&nbsp;
+                            </strong>{{survey.radioQuestions.length}} single-select questions,
+                            {{survey.checkboxQuestions.length}} multi-select questions and
+                            {{survey.inputQuestions.length}} fill in the blank questions</h6><br />
                     </div>
                     <div class="col s3"
                         style="background-color: #e3f2fd; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 400px; overflow: auto;">
@@ -63,11 +74,11 @@
                             <!-- Add a blank line -->
                         </div>
                         <h6 class="center light-blue-text text-darken-2"><strong><i class="fas fa-users"></i>
-                                Registrants&nbsp;( {{voting.participants.length}} / {{voting.partyCount}} )
+                                Registrants&nbsp;( {{survey.participants.length}} / {{survey.partyCount}} )
                             </strong></h6><br />
                         <div id="prompt_msg2"></div><br />
                         <div class="light-blue-text text-darken-2">
-                            {{#each voting.participants}}
+                            {{#each survey.participants}}
                             <div class="row">
                                 <div class="col s12">
                                     <div class="valign-wrapper">
@@ -85,9 +96,10 @@
                     </div>
                 </div>
                 <div class="hidden_inputs">
-                    <input type="hidden" id="all_participants" value="{{#each voting.participants}}{{this._id}},{{/each}}">
+                    <input type="hidden" id="all_participants"
+                        value="{{#each survey.participants}}{{this._id}},{{/each}}">
                     <input type="hidden" id="user_id" value="{{userID}}">
-                    <input type="hidden" id="expected_num" value={{voting.partyCount}}>
+                    <input type="hidden" id="expected_num" value={{survey.partyCount}}>
                 </div>
                 <div class="row col s12">
                     <!-- Add a blank line -->
@@ -101,19 +113,21 @@
                 <div class="row center">
                     <div class="col s6">
                         <a href="#modal1" id="published-unreg-button"
-                            class="waves-effect waves-light blue lighten-1 btn modal-trigger" disabled><strong>Unregister</strong></a>
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"
+                            disabled><strong>Unregister</strong></a>
                     </div>
                     <div class="col s6">
                         <a href="#modal2" id="published-reg-button"
-                            class="waves-effect waves-light blue lighten-1 btn modal-trigger" disabled><strong>Register</strong></a>
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"
+                            disabled><strong>Register</strong></a>
                     </div>
                     <div id="modal1" class="modal">
-                        <form id="published-unregister" action="/users/voting/published/unregister" method="POST">
+                        <form id="published-unregister" action="/users/surveys/published/unregister" method="POST">
                             <div class="modal-content">
                                 <h4 class="light-blue-text text-darken-2 center">Confirm Unregistration</h4><br />
                                 <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to unregister this
-                                        voting? Please enter your password to confirm.</strong></h6><br /><br />
-                                <input type="hidden" id="votingid1" name="votingid" value={{voting._id}} required>
+                                        survey? Please enter your password to confirm.</strong></h6><br /><br />
+                                <input type="hidden" id="surveyidval1" name="surveyid" value={{survey._id}} required>
                                 <div class="row">
                                     <div class="input-field col s6 offset-s3">
                                         <input placeholder="Please enter here ..." type="password" data-length="100"
@@ -137,13 +151,13 @@
                         </form>
                     </div>
                     <div id="modal2" class="modal">
-                        <form id="published-register" action="/users/voting/published/register" method="POST">
+                        <form id="published-register" action="/users/surveys/published/register" method="POST">
                             <div class="modal-content">
                                 <h4 class="light-blue-text text-darken-2 center">Confirm Registration</h4><br />
                                 <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to register
                                         this
-                                        voting? Please enter your password to confirm.</strong></h6><br /><br />
-                                <input type="hidden" id="votingid2" name="votingid" value={{voting._id}} required>
+                                        survey? Please enter your password to confirm.</strong></h6><br /><br />
+                                <input type="hidden" id="surveyidval2" name="surveyid" value={{survey._id}} required>
                                 <div class="row">
                                     <div class="input-field col s6 offset-s3">
                                         <input placeholder="Please enter here ..." type="password" data-length="100"

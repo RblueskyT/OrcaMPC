@@ -1,0 +1,184 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <h3 style="padding-top: 35px; margin-right: 20px;" class="center cyan-text text-darken-2"><a
+                    style="float: left; margin-top: 5px; margin-left: 20px;" href="/users/surveys/preparing"
+                    class="btn-floating waves-effect waves-light blue lighten-1"><i
+                        class="fas fa-arrow-left"></i></a>{{survey.surveyTitle}}</h3><br />
+            <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                {{#if flash_success_message}}
+                <div class="success_msg">
+                    <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_success_message}}
+                </div>
+                {{/if}}
+                {{#if flash_error_message}}
+                <div class="error_msg">
+                    <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_error_message}}
+                </div>
+                {{/if}}
+            </div>
+            <div class="divider"></div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s9">
+                        <h6>
+                            <div class="valign-wrapper">
+                                <strong class="black-text">Survey Creator: </strong><img
+                                    style="margin-left: 20px; margin-right: 20px;" class="circle"
+                                    src="{{survey.user.avatar}}">
+                                <a href="/users/profile/{{survey.user._id}}"
+                                    class="light-blue-text text-darken-2"><u><strong>{{survey.user.firstName}}
+                                            {{survey.user.lastName}}</strong></u></a>
+                            </div>
+                        </h6><br />
+                        <h6 class="black-text" style="text-align:justify; line-height: 1.5;">
+                            <strong>Description:&nbsp;
+                            </strong> {{survey.description}}
+                        </h6><br />
+                        <h6 class="black-text"><strong>Survey Pattern:&nbsp; </strong>
+                            {{#ifEquals survey.pattern "Participate"}}
+                            Participant Pattern
+                            {{/ifEquals}}
+                            {{#ifEquals survey.pattern "Collect"}}
+                            Collector Pattern
+                            {{/ifEquals}}
+                        </h6><br />
+                        <h6 class="black-text"><strong>Survey Date and Time:&nbsp; </strong>
+                            {{survey.estimatedDate}}, {{survey.estimatedTime}}</h6><br />
+                        <h6 class="black-text"><strong>Survey Duration:&nbsp; </strong>
+                            {{survey.estimatedDuration}} minutes</h6><br />
+                        <h6 class="black-text"><strong>Number of Participants:&nbsp; </strong>
+                            {{survey.partyCount}}</h6><br />
+                        <h6 class="black-text"><strong>Composition of Questions:&nbsp;
+                            </strong>{{survey.radioQuestions.length}} single-select questions,
+                            {{survey.checkboxQuestions.length}} multi-select questions and
+                            {{survey.inputQuestions.length}} fill in the blank questions</h6><br />
+                    </div>
+                    <div id="hidden_inputs">
+                        <input type="hidden" id="participants_num" value={{survey.partyCount}}>
+                        {{#if surveysession}}
+                        <input type="hidden" id="session_participants" value={{surveysession.participants}}>
+                        <input type="hidden" id="my_userid" value={{userID}}>
+                        <input type="hidden" id="session_attendance" value={{surveysession.confirmAttendance}}>
+                        {{/if}}
+                    </div>
+                    <div class="col s3"
+                        style="background-color: #e3f2fd; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 400px; overflow: auto;">
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <h6 class="center light-blue-text text-darken-2"><strong><i class="fas fa-user-check"></i>&nbsp;
+                                {{#if surveysession}}
+                                Confirm Attendance ( {{surveysession.confirmAttendance.length}} /
+                                {{surveysession.participants.length}} )
+                                {{else}}
+                                Confirm Attendance ( 0 / {{survey.partyCount}} )
+                                {{/if}}
+                            </strong></h6><br />
+                        <div id="prompt_msg">
+                            {{#if surveysession}}
+                            <p id="prompt_msg_content"></p>
+
+                            {{else}}
+                            <p class="red-text text-darken-1 center">- Survey session is not configured -</p>
+                            {{/if}}
+                        </div><br />
+                        <div class="light-blue-text text-darken-2">
+                            {{#each survey.participants}}
+                            <div class="row">
+                                <div class="col s9">
+                                    <div class="valign-wrapper">
+                                        <strong id="reg-serialNum{{serialNumber @index}}">{{serialNumber @index}}.
+                                        </strong><img style="margin-left: 20px; margin-right: 20px;" class="circle"
+                                            src="{{this.avatar}}">
+                                        <a href="/users/profile/{{this._id}}"
+                                            class="teal-text text-darken-1"><u><strong>{{this.firstName}}
+                                                    {{this.lastName}}</strong></u></a>
+                                    </div>
+                                </div>
+                                <div id="confirm-attendance-div{{serialNumber @index}}" class="col s3"></div>
+                            </div>
+                            {{/each}}
+                        </div><br />
+                    </div>
+                </div><br />
+                <div class="row">
+                    {{#if surveysession}}
+                    <h6 id="prompt_msg2"></h6><br />
+                    <div class="row center">
+                        <a href="#modal1" id="confirmattendance-button"
+                            class="btn-floating waves-effect waves-light cyan lighten-1 modal-trigger" disabled><i
+                                class="fas fa-check"></i></a>
+                        <div id="modal1" class="modal">
+                            <form id="confirm_attendence_form" action="/users/surveys/preparing/confirmattandence"
+                                method="POST">
+                                <div class="modal-content">
+                                    <h4 class="light-blue-text text-darken-2 center">Confirm Attendance</h4><br />
+                                    <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to attend this
+                                            survey session? Please enter your password to confirm.</strong></h6>
+                                    <br /><br />
+                                    <input type="hidden" id="sessionid1" name="sessionid" value={{surveysession._id}}
+                                        required>
+                                    <input type="hidden" id="surveyid1" name="surveyid" value={{survey._id}}
+                                        required>
+                                    <div class="row">
+                                        <div class="input-field col s6 offset-s3">
+                                            <input placeholder="Please enter here ..." type="password" data-length="100"
+                                                id="password_check4" name="password" onblur="checkPwd2()"
+                                                onfocus="checkPwd2()" onchange="checkPwd2()" required>
+                                            <label for="password">Password</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="modal-footer">
+                                    <div class="col s6">
+                                        <a href="#"
+                                            class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                    </div>
+                                    <div class="col s6">
+                                        <button class="modal-close waves-effect waves-green btn-flat"
+                                            id="attendance-submit" type="submit" disabled><strong>Yes</strong></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {{else}}
+                    <h6 class="cyan-text text-darken-2 center">- Please wait for the survey creator to configure the
+                        survey session -</h6>
+                    {{/if}}
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

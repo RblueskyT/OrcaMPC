@@ -184,7 +184,7 @@ if (votingresult && optionslen) {
         data: {
             labels: opArr,
             datasets: [{
-                label: ' Number of Votes',
+                label: ' Number of Vote(s)',
                 data: resultData,
                 backgroundColor: bgcolor1,
                 borderColor: bgcolor2,

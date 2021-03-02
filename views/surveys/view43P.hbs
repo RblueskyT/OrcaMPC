@@ -1,0 +1,212 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <div class="card-content">
+                <input type="hidden" id="SurveyPattern" value="{{survey.pattern}}">
+                <div class="row">
+                    <div class="col s12">
+                        <h5 class="red-text text-darken-1 center" style="line-height: 1.8;"><strong>*** Survey Filling
+                                Rule
+                                ***</strong></h5><br />
+                        <h6 class="red-text text-darken-1 center" style="line-height: 1.8;">
+                            <strong>Please do not reload this page when you have already clicked the submit button or
+                                the survey session will get failed</strong>
+                        </h6><br />
+                        <h6 class="red-text text-darken-1 center" style="line-height: 1.8;">
+                            <strong>------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</strong>
+                        </h6><br />
+                        {{#ifEquals survey.pattern "Participate"}}
+                        <h6 class="center"><strong>- Survey Pattern: Participant Pattern -</strong></h6>
+                        <h6 class="center">(Survey creator will also fill out this survey)</h6><br />
+                        {{/ifEquals}}
+                        {{#ifEquals survey.pattern "Collect"}}
+                        <h6 class="center"><strong>- Survey Pattern: Collector Pattern -</strong></h6>
+                        <h6 class="center">(Survey creator will only collect data from you)</h6><br />
+                        {{/ifEquals}}
+                        <p>Please fill in <span class="red-text"><strong>All</strong></span> the following questions</p><br />
+                        {{#if survey.radioQuestions}}
+                        <h6 class="pink-text text-darken-2"><strong>Single-Select Question(s):&nbsp; </strong></h6>
+                        <input type="hidden" id="radioQNum" value={{survey.radioQuestions.length}}>
+                        <br />
+                        {{#each survey.radioQuestions}}
+                        <h6>{{serialNumber @index}}. {{description}}</h6><br />
+                        <div id="radio_options{{serialNumber @index}}">
+                            {{#each options}}
+                            <div class="col s3">
+                                <label>
+                                    <input class="with-gap" name="Roptions{{@../index}}" type="radio" />
+                                    <span><strong>{{this}}</strong></span>
+                                </label>
+                            </div>
+                            {{/each}}
+                        </div><br /><br>
+                        {{/each}}
+                        <br />
+                        {{/if}}
+                        {{#if survey.checkboxQuestions}}
+                        <h6 class="indigo-text text-darken-2"><strong>Multi-Select Question(s):&nbsp; </strong></h6>
+                        <input type="hidden" id="checkboxQNum" value={{survey.checkboxQuestions.length}}>
+                        <br />
+                        {{#each survey.checkboxQuestions}}
+                        <h6>{{serialNumber @index}}. {{description}} (Choose up to {{optionLimit}} options)</h6><br />
+                        <input type="hidden" id="checkboxLimit{{@index}}" value={{optionLimit}}>
+                        <div id="checkbox_options{{serialNumber @index}}">
+                            {{#each options}}
+                            <div class="col s3">
+                                <label>
+                                    <input name="Coptions{{@../index}}"
+                                        class="filled-in checkbox-blue Coptions{{@../index}}" type="checkbox" />
+                                    <span><strong>{{this}}</strong></span>
+                                </label>
+                            </div>
+                            {{/each}}
+                        </div><br /><br>
+                        {{/each}}
+                        <br />
+                        {{/if}}
+                        {{#if survey.inputQuestions}}
+                        <h6 class="teal-text text-darken-2"><strong>Fill In the Blank Question(s):&nbsp; </strong></h6>
+                        <input type="hidden" id="inputQNum" value={{survey.inputQuestions.length}}>
+                        <br />
+                        {{#each survey.inputQuestions}}
+                        <h6>{{serialNumber @index}}. {{description}} (Numbers Only)</h6>
+                        <input type="hidden" id="inputNumLimit{{@index}}" value={{inputLimit}}>
+                        <p class="grey-text text-darken-1" style="line-height: 2.0;"><strong>Input Limit: </strong>
+                            {{#each inputLimit}}
+                            {{#ifEquals @index "0"}}
+                            Not smaller than {{this}}
+                            {{/ifEquals}}
+                            {{#ifEquals @index "1"}}
+                            and not greater than {{this}}
+                            {{/ifEquals}}
+                            {{/each}}
+                        </p>
+                        <div class="input-field row">
+                            <div class="col s3">
+                                <input type="number" placeholder="Please enter here ..." id="numInput{{@index}}"
+                                    name="numInputs" step="1" min="{{inputLimit.[0]}}" max="{{inputLimit.[1]}}"
+                                    required>
+                            </div>
+                        </div><br />
+                        {{/each}}
+                        {{/if}}
+                    </div>
+                    <div class="jiff_connection" style="display: none;">
+                        <div class="input-field col s12">
+                            <input disabled value={{surveysession._id}}{{survey._id}} id="survey_id" type="text"
+                                class="survey_id">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled value={{survey.partyCount}} id="survey_partycount" type="text"
+                                class="survey_partycount">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled value={{userID}} id="survey_user_id" type="text" class="survey_user_id">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled value={{surveysession.participants}} id="survey_people" type="text"
+                                class="survey_people">
+                        </div>
+                        <div class="input-field col s12">
+                            <input disabled id="my_party_id" type="text" class="my_party_id">
+                        </div>
+                    </div>
+                </div><br />
+                <div id="loading_prompt"></div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row center">
+                    <div class="col s6">
+                        <a href="#modal1" id="initiating-back-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Back</strong></a>
+                    </div>
+                    <div class="col s6">
+                        <a href="#modal2" id="initiating-submit-button"
+                            class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Submit</strong></a>
+                    </div>
+                    <div id="modal1" class="modal">
+                        <div class="modal-content">
+                            <h4 class="light-blue-text text-darken-2 center">Confirm to Leave</h4><br />
+                            <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to leave this survey
+                                    session? You can still come back to finish your work if the session is not
+                                    closed.</strong></h6><br />
+                        </div>
+                        <div class="divider"></div>
+                        <div class="modal-footer">
+                            <div class="col s6">
+                                <a href="#" class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                            </div>
+                            <div class="col s6">
+                                <a href="/users/surveys/initiating"
+                                    class="modal-close waves-effect waves-green btn-flat"><strong>Yes</strong></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="modal2" class="modal">
+                        <form id="others_answers" action="/users/surveys/initiating/submit" method="POST">
+                            <div class="modal-content">
+                                <h4 class="light-blue-text text-darken-2 center">Confirm Submission</h4><br />
+                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to submit your
+                                        answers? Please confirm it again.</strong></h6>
+                                <br /><br />
+                                <input type="hidden" id="sessionid2" name="sessionid" value={{surveysession._id}}
+                                    required>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="modal-footer">
+                                <div class="col s6">
+                                    <a href="#"
+                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <a class="modal-close waves-effect waves-green btn-flat" id="initiate-submit-button"
+                                        onclick="otherUserSubmit()"><strong>Yes</strong></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><br />
+            </div>
+        </div>
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+</main>
