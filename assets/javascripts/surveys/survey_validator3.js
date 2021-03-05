@@ -5,16 +5,16 @@ var radioQ = document.getElementById("radioQNum");
 var checkboxQ = document.getElementById("checkboxQNum");
 var inputQ = document.getElementById("inputQNum");
 var colorPool1 = [
-    'rgba(255, 99, 132, 0.2)',
-    'rgba(54, 162, 235, 0.2)',
-    'rgba(255, 206, 86, 0.2)',
-    'rgba(75, 192, 192, 0.2)',
-    'rgba(153, 102, 255, 0.2)',
-    'rgba(255, 159, 64, 0.2)',
-    'rgba(63, 191, 174, 0.2)',
-    'rgba(165, 63, 191, 0.2)',
-    'rgba(104, 191, 63, 0.2)',
-    'rgba(191, 159, 63, 0.2)'
+    'rgba(255, 99, 132, 0.5)',
+    'rgba(54, 162, 235, 0.5)',
+    'rgba(255, 206, 86, 0.5)',
+    'rgba(75, 192, 192, 0.5)',
+    'rgba(153, 102, 255, 0.5)',
+    'rgba(255, 159, 64, 0.5)',
+    'rgba(63, 191, 174, 0.5)',
+    'rgba(165, 63, 191, 0.5)',
+    'rgba(104, 191, 63, 0.5)',
+    'rgba(191, 159, 63, 0.5)'
 ];
 var colorPool2 = [
     'rgba(255, 99, 132, 1)',
@@ -123,7 +123,7 @@ function drawChart1(item, index) {
         var newoption = document.getElementById(item + i).value;
         OpArr.push(newoption);
 
-        var newcolor1 = colorPool2[i];
+        var newcolor1 = colorPool1[i];
         color1.push(newcolor1);
 
     }
@@ -190,7 +190,7 @@ function drawChart2(item, index) {
         var newoption = document.getElementById(item + i).value;
         OpArr.push(newoption);
 
-        var newcolor1 = colorPool2[i];
+        var newcolor1 = colorPool1[i];
         color1.push(newcolor1);
 
     }
@@ -252,10 +252,10 @@ function drawChart3(item, index) {
 
     }
 
-    color1.push(colorPool2[5]);
-    color1.push(colorPool2[6]);
-    color2.push(colorPool1[5]);
-    color2.push(colorPool1[6]);
+    color1.push(colorPool1[5]);
+    color1.push(colorPool1[6]);
+    color2.push(colorPool2[5]);
+    color2.push(colorPool2[6]);
 
     var ctx = document.getElementById('inputChart' + index);
     var myChart3 = new Chart(ctx, {
