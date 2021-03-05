@@ -753,7 +753,7 @@ function checkCount() {
         $("#survey-pupdate-button").attr("disabled", true);
     }
 
-    var regex = /^[5][0]$|^[1-4][0-9]$|^[2-9]$/;
+    var regex = /^[5][0]$|^[1-4][0-9]$|^[3-9]$/;
     if (regex.test(val)) {
         document.getElementById("partyCount").classList.remove("invalid");
         document.getElementById("partyCount").classList.add("valid");
