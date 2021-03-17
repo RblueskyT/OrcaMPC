@@ -1,0 +1,204 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <h3 style="padding-top: 35px; margin-right: 20px;" class="center cyan-text text-darken-2"><a
+                    style="float: left; margin-top: 5px; margin-left: 20px;" href="/community/groups"
+                    class="btn-floating waves-effect waves-light blue lighten-1"><i
+                        class="fas fa-arrow-left"></i></a>{{group.groupName}}</h3><br />
+            <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                {{#if flash_success_message}}
+                <div class="success_msg">
+                    <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_success_message}}
+                </div>
+                {{/if}}
+                {{#if flash_error_message}}
+                <div class="error_msg">
+                    <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_error_message}}
+                </div>
+                {{/if}}
+            </div>
+            <div class="divider"></div>
+            <div class="card-content">
+                <br />
+                <div class="row">
+                    <div class="col s12"
+                        style="background-color: #ffebee; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 200px; overflow: auto;">
+                        <p class="center col s12" style="margin-top: 12px;"><img class="circle" src="{{group.avatar}}"
+                                style="height: 100px; width: 100px;"></p>
+                        <p class="black-text col s12 center" style="margin-top: 10px;"><strong>Group
+                                Creator:&nbsp;</strong>
+                            {{group.creator.firstName}} {{group.creator.lastName}}</p>
+                        <p class="black-text col s12 center" style="margin-top: 10px;"><strong>Creation Date and
+                                Time:&nbsp;</strong>
+                            {{formatDate group.createTime 'MMMM Do YYYY, h:mm:ss a'}}</p>
+                    </div>
+                    <div class="col s12"
+                        style="background-color: #e8f5e9; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 100px; overflow: auto;">
+                        <div class="col s6 offset-s3">
+                            <p class="center" style="margin-top: 10px;"><strong>Group Description</strong></p>
+                            <p style="text-align:justify; line-height: 2.0;">{{group.description}}</p>
+                        </div>
+                    </div>
+                    <div class="col s9"
+                        style="background-color: #e8eaf6; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 600px; overflow: auto;">
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <h6 class="light-blue-text text-darken-2 center"><strong><i
+                                    class="fas fa-mail-bulk"></i>&nbsp;POSTS</strong></h6><br />
+                        {{#if group.posts}}
+
+                        {{else}}
+                        <p class="center">Currently no post here</p><br />
+                        {{/if}}
+                    </div>
+                    <div class="col s3"
+                        style="background-color: #e3f2fd; border-width: 2px; border-style: solid; border-color: #bbdefb; height: 600px; overflow: auto;">
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <h6 class="center light-blue-text text-darken-2"><strong><i class="fas fa-users"></i>
+                                Members</strong></h6><br />
+                        <div class="light-blue-text text-darken-2">
+                            <input type="hidden" id="gmemberNum" value={{group.members.length}}>
+                            {{#each group.members}}
+                            <div class="row">
+                                <div class="col s9">
+                                    <div class="valign-wrapper">
+                                        <strong id="member-serialNum{{serialNumber @index}}">{{serialNumber @index}}.
+                                        </strong><img style="margin-left: 20px; margin-right: 20px;" class="circle"
+                                            src="{{this.avatar}}">
+                                        <a href="/users/profile/{{this._id}}"
+                                            class="teal-text text-darken-1"><u><strong>{{this.firstName}}
+                                                    {{this.lastName}}</strong></u></a>
+                                    </div>
+                                </div>
+                                <div class="col s3">
+                                    <a href="#modal{{this._id}}" id="member-remove-button{{serialNumber @index}}"
+                                        class="btn-floating btn-small waves-effect waves-light red lighten-2 modal-trigger"
+                                        disabled><i class="fas fa-times"></i></a>
+                                    <div id="modal{{this._id}}" class="modal">
+                                        <form id="member-remove{{serialNumber @index}}"
+                                            action="/community/groups/remove" method="POST">
+                                            <div class="modal-content">
+                                                <h4 class="light-blue-text text-darken-2 center">Confirm Removal</h4>
+                                                <br />
+                                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
+                                                        remove this group member? Please enter your password to
+                                                        confirm.</strong></h6>
+                                                <br /><br />
+                                                <input type="hidden" id="groupid3{{serialNumber @index}}" name="groupid"
+                                                    value="{{../group._id}}" required>
+                                                <input type="hidden" id="memberid{{serialNumber @index}}"
+                                                    name="memberid" value={{this._id}} required>
+                                                <div class="row">
+                                                    <div class="input-field col s6 offset-s3">
+                                                        <input placeholder="Please enter here ..." type="password"
+                                                            data-length="100"
+                                                            id="gpassword_check3{{serialNumber @index}}" name="password"
+                                                            onblur="checkGPwd()" onfocus="checkGPwd()"
+                                                            onchange="checkGPwd()" required>
+                                                        <label for="password">Password</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="modal-footer">
+                                                <div class="col s6">
+                                                    <a href="#"
+                                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                                </div>
+                                                <div class="col s6">
+                                                    <button class="modal-close waves-effect waves-green btn-flat"
+                                                        id="mremove-submit-button{{serialNumber @index}}" type="submit"
+                                                        disabled><strong>Yes</strong></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div><br />
+                    </div>
+                    <div id="all_other_modals">
+                        <div id="modaldisband" class="modal">
+                            <form id="group_disband" action="/community/groups/disband" method="POST">
+                                <div class="modal-content">
+                                    <h4 class="light-blue-text text-darken-2 center">Confirm Disbanding the Group</h4>
+                                    <br />
+                                    <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
+                                            disband this group? Please enter your password to
+                                            confirm.</strong></h6>
+                                    <br /><br />
+                                    <input type="hidden" id="groupid" name="groupid" value="{{group._id}}" required>
+                                    <div class="row">
+                                        <div class="input-field col s6 offset-s3">
+                                            <input placeholder="Please enter here ..." type="password" data-length="100"
+                                                id="gpassword_checkdisband" name="password" onblur="checkGPwd()"
+                                                onfocus="checkGPwd()" onchange="checkGPwd()" required>
+                                            <label for="password">Password</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="modal-footer">
+                                    <div class="col s6">
+                                        <a href="#"
+                                            class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                    </div>
+                                    <div class="col s6">
+                                        <button class="modal-close waves-effect waves-green btn-flat"
+                                            id="disband-submit" type="submit" disabled><strong>Yes</strong></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="fixed-action-btn">
+                        <a class="btn-floating btn-large tooltipped teal darken-1" data-position="left"
+                            data-tooltip="Toolbar">
+                            <i class="fas fa-tools"></i>
+                        </a>
+                        <ul>
+                            <li><a href="#modaldisband" class="btn-floating tooltipped red darken-1 modal-trigger"
+                                    data-position="left" data-tooltip="Disband Group"><i
+                                        class="fas fa-users-slash"></i></a>
+                            </li>
+                            <li><a class="btn-floating tooltipped green darken-1" data-position="left"
+                                    data-tooltip="Post Survey"><i class="fas fa-poll-h"></i></a></li>
+                            <li><a class="btn-floating tooltipped yellow darken-1" data-position="left"
+                                    data-tooltip="Post Voting"><i class="fas fa-vote-yea"></i></a></li>
+                            <li><a class="btn-floating tooltipped blue darken-1" data-position="left"
+                                    data-tooltip="Edit" href="/community/groups/edit/{{group._id}}"><i
+                                        class="far fa-edit"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

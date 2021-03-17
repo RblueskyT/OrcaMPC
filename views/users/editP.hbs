@@ -1,0 +1,137 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col s8 offset-s2">
+                <div class="card white">
+                    <h3 style="padding-top: 35px;" class="center light-blue-text text-darken-2"><i class="fas fa-edit"></i> Profile Editor</h3>
+                    </br>
+                    <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                        {{#if flash_success_message}}
+                        <div class="success_msg">
+                            <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                            {{flash_success_message}}
+                        </div>
+                        {{/if}}
+                        {{#if flash_error_message}}
+                        <div class="error_msg">
+                            <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                            {{flash_error_message}}
+                        </div>
+                        {{/if}}
+                    </div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <div class="col s12">
+                            <p><span class="red-text"><strong>No</strong></span> field is required</p><br />
+                        </div>
+                        <form id="editprofile" action="/users/myprofile/edit" method="POST">
+                            <div class="input-field col s12">
+                                <select id="gender" name="gender">
+                                    <option value="" disabled selected>{{gender}}</option>
+                                    <option value="Secret">Secret</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                </select>
+                                <label for="gender">Gender</label>
+                            </div>
+                            <div class="row col s12">
+                                <!-- Add a blank line -->
+                            </div>
+                            <div class="input-field col s12">
+                                <input placeholder="Please select here ..." type="text" id="birthday" name="birthday"
+                                    class="birthday datepicker validate" value="{{birthday}}">
+                                <label for="birthday">Birthday</label>
+                                <span class="helper-text" data-error="Please select again"
+                                    data-success="Date selected"></span>
+                            </div>
+                            <div class="input-field col s12">
+                                <input placeholder="No special characters (e.g. @, # and $)" type="text" id="career"
+                                    name="career" onblur="checkCareer()" onfocus="checkCareer()"
+                                    onchange="checkCareer()" class="validate" value="{{career}}">
+                                <label for="career">Career</label>
+                                <span class="helper-text" data-error="Please check your format"
+                                    data-success="Format correct"></span>
+                            </div>
+                            <div class="input-field col s12">
+                                <textarea placeholder="At least 20 characters" id="Sdescription" name="description"
+                                    onblur="checkSDes()" onfocus="checkSDes()" onchange="checkSDes()"
+                                    class="materialize-textarea validate" required>{{description}}</textarea>
+                                <label for="description">Self-Introduction</label>
+                                <span class="helper-text" data-error="Please fill in this field or check your format"
+                                    data-success="Input completed"></span>
+                            </div><br />
+                            <div class="row col s12">
+                                <!-- Add a blank line -->
+                            </div>
+                            <div class="row center">
+                                <div class="col s6">
+                                    <a href="#modal1" id="cancel-button"
+                                        class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Cancel</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <a href="#modal2" id="profile-update-button"
+                                        class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Update</strong></a>
+                                </div>
+                                <div id="modal1" class="modal">
+                                    <div class="modal-content">
+                                        <h4 class="light-blue-text text-darken-2 center">Cancel Edit</h4><br />
+                                        <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to cancel
+                                                this
+                                                edit? Please be informed that your work won't be saved.</strong></h6>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="modal-footer">
+                                        <div class="col s6">
+                                            <a href="#"
+                                                class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                        </div>
+                                        <div class="col s6">
+                                            <a href="/users/myprofile"
+                                                class="modal-close waves-effect waves-green btn-flat"><strong>Yes</strong></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="modal2" class="modal">
+                                    <div class="modal-content">
+                                        <h4 class="light-blue-text text-darken-2 center">Confirm Update</h4><br />
+                                        <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to update
+                                                your personal profile? Please confirm it again.</strong></h6>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="modal-footer">
+                                        <div class="col s6">
+                                            <a href="#"
+                                                class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                        </div>
+                                        <div class="col s6">
+                                            <button class="modal-close waves-effect waves-green btn-flat" id="submit"
+                                                type="submit"><strong>Yes</strong></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

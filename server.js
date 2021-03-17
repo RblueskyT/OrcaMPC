@@ -87,11 +87,13 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const votingRouter = require('./routes/voting');
 const surveysRouter = require('./routes/surveys');
+const communityRouter = require('./routes/community');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/users/voting', votingRouter);
 app.use('/users/surveys', surveysRouter);
+app.use('/community', communityRouter);
 
 // Server Connecting
 const PORT = process.env.PORT || 8080;

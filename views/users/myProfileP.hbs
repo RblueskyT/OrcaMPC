@@ -1,0 +1,78 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col s8 offset-s2">
+                <div class="card white">
+                    <h3 style="padding-top: 35px;" class="center light-blue-text text-darken-2"><i
+                            class="fas fa-id-badge"></i>&nbsp; Personal Profile</h3>
+                    <br />
+                    <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                        {{#if flash_success_message}}
+                        <div class="success_msg">
+                            <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                            {{flash_success_message}}
+                        </div>
+                        {{/if}}
+                        {{#if flash_error_message}}
+                        <div class="error_msg">
+                            <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                            {{flash_error_message}}
+                        </div>
+                        {{/if}}
+                    </div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <div class="center" style="position: relative;">
+                            <h6 class="light-blue-text text-darken-3"><img class="circle" src={{avatar}}
+                                    style="vertical-align:middle"></h6>
+                            <a href="/users/myprofile/upload" style="position: absolute; top: 45%; left: 51%;"
+                                class="btn-floating btn-small waves-effect waves-light red lighten-2"><i class="fas fa-pencil-alt"></i></a>
+                            <h6 class="light-blue-text text-darken-3"><strong>{{firstName}} {{lastName}}</strong></h6>
+                        </div><br />
+                        <h6 class="black-text"><strong>Registration Time:&nbsp; </strong> {{formatDate registerTime
+                            'MMMM Do
+                            YYYY, h:mm:ss a'}}
+                        </h6>
+                        <br />
+                        <h6 class="black-text"><strong>E-mail Address:&nbsp; </strong> {{email}}</h6><br />
+                        <h6 class="black-text"><strong>Gender:&nbsp; </strong> {{gender}}</h6><br />
+                        <h6 class="black-text"><strong>Birthday:&nbsp; </strong> {{birthday}}</h6><br />
+                        <h6 class="black-text"><strong>Career:&nbsp; </strong> {{career}}</h6><br />
+                        <h6 class="black-text" style="text-align:justify; line-height: 1.5;">
+                            <strong>Self-Introduction:&nbsp;
+                            </strong> {{description}}</h6><br />
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <div class="row center">
+                            <a href="/users/myprofile/edit"
+                                class="btn-floating btn-large waves-effect waves-light blue lighten-1"><i
+                                    class="fas fa-feather-alt"></i></a>
+                        </div>
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

@@ -1,0 +1,134 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="card white">
+            <h3 style="padding-top: 35px;" class="light-blue-text text-darken-2 center"><i class="fas fa-edit"></i>
+                Group Creator</h3><br />
+            <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
+                {{#if flash_success_message}}
+                <div class="success_msg">
+                    <span class="closebtn-s" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_success_message}}
+                </div>
+                {{/if}}
+                {{#if flash_error_message}}
+                <div class="error_msg">
+                    <span class="closebtn-e" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{flash_error_message}}
+                </div>
+                {{/if}}
+            </div>
+            <div class="divider"></div>
+            <div class="card-content">
+                <div class="col s12">
+                    <p><span class="red-text"><strong>All</strong></span> fields are required</p><br /><br />
+                </div>
+                <div class="create_form">
+                    <form id="group_create" action="/community/groups/create" method="POST">
+                        <div class="input-field">
+                            <input placeholder="Maximum 200 characters and no special characters (e.g. @, # and $)"
+                                type="text" id="groupName" name="groupName" onblur="checkGname()" onfocus="checkGname()"
+                                onchange="checkGname()" class="validate" data-length="200" required>
+                            <label for="groupName">Group Name</label>
+                            <span class="helper-text" data-error="Please fill in this field or check your format"
+                                data-success="Format correct"></span>
+                        </div><br /><br />
+                        <div class="input-field">
+                            <textarea placeholder="At least 50 characters" id="gdescription" name="description"
+                                onblur="checkGDes()" onfocus="checkGDes()" onchange="checkGDes()"
+                                class="materialize-textarea validate" required></textarea>
+                            <label for="description">Group Description</label>
+                            <span class="helper-text" data-error="Please fill in this field or check your format"
+                                data-success="Input completed"></span>
+                        </div><br /><br />
+                        <div class="input-field">
+                            <input placeholder="Maximum 30 characters" type="text" id="groupToken" name="token"
+                                onblur="checkGToken()" onfocus="checkGToken()" onchange="checkGToken()" class="validate"
+                                data-length="30" required>
+                            <label for="votingToken">Group Token</label>
+                            <span class="helper-text" data-error="Please fill in this field or check your input"
+                                data-success="Input Finished"></span>
+                        </div>
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <div class="row col s12">
+                            <!-- Add a blank line -->
+                        </div>
+                        <div class="row center">
+                            <div class="col s6">
+                                <a href="#modal1" id="gcancel-button"
+                                    class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Cancel</strong></a>
+                            </div>
+                            <div class="col s6">
+                                <a href="#modal2" id="gcreate-button"
+                                    class="waves-effect waves-light blue lighten-1 btn modal-trigger"
+                                    disabled><strong>Create</strong></a>
+                            </div>
+                            <div id="modal1" class="modal">
+                                <div class="modal-content">
+                                    <h4 class="light-blue-text text-darken-2 center">Cancel Creation</h4><br />
+                                    <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to cancel the
+                                            group
+                                            creation? Please be informed that your work won't be saved.</strong></h6>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="modal-footer">
+                                    <div class="col s6">
+                                        <a href="#"
+                                            class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                    </div>
+                                    <div class="col s6">
+                                        <a href="/community/groups"
+                                            class="modal-close waves-effect waves-green btn-flat"><strong>Yes</strong></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="modal2" class="modal">
+                                <div class="modal-content">
+                                    <h4 class="light-blue-text text-darken-2 center">Confirm Creation</h4><br />
+                                    <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to create this
+                                            group? Please confirm it again.</strong></h6>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="modal-footer">
+                                    <div class="col s6">
+                                        <a href="#"
+                                            class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
+                                    </div>
+                                    <div class="col s6">
+                                        <button class="modal-close waves-effect waves-green btn-flat" id="submit"
+                                            type="submit"><strong>Yes</strong></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row col s12">
+                        <!-- Add a blank line -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+</main>
