@@ -3,6 +3,7 @@ const session = require('express-session');
 const multer = require('multer');
 const path = require('path');
 const { ensureAuthenticated } = require('../config/login_auth');
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const Message = require('../models/message');
 const Voting = require('../models/voting');
@@ -182,6 +183,8 @@ router.get('/myprofile', ensureAuthenticated, async (req, res) => {
 
     var newMessages;
     var newNotifications;
+    var votingCount;
+    var surveyCount;
 
     await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Message', status: 'Unread' }, function (err, count) {
         if (err) {
@@ -199,6 +202,22 @@ router.get('/myprofile', ensureAuthenticated, async (req, res) => {
         }
     });
 
+    await Voting.countDocuments({ user: req.user.id }, function (err, count) {
+        if (err) {
+            votingCount = 0;
+        } else {
+            votingCount = count;
+        }
+    });
+
+    await Survey.countDocuments({ user: req.user.id }, function (err, count) {
+        if (err) {
+            surveyCount = 0;
+        } else {
+            surveyCount = count;
+        }
+    });
+
     res.render('users/myProfileP', {
         registerTime: req.user.registerTime,
         avatar: req.user.avatar,
@@ -211,6 +230,8 @@ router.get('/myprofile', ensureAuthenticated, async (req, res) => {
         email: req.user.email,
         newMessages,
         newNotifications,
+        votingCount,
+        surveyCount,
         title: 'Profile of ' + req.user.firstName + ' ' + req.user.lastName + ' - Orca MPC',
         layout: 'users'
     });
@@ -332,7 +353,150 @@ router.post('/myprofile/upload', ensureAuthenticated, async (req, res) => {
 
 });
 
+// Change password
+router.get('/changepassword', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        var newMessages;
+        var newNotifications;
+
+        await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Message', status: 'Unread' }, function (err, count) {
+            if (err) {
+                newMessages = 0;
+            } else {
+                newMessages = count;
+            }
+        });
+
+        await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Notification', status: 'Unread' }, function (err, count) {
+            if (err) {
+                newNotifications = 0;
+            } else {
+                newNotifications = count;
+            }
+        });
+
+        res.render('users/changePwdP', {
+            avatar: req.user.avatar,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            email: req.user.email,
+            newMessages,
+            newNotifications,
+            title: req.user.firstName + ' ' + req.user.lastName + ' / Change Password - Orca MPC',
+            layout: 'users'
+        });
+
+    } catch (err) {
+
+        res.render('errors/error_500', {
+            avatar: req.user.avatar,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            email: req.user.email,
+            title: 'ERROR 500 - Orca MPC',
+            layout: 'users'
+        });
+
+    }
+
+});
+
+router.post('/changepassword', ensureAuthenticated, async (req, res) => {
+
+    try {
+
+        var account = await User.findOne({ _id: req.user.id });
+        const pwdMatch = await bcrypt.compare(req.body.oldpassword, account.password);
+
+        if (pwdMatch) {
+
+            const newSalt = bcrypt.genSaltSync(10);
+            const newPwd = bcrypt.hashSync(req.body.newpassword, newSalt);
+
+            await User.updateOne({ _id: req.user.id }, { password: newPwd });
+
+            req.logout();
+            req.session.destroy(function (err) {
+                res.redirect('../login');
+            });
+
+
+        } else {
+
+            req.flash('flash_error_message', 'Sorry, you cannot change your password');
+            res.redirect('/users/changepassword');
+
+        }
+
+    } catch (err) {
+
+        req.flash('flash_error_message', 'Sorry, an unknown error occurred');
+        res.redirect('/users/dashboard');
+
+    }
+
+});
+
 /* Access other user profiles */
+router.get('/profile/:id', ensureAuthenticated, async (req, res) => {
+
+    var newMessages;
+    var newNotifications;
+    var votingCount;
+    var surveyCount;
+
+    const profile = await User.findOne({ _id: req.params.id })
+        .lean();
+
+    await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Message', status: 'Unread' }, function (err, count) {
+        if (err) {
+            newMessages = 0;
+        } else {
+            newMessages = count;
+        }
+    });
+
+    await Message.countDocuments({ receiver: req.user.id, messageLabel: 'Notification', status: 'Unread' }, function (err, count) {
+        if (err) {
+            newNotifications = 0;
+        } else {
+            newNotifications = count;
+        }
+    });
+
+    await Voting.countDocuments({ user: req.params.id }, function (err, count) {
+        if (err) {
+            votingCount = 0;
+        } else {
+            votingCount = count;
+        }
+    });
+
+    await Survey.countDocuments({ user: req.params.id }, function (err, count) {
+        if (err) {
+            surveyCount = 0;
+        } else {
+            surveyCount = count;
+        }
+    });
+
+    res.render('users/profileP', {
+        avatar: req.user.avatar,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        email: req.user.email,
+        newMessages,
+        newNotifications,
+        votingCount,
+        surveyCount,
+        profile,
+        title: 'Profile of ' + req.user.firstName + ' ' + req.user.lastName + ' - Orca MPC',
+        layout: 'users'
+    });
+
+});
 
 
 // Notifications

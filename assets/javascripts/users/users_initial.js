@@ -5,7 +5,7 @@ $(document).ready(function () {
 
 // Materialize Character Counter
 $(document).ready(function () {
-  $('input#votingTitle, input#surveyTitle, input[name = "questionName"], input[name = "password"], input#votingToken, input#surveyToken,  input#groupToken, input#userNotice, input#sessiontoken, textarea#cancelReason, textarea#deleteReason, textarea[name = "description"]').characterCounter();
+  $('input#votingTitle, input#surveyTitle, input[name = "questionName"], input[name = "password"], input#groupName, input#topicName, input#votingToken, input#surveyToken,  input#groupToken, input#userNotice, input#sessiontoken, textarea#cancelReason, textarea#deleteReason, textarea#postcontentv, textarea#postcontents, textarea[name = "description"]').characterCounter();
 });
 
 
@@ -74,14 +74,17 @@ $(document).ready(function () {
 });
 
 // Materialze floating button
-$(document).ready(function(){
+$(document).ready(function () {
   $('.fixed-action-btn').floatingActionButton();
 });
 
 // Materialize tooltips
-$(document).ready(function(){
+$(document).ready(function () {
   $('.tooltipped').tooltip();
 });
+
+// Materialize drop trigger
+$('.dropdown-trigger').dropdown();
 
 // Flash Message style
 var close1 = document.getElementsByClassName("closebtn-s");
@@ -186,6 +189,101 @@ function checkImage() {
   }
 
 }
+
+// Validate the fields of changing password
+var oldpassword = document.getElementById("oldpassword");
+var newpassword = document.getElementById("newpassword");
+var repeatnew = document.getElementById("password_ccheck");
+
+if (oldpassword && newpassword && repeatnew) {
+  document.getElementById("oldpassword").addEventListener("keyup", checkCPassword1);
+  document.getElementById("newpassword").addEventListener("keyup", checkCPassword2);
+  document.getElementById("password_ccheck").addEventListener("keyup", checkCRepeat);
+}
+
+var l1 = false;
+var l2 = false;
+var l3 = false;
+
+function checkCPassword1() {
+  var val = document.getElementById("oldpassword").value;
+
+  if (!val || !val.length) {
+    l1 = false;
+    document.getElementById("oldpassword").classList.remove("valid");
+    document.getElementById("oldpassword").classList.add("invalid");
+    $("#newpassword").attr("disabled", true);
+  } else {
+    l1 = true;
+    document.getElementById("oldpassword").classList.remove("invalid");
+    document.getElementById("oldpassword").classList.add("valid");
+    $("#newpassword").attr("disabled", false);
+  }
+
+  checkChange();
+
+}
+
+function checkCPassword2() {
+  var val = document.getElementById("newpassword").value;
+  var val1 = document.getElementById("oldpassword").value;
+
+  if (!val || !val.length || val == val1) {
+    l2 = false;
+    document.getElementById("newpassword").classList.remove("valid");
+    document.getElementById("newpassword").classList.add("invalid");
+    $("#password_ccheck").attr("disabled", true);
+  } else {
+    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,100}$/;
+    if (regex.test(val)) {
+      l2 = true;
+      document.getElementById("newpassword").classList.remove("invalid");
+      document.getElementById("newpassword").classList.add("valid");
+      $("#password_ccheck").attr("disabled", false);
+    } else {
+      l2 = false;
+      document.getElementById("newpassword").classList.remove("valid");
+      document.getElementById("newpassword").classList.add("invalid");
+      $("#password_ccheck").attr("disabled", true);
+    }
+  }
+
+  checkChange();
+
+}
+
+function checkCRepeat() {
+  var val = document.getElementById("password_ccheck").value;
+  var val1 = document.getElementById("newpassword").value;
+
+  if (!val || !val.length || val != val1) {
+    l3 = false;
+    document.getElementById("password_ccheck").classList.remove("valid");
+    document.getElementById("password_ccheck").classList.add("invalid");
+    $("#changepwd-submit").attr("disabled", true);
+  } else {
+    l3 = true;
+    document.getElementById("password_ccheck").classList.remove("invalid");
+    document.getElementById("password_ccheck").classList.add("valid");
+  }
+
+  checkChange();
+  
+}
+
+function checkChange(){
+
+  if (l1 && l2 && l3) {
+    $("#changepwd-submit").attr("disabled", false);
+  } else {
+    $("#changepwd-submit").attr("disabled", true);
+  }
+
+
+}
+
+
+
 
 
 

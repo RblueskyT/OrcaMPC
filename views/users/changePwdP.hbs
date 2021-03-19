@@ -1,0 +1,111 @@
+<main>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="row col s12">
+        <!-- Add a blank line -->
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col s6 offset-s3">
+                <div class="card white hoverable">
+                    <div class="card-content">
+                        <h3 class="center blue-text text-lighten-1"><i class="fas fa-key"></i>&nbsp; Change Password
+                        </h3></br>
+                        <div class="message_area row">
+                            {{#if flash_success_message}}
+                            <div class="success_msg">
+                                <span class="closebtn-s"
+                                    onclick="this.parentElement.style.display='none';">&times;</span>
+                                {{flash_success_message}}
+                            </div>
+                            {{/if}}
+                            {{#if flash_error_message}}
+                            <div class="error_msg">
+                                <span class="closebtn-e"
+                                    onclick="this.parentElement.style.display='none';">&times;</span>
+                                {{flash_error_message}}
+                            </div>
+                            {{/if}}
+                        </div>
+                        <form id="change_password" action="/users/changepassword" method="POST">
+                            <div class="col s12">
+                                <p><span class="red-text"><strong>All</strong></span> fields are required</p></br>
+                            </div>
+                            <div class="input-field col s12">
+                                <input
+                                    placeholder="Please enter your old password here ..."
+                                    type="password" data-length="100" id="oldpassword" name="oldpassword"
+                                    onblur="checkCPassword1()" onfocus="checkCPassword1()" onchange="checkCPassword1()"
+                                    class="validate" required>
+                                <label for="password">Old Password</label>
+                                <span class="helper-text" data-error="Please fill in this field"
+                                    data-success="Input Finished"></span>
+                            </div>
+                            <div class="input-field col s12">
+                                <input
+                                    placeholder="8-100 characters: letters, numbers and special characters are all required"
+                                    type="password" data-length="100" id="newpassword" name="newpassword"
+                                    onblur="checkCPassword2()" onfocus="checkCPassword2()" onchange="checkCPassword2()"
+                                    class="validate" required disabled>
+                                <label for="password">New Password</label>
+                                <span class="helper-text"
+                                    data-error="Please fill in this field or check your format (e.g. Aa@123456, must be different from the old one)"
+                                    data-success="Format correct"></span>
+                            </div>
+                            <div class="input-field col s12">
+                                <input placeholder="Please repeat your new password again ..." type="password"
+                                    data-length="100" id="password_ccheck" name="password_ccheck"
+                                    onblur="checkCRepeat()" onfocus="checkCRepeat()" onchange="checkCRepeat()"
+                                    class="validate" required disabled>
+                                <label for="password_check">Confirm Your New Password</label>
+                                <span class="helper-text" data-error="Please fill in this field or check your input"
+                                    data-success="Confirm correct"></span>
+                            </div>
+                            <div class="row col s12">
+                                <!-- Add a blank line -->
+                            </div>
+                            <div class="row col s12">
+                                <!-- Add a blank line -->
+                            </div>
+                            <div class="row center">
+                                <div class="col s6">
+                                    <a href="/users/dashboard" id="auth-cancel-button"
+                                        class="btn waves-effect waves-light blue lighten-1"><strong>Cancel</strong></a>
+                                </div>
+                                <div class="col s6">
+                                    <button class="btn waves-effect waves-light blue lighten-1" id="changepwd-submit"
+                                        type="submit" disabled><strong>Submit</strong></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+        <div class="row col s12">
+            <!-- Add a blank line -->
+        </div>
+    </div>
+</main>

@@ -14,7 +14,7 @@
     <div class="container">
         <div class="card white">
             <h3 style="padding-top: 35px; margin-right: 20px;" class="center yellow-text text-darken-2"><a
-                    style="float: left; margin-top: 5px; margin-left: 20px;" href="/users/voting/published"
+                    style="float: left; margin-top: 5px; margin-left: 20px;" href="{{#if group2}}/community/groups/view/{{group2._id}}{{else}}/community/topics/view/{{topic._id}}{{/if}}"
                     class="btn-floating waves-effect waves-light blue lighten-1"><i
                         class="fas fa-arrow-left"></i></a>{{voting.votingTitle}}</h3><br />
             <div class="message_area" style="margin-left: 10px; margin-right: 10px;">

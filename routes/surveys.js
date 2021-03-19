@@ -4,6 +4,8 @@ const { ensureAuthenticated } = require('../config/login_auth');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const Message = require('../models/message');
+const Group = require('../models/group');
+const Topic = require('../models/topic');
 const Question = require('../models/question');
 const Survey = require('../models/survey');
 const SurveySession = require('../models/surveySession');
@@ -878,36 +880,6 @@ router.post('/unpublished/delete', ensureAuthenticated, async (req, res) => {
 
 });
 
-// Publish a specific unpublished survey
-router.post('/unpublished/publish', ensureAuthenticated, async (req, res) => {
-
-    try {
-
-        let survey = await Survey.findOne({ _id: req.body.surveyid, user: req.user.id, status: 'Unpublished' })
-            .lean();
-
-        if (!survey) {
-
-            req.flash('flash_error_message', 'Sorry, this survey is not existing');
-            res.redirect('/users/surveys/unpublished');
-
-        } else {
-
-            await Survey.updateOne({ _id: req.body.surveyid, user: req.user.id, status: 'Unpublished' }, { status: 'Published' });
-            req.flash('flash_success_message', 'You have successfully published a survey');
-            res.redirect('/users/surveys/published');
-
-        }
-
-    } catch (err) {
-
-        req.flash('flash_error_message', 'Sorry, an unknown error occurred');
-        res.redirect('/users/surveys/unpublished');
-
-    }
-
-});
-
 /* Published Surveys */
 
 // Manage all published surveys
@@ -993,6 +965,8 @@ router.get('/published/view/:id', ensureAuthenticated, async (req, res) => {
             }
         });
 
+        let group = await Group.findOne({ survey: req.params.id })
+            .lean();
         let survey = await Survey.findOne({ _id: req.params.id, user: req.user.id, status: 'Published' })
             .populate('user')
             .populate('participants')
@@ -1001,39 +975,109 @@ router.get('/published/view/:id', ensureAuthenticated, async (req, res) => {
             .populate('inputQuestions')
             .lean();
 
-        if (!survey) {
 
-            let survey = await Survey.findOne({ _id: req.params.id, status: 'Published' })
-                .populate('user')
-                .populate('participants')
+        if (group) {
+
+            let group2 = await Group.findOne({ survey: req.params.id, members: req.user.id })
                 .lean();
 
-            res.render('surveys/view22P', {
-                userID: req.user.id,
-                avatar: req.user.avatar,
-                firstName: req.user.firstName,
-                lastName: req.user.lastName,
-                email: req.user.email,
-                newMessages,
-                newNotifications,
-                survey,
-                title: req.user.firstName + ' ' + req.user.lastName + ' / View: ' + survey.surveyTitle + ' - Orca MPC',
-                layout: 'survey'
-            });
+            if (group2) {
+
+                if (!survey) {
+
+                    let survey = await Survey.findOne({ _id: req.params.id, status: 'Published' })
+                        .populate('user')
+                        .populate('participants')
+                        .lean();
+
+                    res.render('surveys/view22P', {
+                        userID: req.user.id,
+                        avatar: req.user.avatar,
+                        firstName: req.user.firstName,
+                        lastName: req.user.lastName,
+                        email: req.user.email,
+                        newMessages,
+                        newNotifications,
+                        survey,
+                        group2,
+                        title: req.user.firstName + ' ' + req.user.lastName + ' / View: ' + survey.surveyTitle + ' - Orca MPC',
+                        layout: 'survey'
+                    });
+
+                } else {
+
+                    res.render('surveys/view21P', {
+                        avatar: req.user.avatar,
+                        firstName: req.user.firstName,
+                        lastName: req.user.lastName,
+                        email: req.user.email,
+                        newMessages,
+                        newNotifications,
+                        survey,
+                        group2,
+                        title: req.user.firstName + ' ' + req.user.lastName + ' / View: ' + survey.surveyTitle + ' - Orca MPC',
+                        layout: 'survey'
+                    });
+
+                }
+
+            } else {
+
+                res.render('errors/error_404', {
+                    avatar: req.user.avatar,
+                    firstName: req.user.firstName,
+                    lastName: req.user.lastName,
+                    email: req.user.email,
+                    newMessages,
+                    newNotifications,
+                    title: 'ERROR 404 - Orca MPC',
+                    layout: 'users'
+                });
+
+            }
 
         } else {
 
-            res.render('surveys/view21P', {
-                avatar: req.user.avatar,
-                firstName: req.user.firstName,
-                lastName: req.user.lastName,
-                email: req.user.email,
-                newMessages,
-                newNotifications,
-                survey,
-                title: req.user.firstName + ' ' + req.user.lastName + ' / View: ' + survey.surveyTitle + ' - Orca MPC',
-                layout: 'survey'
-            });
+            let topic = await Topic.findOne({ survey: req.params.id })
+                .lean();
+
+            if (!survey) {
+
+                let survey = await Survey.findOne({ _id: req.params.id, status: 'Published' })
+                    .populate('user')
+                    .populate('participants')
+                    .lean();
+
+                res.render('surveys/view22P', {
+                    userID: req.user.id,
+                    avatar: req.user.avatar,
+                    firstName: req.user.firstName,
+                    lastName: req.user.lastName,
+                    email: req.user.email,
+                    newMessages,
+                    newNotifications,
+                    survey,
+                    topic,
+                    title: req.user.firstName + ' ' + req.user.lastName + ' / View: ' + survey.surveyTitle + ' - Orca MPC',
+                    layout: 'survey'
+                });
+
+            } else {
+
+                res.render('surveys/view21P', {
+                    avatar: req.user.avatar,
+                    firstName: req.user.firstName,
+                    lastName: req.user.lastName,
+                    email: req.user.email,
+                    newMessages,
+                    newNotifications,
+                    survey,
+                    topic,
+                    title: req.user.firstName + ' ' + req.user.lastName + ' / View: ' + survey.surveyTitle + ' - Orca MPC',
+                    layout: 'survey'
+                });
+
+            }
 
         }
 
@@ -1173,26 +1217,26 @@ router.post('/published/remove/question', ensureAuthenticated, async (req, res) 
                 req.flash('flash_error_message', 'Sorry, you cannot remove the only question of this survey');
                 res.redirect('/users/surveys/published/view/' + req.body.surveyid);
 
-            }else{
+            } else {
 
                 if (req.body.questiontype == "Radio") {
 
                     await Survey.updateOne({ _id: req.body.surveyid, user: req.user.id, status: 'Published' }, { $pullAll: { radioQuestions: [req.body.questionid] } });
                     req.flash('flash_success_message', 'You have successfully removed a question');
                     res.redirect('/users/surveys/published/view/' + req.body.surveyid);
-    
+
                 } else if (req.body.questiontype == "Checkbox") {
-    
+
                     await Survey.updateOne({ _id: req.body.surveyid, user: req.user.id, status: 'Published' }, { $pullAll: { checkboxQuestions: [req.body.questionid] } });
                     req.flash('flash_success_message', 'You have successfully removed a question');
                     res.redirect('/users/surveys/published/view/' + req.body.surveyid);
-    
+
                 } else {
-    
+
                     await Survey.updateOne({ _id: req.body.surveyid, user: req.user.id, status: 'Published' }, { $pullAll: { inputQuestions: [req.body.questionid] } });
                     req.flash('flash_success_message', 'You have successfully removed a question');
                     res.redirect('/users/surveys/published/view/' + req.body.surveyid);
-    
+
                 }
 
             }
@@ -1288,6 +1332,8 @@ router.post('/published/cancel', ensureAuthenticated, async (req, res) => {
                     }
                 }
                 await Survey.updateOne({ _id: req.body.surveyid, user: req.user.id, status: 'Published' }, { participants: req.user.id, status: 'Unpublished' });
+                await Group.updateOne({ members: req.user.id, survey: req.body.surveyid }, { $pull: { survey: req.body.surveyid, posts: { relatedSurvey: { $in: [req.body.surveyid] } } } });
+                await Topic.updateOne({ survey: req.body.surveyid }, { $pull: { survey: req.body.surveyid, posts: { relatedSurvey: { $in: [req.body.surveyid] } } } });
                 req.flash('flash_success_message', 'You have successfully canceled the survey');
                 res.redirect('/users/surveys/unpublished');
 
@@ -1341,6 +1387,8 @@ router.post('/published/consent', ensureAuthenticated, async (req, res) => {
                     }
                 }
                 await Survey.updateOne({ _id: req.body.surveyid, user: req.user.id, status: 'Published' }, { status: 'Preparing' });
+                await Group.updateOne({ members: req.user.id, survey: req.body.surveyid }, { $pull: { survey: req.body.surveyid, posts: { relatedSurvey: { $in: [req.body.surveyid] } } } });
+                await Topic.updateOne({ survey: req.body.surveyid }, { $pull: { survey: req.body.surveyid, posts: { relatedSurvey: { $in: [req.body.surveyid] } } } });
                 req.flash('flash_success_message', 'You have successfully consented the survey, now you can prepare the survey for all registrants');
                 res.redirect('/users/surveys/preparing');
 
@@ -2639,38 +2687,6 @@ router.post('/expired/delete', ensureAuthenticated, async (req, res) => {
         req.flash('flash_error_message', 'Sorry, an unknown error occurred');
         res.redirect('/users/surveys/expired');
 
-    }
-
-});
-
-/* All following parts will be modified  */
-
-// This part will be splited into groups and topics in the future
-router.get('/', ensureAuthenticated, async (req, res) => {
-    try {
-        const surveys = await Survey.find({ status: 'Published' })
-            .populate('user')
-            .sort({ createTime: 'desc' })
-            .lean();
-        res.render('surveys/viewAllP', {
-            avatar: req.user.avatar,
-            firstName: req.user.firstName,
-            lastName: req.user.lastName,
-            email: req.user.email,
-            surveys,
-            title: 'All Published Surveys - Orca MPC',
-            layout: 'users'
-        });
-    } catch (err) {
-
-        res.render('errors/error_500', {
-            avatar: req.user.avatar,
-            firstName: req.user.firstName,
-            lastName: req.user.lastName,
-            email: req.user.email,
-            title: 'ERROR 500 - Orca MPC',
-            layout: 'users'
-        });
     }
 
 });

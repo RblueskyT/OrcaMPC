@@ -47,7 +47,8 @@
                     {{voting.estimatedDuration}} minutes</h6><br />
                 <h6 class="black-text"><strong>Expected Number of Participants:&nbsp; </strong>
                     {{voting.partyCount}}</h6><br />
-                <h6 class="black-text" style="text-align:justify; line-height: 1.5;"><strong>Voting Options:&nbsp; </strong>
+                <h6 class="black-text" style="text-align:justify; line-height: 1.5;"><strong>Voting Options:&nbsp;
+                    </strong>
                     {{#each voting.options}}
                     {{serialNumber @index}}. {{this}}&nbsp;
                     {{/each}}
@@ -58,7 +59,7 @@
                 <div class="row col s12">
                     <!-- Add a blank line -->
                 </div>
-                <form action="/users/voting/unpublished/publish" method="POST">
+                <form action="/users/voting/unpublished/delete" method="POST">
                     <input type="hidden" id="votingid" name="votingid" value={{voting._id}} required>
                     <div class="row center">
                         <div class="col s6">
@@ -66,8 +67,12 @@
                                 class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Delete</strong></a>
                         </div>
                         <div class="col s6">
-                            <a href="#modal2" id="publish-button"
-                                class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Publish</strong></a>
+                            <a href="#" data-target='dropdown1' id="publish-button"
+                                class="waves-effect waves-light blue lighten-1 btn dropdown-trigger"><strong>Publish</strong></a>
+                            <ul id='dropdown1' class='dropdown-content'>
+                                <li><a href="/community/groups" class="light-blue-text text-darken-2">To Group</a></li>
+                                <li><a href="/community/topics" class="light-blue-text text-darken-2">To Topic</a></li>
+                            </ul>
                         </div>
                         <div id="modal1" class="modal">
                             <div class="modal-content">
@@ -83,26 +88,6 @@
                                 </div>
                                 <div class="col s6">
                                     <button class="modal-close waves-effect waves-green btn-flat" id="delete-button"
-                                        type="submit"
-                                        formaction="/users/voting/unpublished/delete"><strong>Yes</strong></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="modal2" class="modal">
-                            <div class="modal-content">
-                                <h4 class="light-blue-text text-darken-2 center">Confirm Publishment</h4><br />
-                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to publish
-                                        this
-                                        voting? Please confirm it again.</strong></h6>
-                            </div>
-                            <div class="divider"></div>
-                            <div class="modal-footer">
-                                <div class="col s6">
-                                    <a href="#"
-                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
-                                </div>
-                                <div class="col s6">
-                                    <button class="modal-close waves-effect waves-green btn-flat" id="publish-button"
                                         type="submit"><strong>Yes</strong></button>
                                 </div>
                             </div>

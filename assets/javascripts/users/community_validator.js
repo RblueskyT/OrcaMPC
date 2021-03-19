@@ -76,7 +76,7 @@ function checkGDes() {
     checkGForm();
 }
 
-// Check the group description
+// Check the group token
 function checkGToken() {
     var val = document.getElementById("groupToken").value;
 
@@ -157,9 +157,144 @@ function checkGPwd() {
         var val = document.getElementById("gpassword_checkdisband").value;
         if (!val || !val.length) {
             $("#disband-submit").attr("disabled", true);
+            $("#leave-submit").attr("disabled", true);
         } else {
             $("#disband-submit").attr("disabled", false);
+            $("#leave-submit").attr("disabled", false);
         }
+    }
+
+}
+
+var postcontentv = document.getElementById("postcontentv");
+var postcontents = document.getElementById("postcontents");
+
+if (postcontentv) {
+    document.getElementById("postcontentv").addEventListener("keyup", checkPost1);
+}
+
+if (postcontents) {
+    document.getElementById("postcontents").addEventListener("keyup", checkPost2);
+}
+
+function checkPost1() {
+
+    if (postcontentv) {
+        var val = document.getElementById("postcontentv").value;
+        if (!val || !val.length || val.length > 200) {
+            document.getElementById("postcontentv").classList.remove("valid");
+            document.getElementById("postcontentv").classList.add("invalid");
+            $("#postv-submit").attr("disabled", true);
+        } else {
+            document.getElementById("postcontentv").classList.remove("invalid");
+            document.getElementById("postcontentv").classList.add("valid");
+            $("#postv-submit").attr("disabled", false);
+        }
+    }
+
+}
+
+function checkPost2() {
+
+    if (postcontents) {
+        var val = document.getElementById("postcontents").value;
+        if (!val || !val.length || val.length > 200) {
+            document.getElementById("postcontents").classList.remove("valid");
+            document.getElementById("postcontents").classList.add("invalid");
+            $("#posts-submit").attr("disabled", true);
+        } else {
+            document.getElementById("postcontents").classList.remove("invalid");
+            document.getElementById("postcontents").classList.add("valid");
+            $("#posts-submit").attr("disabled", false);
+        }
+    }
+
+}
+
+// Validate operations related to topics
+
+var tinput1 = document.getElementById("topicName");
+var tinput2 = document.getElementById("tdescription");
+
+if (tinput1 && tinput2) {
+    document.getElementById("topicName").addEventListener("keyup", checkTname);
+    document.getElementById("tdescription").addEventListener("keyup", checkTDes);
+} else if (!tinput1 && tinput2) {
+    document.getElementById("tdescription").addEventListener("keyup", checkTDes);
+}
+
+// Status flags - topic creator
+var b1 = false;
+var b2 = false;
+var b3 = true;
+
+// Check the topic name
+function checkTname() {
+    var val = document.getElementById("topicName").value;
+
+    if (!val || !val.length) {
+        b1 = false;
+        $("#tcreate-button").attr("disabled", true);
+    }
+
+    var regex = /^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$/;
+    if (val.length < 1 || val.length > 200) {
+        document.getElementById("topicName").classList.remove("valid");
+        document.getElementById("topicName").classList.add("invalid");
+        b1 = false;
+    } else {
+        if (regex.test(val)) {
+            document.getElementById("topicName").classList.remove("invalid");
+            document.getElementById("topicName").classList.add("valid");
+            b1 = true;
+        } else {
+            document.getElementById("topicName").classList.remove("valid");
+            document.getElementById("topicName").classList.add("invalid");
+            b1 = false;
+        }
+    }
+
+    checkTForm();
+}
+
+// Check the topic description
+function checkTDes() {
+    var val = document.getElementById("tdescription").value;
+
+    if (!val || !val.length) {
+        b2 = false;
+        b3 = false;
+        $("#tcreate-button").attr("disabled", true);
+    }
+
+    if (val.length < 50) {
+        document.getElementById("tdescription").classList.remove("valid");
+        document.getElementById("tdescription").classList.add("invalid");
+        b2 = false;
+        b3 = false;
+    } else {
+        document.getElementById("tdescription").classList.remove("invalid");
+        document.getElementById("tdescription").classList.add("valid");
+        b2 = true;
+        b3 = true;
+    }
+
+    checkTForm();
+}
+
+// Make sure that the button only active if some fields validated
+function checkTForm() {
+
+    if (b1 && b2) {
+        $("#tcreate-button").attr("disabled", false);
+    } else {
+        $("#tcreate-button").attr("disabled", true);
+    }
+
+    if (b3) {
+        $("#tupdate-button").attr("disabled", false);
+    } else {
+        $("#tupdate-button").attr("disabled", true);
     }
 
 }

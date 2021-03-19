@@ -103,72 +103,17 @@
                                 </div>
                                 <div class="card-action">
                                     {{#if relatedVoting}}
-                                    <div class="left"><a href="#modalv{{relatedVoting._id}}"
-                                            class="modal-trigger"><strong><i class="far fa-trash-alt"></i>
-                                                Delete</strong></a></div>
-                                    <div class="right"><a
+                                    <div class="center"><a
                                             href="/users/voting/published/view/{{relatedVoting._id}}"><strong><i
                                                     class="far fa-file-alt"></i> View</strong></a></div>
                                     {{else}}
-                                    <div class="left"><a href="#modals{{relatedSurvey._id}}"
-                                            class="modal-trigger"><strong><i class="far fa-trash-alt"></i>
-                                                Delete</strong></a></div>
-                                    <div class="right"><a
+                                    <div class="center"><a
                                             href="/users/surveys/published/view/{{relatedSurvey._id}}"><strong><i
                                                     class="far fa-file-alt"></i> View</strong></a></div>
                                     {{/if}}
-                                </div><br />
+                                </div>
                             </div>
                         </div>
-                        {{#if relatedVoting}}
-                        <div id="modalv{{relatedVoting._id}}" class="modal">
-                            <form action="/community/groups/post/voting/delete" method="POST">
-                                <input type="hidden" id="groupid{{serialNumber @index}}" name="groupid" value={{../group._id}}>
-                                <input type="hidden" id="postid{{serialNumber @index}}" name="postid" value={{_id}}>
-                                <input type="hidden" id="rvotingid{{serialNumber @index}}" name="votingid" value={{relatedVoting._id}}>
-                                <input type="hidden" id="vsenderid{{serialNumber @index}}" name="senderid" value={{sender._id}}>
-                                <div class="modal-content">
-                                    <h4 class="light-blue-text text-darken-2 center">Confirm Deletion</h4>
-                                    <br />
-                                    <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to delete this post? Please confirm it again.</strong></h6>
-                                </div>
-                                <div class="divider"></div>
-                                <div class="modal-footer">
-                                    <div class="col s6">
-                                        <a href="#"
-                                            class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
-                                    </div>
-                                    <div class="col s6">
-                                        <button class="modal-close waves-effect waves-green btn-flat" type="submit"><strong>Yes</strong></button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        {{else}}
-                        <div id="modals{{relatedSurvey._id}}" class="modal">
-                            <form action="/community/groups/post/survey/delete" method="POST">
-                                <input type="hidden" id="groupid{{serialNumber @index}}" name="groupid" value={{../group._id}}>
-                                <input type="hidden" id="postid{{serialNumber @index}}" name="postid" value={{_id}}>
-                                <input type="hidden" id="rsurveyid{{serialNumber @index}}" name="surveyid" value={{relatedSurvey._id}}>
-                                <input type="hidden" id="ssenderid{{serialNumber @index}}" name="senderid" value={{sender._id}}>
-                                <div class="modal-content">
-                                    <h4 class="light-blue-text text-darken-2 center">Confirm Deletion</h4>
-                                    <br />
-                                    <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to delete this post? Please confirm it again.</strong></h6>
-                                </div>
-                                <div class="divider"></div>
-                                <div class="modal-footer">
-                                    <div class="col s6">
-                                        <a href="#"
-                                            class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
-                                    </div>
-                                    <div class="col s6">
-                                        <button class="modal-close waves-effect waves-green btn-flat" type="submit"><strong>Yes</strong></button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        {{/if}}
                         {{/each}}
                         {{else}}
                         <p class="center">Currently no post here</p><br />
@@ -182,10 +127,9 @@
                         <h6 class="center light-blue-text text-darken-2"><strong><i class="fas fa-users"></i>
                                 Members</strong></h6><br />
                         <div class="light-blue-text text-darken-2">
-                            <input type="hidden" id="gmemberNum" value={{group.members.length}}>
                             {{#each group.members}}
                             <div class="row">
-                                <div class="col s9">
+                                <div class="col s12">
                                     <div class="valign-wrapper">
                                         <strong id="member-serialNum{{serialNumber @index}}">{{serialNumber @index}}.
                                         </strong><img style="margin-left: 20px; margin-right: 20px;" class="circle"
@@ -195,62 +139,18 @@
                                                     {{this.lastName}}</strong></u></a>
                                     </div>
                                 </div>
-                                <div class="col s3">
-                                    <a href="#modal{{this._id}}" id="member-remove-button{{serialNumber @index}}"
-                                        class="btn-floating btn-small waves-effect waves-light red lighten-2 modal-trigger"
-                                        disabled><i class="fas fa-times"></i></a>
-                                    <div id="modal{{this._id}}" class="modal">
-                                        <form id="member-remove{{serialNumber @index}}"
-                                            action="/community/groups/remove" method="POST">
-                                            <div class="modal-content">
-                                                <h4 class="light-blue-text text-darken-2 center">Confirm Removal</h4>
-                                                <br />
-                                                <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
-                                                        remove this group member? Please enter your password to
-                                                        confirm.</strong></h6>
-                                                <br /><br />
-                                                <input type="hidden" id="groupid3{{serialNumber @index}}" name="groupid"
-                                                    value="{{../group._id}}" required>
-                                                <input type="hidden" id="memberid{{serialNumber @index}}"
-                                                    name="memberid" value={{this._id}} required>
-                                                <div class="row">
-                                                    <div class="input-field col s6 offset-s3">
-                                                        <input placeholder="Please enter here ..." type="password"
-                                                            data-length="100"
-                                                            id="gpassword_check3{{serialNumber @index}}" name="password"
-                                                            onblur="checkGPwd()" onfocus="checkGPwd()"
-                                                            onchange="checkGPwd()" required>
-                                                        <label for="password">Password</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="divider"></div>
-                                            <div class="modal-footer">
-                                                <div class="col s6">
-                                                    <a href="#"
-                                                        class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
-                                                </div>
-                                                <div class="col s6">
-                                                    <button class="modal-close waves-effect waves-green btn-flat"
-                                                        id="mremove-submit-button{{serialNumber @index}}" type="submit"
-                                                        disabled><strong>Yes</strong></button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
                             </div>
                             {{/each}}
                         </div><br />
                     </div>
                     <div id="all_other_modals">
-                        <div id="modaldisband" class="modal">
-                            <form id="group_disband" action="/community/groups/disband" method="POST">
+                        <div id="modalleave" class="modal">
+                            <form id="group_leave" action="/community/groups/leave" method="POST">
                                 <div class="modal-content">
-                                    <h4 class="light-blue-text text-darken-2 center">Confirm Disbanding the Group</h4>
+                                    <h4 class="light-blue-text text-darken-2 center">Confirm Leaving the Group</h4>
                                     <br />
                                     <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to
-                                            disband this group? Please enter your password to
+                                            leave this group? Please enter your password to
                                             confirm.</strong></h6>
                                     <br /><br />
                                     <input type="hidden" id="groupid" name="groupid" value="{{group._id}}" required>
@@ -271,7 +171,7 @@
                                     </div>
                                     <div class="col s6">
                                         <button class="modal-close waves-effect waves-green btn-flat"
-                                            id="disband-submit" type="submit" disabled><strong>Yes</strong></button>
+                                            id="leave-submit" type="submit" disabled><strong>Yes</strong></button>
                                     </div>
                                 </div>
                             </form>
@@ -415,18 +315,14 @@
                             <i class="fas fa-tools"></i>
                         </a>
                         <ul>
-                            <li><a href="#modaldisband" class="btn-floating tooltipped red darken-1 modal-trigger"
-                                    data-position="left" data-tooltip="Disband Group"><i
-                                        class="fas fa-users-slash"></i></a>
+                            <li><a href="#modalleave" class="btn-floating tooltipped red darken-1 modal-trigger"
+                                    data-position="left" data-tooltip="Leave Group"><i class="fas fa-user-slash"></i></a>
                             </li>
                             <li><a href="#modalpsurvey" class="btn-floating tooltipped green darken-1 modal-trigger" data-position="left"
                                     data-tooltip="Post Survey"><i class="fas fa-poll-h"></i></a></li>
                             <li><a href="#modalpvoting" class="btn-floating tooltipped orange darken-1 modal-trigger"
                                     data-position="left" data-tooltip="Post Voting"><i class="fas fa-vote-yea"></i></a>
                             </li>
-                            <li><a class="btn-floating tooltipped blue darken-1" data-position="left"
-                                    data-tooltip="Edit Group Info" href="/community/groups/edit/{{group._id}}"><i
-                                        class="far fa-edit"></i></a></li>
                         </ul>
                     </div>
                 </div>

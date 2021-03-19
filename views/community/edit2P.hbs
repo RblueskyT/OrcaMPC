@@ -14,7 +14,7 @@
     <div class="container">
         <div class="card white">
             <h3 style="padding-top: 35px;" class="light-blue-text text-darken-2 center"><i class="fas fa-edit"></i>
-                Group Editor</h3><br />
+                Topic Editor</h3><br />
             <div class="message_area" style="margin-left: 10px; margin-right: 10px;">
                 {{#if flash_success_message}}
                 <div class="success_msg">
@@ -33,57 +33,46 @@
             <div class="card-content">
                 <br />
                 <div class="center" style="position: relative;">
-                    <h6 class="light-blue-text text-darken-3"><img class="circle" src={{group.avatar}}
+                    <h6 class="light-blue-text text-darken-3"><img class="circle" src={{topic.avatar}}
                             style="vertical-align:middle"></h6>
-                    <a href="/community/groups/upload/{{group._id}}" style="position: absolute; top: 45%; left: 51%;"
+                    <a href="/community/topics/upload/{{topic._id}}" style="position: absolute; top: 45%; left: 51%;"
                         class="btn-floating btn-small waves-effect waves-light red lighten-2"><i
                             class="fas fa-pencil-alt"></i></a>
-                    <h6 class="light-blue-text text-darken-3"><strong>{{group.groupName}}</strong></h6>
+                    <h6 class="light-blue-text text-darken-3"><strong>{{topic.topicName}}</strong></h6>
                 </div><br />
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
+                <div class="row col s12">
+                    <!-- Add a blank line -->
+                </div>
                 <div class="col s12">
-                    <p><span class="red-text">*</span> fields are required</p><br /><br />
+                    <p><span class="red-text"><strong>All</strong></span> fields are required</p><br /><br />
                 </div>
                 <div class="edit_form">
-                    <form id="group_edit" action="/community/groups/edit" method="POST">
-                        <input type="hidden" id="groupid" name="groupid" value={{group._id}} required>
+                    <form id="topic_edit" action="/community/topics/edit" method="POST">
+                        <input type="hidden" id="topicid" name="topicid" value={{topic._id}} required>
                         <div class="input-field">
-                            <input placeholder="Maximum 200 characters and no special characters (e.g. @, # and $)"
-                                type="text" id="groupName" name="groupName" onblur="checkGname()" onfocus="checkGname()"
-                                onchange="checkGname()" class="validate" data-length="200" value="{{group.groupName}}"
-                                required>
-                            <label for="groupName">Group Name <span class="red-text">*</span></label>
-                            <span class="helper-text" data-error="Please fill in this field or check your format"
-                                data-success="Format correct"></span>
-                        </div><br /><br />
-                        <div class="input-field">
-                            <textarea placeholder="At least 50 characters" id="gdescription" name="description"
-                                onblur="checkGDes()" onfocus="checkGDes()" onchange="checkGDes()"
-                                class="materialize-textarea validate" required>{{group.description}}</textarea>
-                            <label for="gdescription">Group Description <span class="red-text">*</span></label>
+                            <textarea placeholder="At least 50 characters" id="tdescription" name="description"
+                                onblur="checkTDes()" onfocus="checkTDes()" onchange="checkTDes()"
+                                class="materialize-textarea validate" required>{{topic.description}}</textarea>
+                            <label for="tdescription">Topic Description</label>
                             <span class="helper-text" data-error="Please fill in this field or check your format"
                                 data-success="Input completed"></span>
                         </div><br /><br />
-                        <div class="input-field">
-                            <input placeholder="Maximum 30 characters" type="text" id="groupToken" name="token"
-                                onblur="checkGToken()" onfocus="checkGToken()" onchange="checkGToken()" class="validate"
-                                data-length="30">
-                            <label for="votingToken">Group Token</label>
-                            <span class="helper-text" data-error="Please fill in this field or check your input"
-                                data-success="Input Finished"></span>
-                        </div>
-                        <div class="row col s12">
-                            <!-- Add a blank line -->
-                        </div>
-                        <div class="row col s12">
-                            <!-- Add a blank line -->
-                        </div>
                         <div class="row center">
                             <div class="col s6">
-                                <a href="#modal1" id="gcancel-button"
+                                <a href="#modal1" id="tcancel-button"
                                     class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Cancel</strong></a>
                             </div>
                             <div class="col s6">
-                                <a href="#modal2" id="gupdate-button"
+                                <a href="#modal2" id="tupdate-button"
                                     class="waves-effect waves-light blue lighten-1 btn modal-trigger"><strong>Update</strong></a>
                             </div>
                             <div id="modal1" class="modal">
@@ -99,7 +88,7 @@
                                             class="modal-close waves-effect waves-red btn-flat"><strong>No</strong></a>
                                     </div>
                                     <div class="col s6">
-                                        <a href="/community/groups"
+                                        <a href="/community/topics/mytopics"
                                             class="modal-close waves-effect waves-green btn-flat"><strong>Yes</strong></a>
                                     </div>
                                 </div>
@@ -109,7 +98,7 @@
                                     <h4 class="light-blue-text text-darken-2 center">Confirm Update</h4><br />
                                     <h6 class="light-blue-text text-darken-2 center"><strong>Are you sure to update the
                                             information of this
-                                            group? Please confirm it again.</strong></h6>
+                                            topic? Please confirm it again.</strong></h6>
                                 </div>
                                 <div class="divider"></div>
                                 <div class="modal-footer">
