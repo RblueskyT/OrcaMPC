@@ -6,7 +6,7 @@ module.exports = {
             return next();
         }
 
-        req.flash('flash_error_message', 'Please log in to access your service');
+        req.flash('flash_error_message', 'Please log in to access to services');
         res.redirect('../login');
     }
 }
