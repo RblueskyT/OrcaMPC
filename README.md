@@ -24,7 +24,7 @@ University.
 - Sample Screenshots:
 
 ![Figure15](https://user-images.githubusercontent.com/50388951/130571975-c3363b50-348b-4cda-856a-f001e0ac0b61.png)
-![Figure16](https://user-images.githubusercontent.com/50388951/130571997-b54aef3c-7cd4-4eb3-a7e8-379611b06a32.png)
+![Figure36](https://user-images.githubusercontent.com/50388951/130572556-425f3d25-c0dc-49e1-9e8a-68f4e2f468a3.png)
 ![Figure14](https://user-images.githubusercontent.com/50388951/130571949-c2364668-5a06-40b0-b3d2-f580c709d461.png)
 ![Figure39](https://user-images.githubusercontent.com/50388951/130572115-428af916-fa9d-4058-a159-c9b8928893e8.png)
 ![Figure41](https://user-images.githubusercontent.com/50388951/130572121-7cb8e1fe-e055-4e14-a13c-37b193fa60e5.png)
