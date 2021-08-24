@@ -4,7 +4,7 @@ COM390 Final Year Project, Secure Multi-Party Computations with JIFF
 
 - Software Developer: Zian Wang
 
-- Software Demo Video Link: In Processing
+- Software Demo Video Link: https://www.bilibili.com/video/BV1u64y1v7G4/
 
 - JIFF Library Link: https://github.com/multiparty/jiff
 
